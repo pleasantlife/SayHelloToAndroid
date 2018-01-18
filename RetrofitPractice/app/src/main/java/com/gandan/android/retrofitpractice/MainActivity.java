@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
 
     //레트로핏 연습에서 사용할 SERVER_URL을 미리 지정해준다.
     //해당 URL은 공개적인 URL이며, 여러 클래스에서 사용할 수도 있기 때문에 static으로 선언해두었다.
-    public static String SERVER_URL = "http://httpbin.org/";
+    public static String SERVER_URL = "https://jsonplaceholder.typicode.com/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

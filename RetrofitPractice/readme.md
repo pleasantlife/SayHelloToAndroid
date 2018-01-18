@@ -22,3 +22,9 @@
  - Sync Now 또는 Rebuild Project를 하면 적용완료!
 
 # 3. Retrofit 사용하기
+
+## 1) Interface 생성
+## 2) 데이터를 저장할 Class 생성
+## 3) Retrofit 선언
+## 4) Interface와 연결
+## 5) CRUD 수행
