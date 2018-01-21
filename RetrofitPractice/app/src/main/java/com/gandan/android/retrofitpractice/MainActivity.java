@@ -2,6 +2,17 @@ package com.gandan.android.retrofitpractice;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  *  레트로핏을 이용하여 받아온 데이터를 화면으로 나타낼 액티비티.
@@ -18,5 +29,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        TextView textView = findViewById(R.id.textView);
+        setRetrofit();
+    }
+
+    //레트로핏 코드를 적어넣기 전에 AndroidManifest.xml에 인터넷 퍼미션을 꼭 주도록 한다!
+    private void setRetrofit(){
+        //Retrofit.Builder()를 이용해 Retrofit을 생성한다.
+        Retrofit retrofitBuilder = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).build();
+        //Retrofit이 서버와 통신을 수행하며 데이터를 연결할 클래스를 지정해준다.
+        CRUDService crudService = retrofitBuilder.create(CRUDService.class);
+        //앞서 인터페이스에서 정한 통신방법(GET)과 메소드(getPostList)에 맞춰 Call로 통신을 수행한다.
+        Call<List<PostInfo>> getPostList = crudService.getPostList();
+        //Callback 패턴을 적용하여 통신이 완료되었을 때 response를 받아올 수 있다.
+        getPostList.enqueue(new Callback<List<PostInfo>>() {
+            @Override
+            public void onResponse(Call<List<PostInfo>> call, Response<List<PostInfo>> response) {
+                if(call.isExecuted()){
+                    Log.e("response:", response.body().get(0).getTitle().toString()+"");
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PostInfo>> call, Throwable t) {
+                Log.e("failure:", t.getMessage().toString()+"");
+            }
+        });
     }
 }

@@ -28,5 +28,7 @@ dependencies {
 
     //Download Retrofit using Gradle
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    //and download Json converter(Gson)
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
 
 }
