@@ -13,7 +13,12 @@
  - 다른 라이브러리에 비해서도 더 빠른 성능을 보여줌.
  - JSON이나 XML 방식의 데이터로 입/출력을 지원함.(Gson, Simple XML 등을 사용)
  - Java 1.7 또는 안드로이드 2.3 이상이면 작동하여 범용성이 높음.
- -    
+
+## 2) CRUD란?
+ - 기본적인 데이터 처리 기능인 Create(생성), Read(읽기), Update(갱신), Delete(삭제)를 묶어서 일컫는 말이다. [(출처 : 위키백과)](https://ko.wikipedia.org/wiki/CRUD)
+ - 데이터베이스 또는 Restful API에서 자주 이야기하는 개념
+ - HTTP 통신에선 Update의 개념에 PATCH, PUT 등이 함께 들어가있기도 하다.
+
 # 2. Retrofit 설치하기
 
  - http://square.github.io/retrofit/ 으로 접속하여 Download 란에서 GRADLE 부분의 구문을 복사한다. 
