@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         TextView textView = findViewById(R.id.textView);
         setRetrofit();
+        postRetrofit();
     }
 
     //레트로핏 코드를 적어넣기 전에 AndroidManifest.xml에 인터넷 퍼미션을 꼭 주도록 한다!
@@ -45,7 +46,9 @@ public class MainActivity extends AppCompatActivity {
         getPostList.enqueue(new Callback<List<PostInfo>>() {
             @Override
             public void onResponse(Call<List<PostInfo>> call, Response<List<PostInfo>> response) {
+                //연결이 성공했을 때
                 if(call.isExecuted()){
+                    //해줄 명령을 적으면 된다.
                     Log.e("response:", response.body().get(0).getTitle().toString()+"");
 
                 }
@@ -53,6 +56,33 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<PostInfo>> call, Throwable t) {
+                Log.e("failure:", t.getMessage().toString()+"");
+            }
+        });
+    }
+
+    private void postRetrofit(){
+        Retrofit retrofitBuilder = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).build();
+        CRUDService crudService = retrofitBuilder.create(CRUDService.class);
+        PostInfo newInfo = new PostInfo();
+        newInfo.setTitle("foo");
+        newInfo.setBody("bar");
+        newInfo.setUserId(16);
+        /**POST를 할 때 List에 넣은 object들이 아닌 하나의 object만 POST하기 때문에
+         * getRetrofit()떄처럼 Call<List<PostInfo>>로 Call을 하면,
+         * 'Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path $' 에러가 난다.
+         * 말 그대로, Array타입을 기대했으나 Object 타입이 와서 에러가 났다는 것.
+         *
+        */
+        Call<PostInfo> postPostList = crudService.postPostList(newInfo);
+        postPostList.enqueue(new Callback<PostInfo>() {
+            @Override
+            public void onResponse(Call<PostInfo> call, Response<PostInfo> response) {
+                Log.e("response:", response.body().getTitle().toString()+"");
+            }
+
+            @Override
+            public void onFailure(Call<PostInfo> call, Throwable t) {
                 Log.e("failure:", t.getMessage().toString()+"");
             }
         });
