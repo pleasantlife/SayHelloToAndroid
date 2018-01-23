@@ -56,7 +56,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<PostInfo>> call, Throwable t) {
+                //연결이 실패했을 때, Throwable 객체 변수인 't'를 통해 에러메세지를 받아올 수 있다.
                 Log.e("failure:", t.getMessage().toString()+"");
+
             }
         });
     }
