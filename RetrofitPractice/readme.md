@@ -31,13 +31,13 @@
 ## 1) Interface 생성
 ## 2) 데이터를 저장할 Class 생성
 ## 3) Retrofit 선언
-    'Java
+    '''java
     Retrofit retrofitBuilder = new Retrofit.Builder()
                                 .baseUrl("http://jsonplaceholder.typicode.com/")
                                 .addConverterFactory(GsonConverterFactory
                                 .create())
                                 .build();
-    '
+    '''
 ## 4) Interface와 연결
 ## 5) CRUD 수행
     'Java
