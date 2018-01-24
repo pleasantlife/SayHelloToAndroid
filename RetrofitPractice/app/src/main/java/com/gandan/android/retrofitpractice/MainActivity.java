@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     //레트로핏 코드를 적어넣기 전에 AndroidManifest.xml에 인터넷 퍼미션을 꼭 주도록 한다!
     private void setRetrofit(){
         //Retrofit.Builder()를 이용해 Retrofit을 생성한다.
+        //addConverterFactory를 하고 괄호 안에 GsonConverterFactory를 생성해준 이유는
+        //Gson이 json 데이터를, 지정된 자바의 클래스를 선언한 변수를 통해 클래스에 넣어줄 수 있기 때문이다.
         Retrofit retrofitBuilder = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).build();
         //Retrofit이 서버와 통신을 수행하며 데이터를 연결할 클래스를 지정해준다.
         CRUDService crudService = retrofitBuilder.create(CRUDService.class);
@@ -61,6 +63,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void queryRetrofit(){
+        Retrofit retrofitBuilder = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).build();
     }
 
     private void postRetrofit(){
