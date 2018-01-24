@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.textView);
         setRetrofit();
         postRetrofit();
+        queryRetrofit();
     }
 
     //레트로핏 코드를 적어넣기 전에 AndroidManifest.xml에 인터넷 퍼미션을 꼭 주도록 한다!
@@ -67,6 +68,21 @@ public class MainActivity extends AppCompatActivity {
 
     private void queryRetrofit(){
         Retrofit retrofitBuilder = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).build();
+        CRUDService crudService = retrofitBuilder.create(CRUDService.class);
+        Call<PostInfo> postList = crudService.getPost(1);
+        postList.enqueue(new Callback<PostInfo>() {
+            @Override
+            public void onResponse(Call<PostInfo> call, Response<PostInfo> response) {
+                Log.e("title", response.body().getTitle());
+
+            }
+
+            @Override
+            public void onFailure(Call<PostInfo> call, Throwable t) {
+
+            }
+        });
+
     }
 
     private void postRetrofit(){

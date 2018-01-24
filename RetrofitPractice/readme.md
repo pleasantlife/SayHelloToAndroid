@@ -28,16 +28,21 @@
 
 # 3. Retrofit 사용하기
 
-## 1) Interface 생성
-## 2) 데이터를 저장할 Class 생성
-## 3) Retrofit 선언
-    '''java
+## 1) 데이터를 저장할 Class 생성
+## 2) Retrofit 선언
+
+    - 원하는 액티비티나 클래스에서 아래와 같이 선언하면 된다.
+
+    '''
+    //Json 데이터를 받아서 처리할 것이기 때문에, 
+    //GsonConverterFactory를 사용한다.
+    //(GsonConverterFactory는 별도로 그래들에서 implementation을 수행해야 한다.)   
     Retrofit retrofitBuilder = new Retrofit.Builder()
                                 .baseUrl("http://jsonplaceholder.typicode.com/")
-                                .addConverterFactory(GsonConverterFactory
-                                .create())
+                                .addConverterFactory(GsonConverterFactor.create())
                                 .build();
     '''
+## 3) Retrofit과 연결할 Interface 생성 및 CRUD에 따른 로직 등록    
 ## 4) Interface와 연결
 ## 5) CRUD 수행
     'Java
