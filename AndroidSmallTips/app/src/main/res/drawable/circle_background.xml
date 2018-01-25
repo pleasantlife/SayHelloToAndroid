@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- shape를 rectangle(직사각형, 구조체)로 주고 radius로 모서리 커브값을 가로길이, 세로길이 만큼 주면 원이 된다! -->
+<!-- 1. rectangle로 shape 생성 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+
+    <!-- 2. radius로 모서리 커브값 설정. 여기에서 주는 값은 width, height와 동일해야 함. -->
+    <corners
+        android:topLeftRadius="80dp"
+        android:topRightRadius="80dp"
+        android:bottomLeftRadius="80dp"
+        android:bottomRightRadius="80dp"
+        />
+    <!-- 3. 배경색 지정 (필수 아님) -->
+    <solid
+        android:color="#55000000"
+        />
+
+    <!-- 4. 패딩 지정(필수 아님) -->
+    <padding
+        android:left="0dp"
+        android:top="0dp"
+        android:right="0dp"
+        android:bottom="0dp"
+        />
+
+    <!-- 5. 배경이 될 사이즈 지정. 이미지뷰에서 80dp보다 크거나 작게 해도 원이 망가지지는 않음. -->
+    <size
+        android:width="80dp"
+        android:height="80dp"
+        />
+
+    <!-- 6. 외곽선 설정. (필수 아님) -->
+    <stroke
+        android:width="3dp"
+        android:color="#ffffff"
+        />
+</shape>
