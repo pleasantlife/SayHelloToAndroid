@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">RecyclerViewPractice</string>
+    <string name="textView1">리사이클러뷰 연습</string>
+</resources>
