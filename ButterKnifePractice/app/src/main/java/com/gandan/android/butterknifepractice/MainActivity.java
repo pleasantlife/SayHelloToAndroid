@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //4) 버터나이프로 바인딩함을 선언해준다.
         //findViewById를 선언할 수 있는 곳이면, 어디든 .bind()를 사용할 수 있다.
         ButterKnife.bind(this);
+        textView1.setText("Test Text");
 
         /**ButterKnife를 사용하지 않으면?
         * TextView noButtertextView1 = findViewById(R.id.textView1);
