@@ -15,6 +15,7 @@ import java.util.List;
 
 public class RecyclerViewTestAdapter extends RecyclerView.Adapter<RecyclerViewTestHolder> {
 
+
     Context context;
     List<String> dummyList = new ArrayList<>();
 

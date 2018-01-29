@@ -1,11 +1,14 @@
 package com.gandan.android.butterknifepractice;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import butterknife.BindColor;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -23,9 +26,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.textView2)
     TextView textView2;
 
+    @BindView(R.id.textView3)
+    TextView textView3;
+
     @BindView(R.id.btnButton1)
     Button btnButton1;
 
+    @BindView(R.id.btnButton2)
+    Button btnButton2;
+
+    @BindView(R.id.btnButton3)
+    Button btnButton3;
+
+    //추가 : 단순히 View만 담아내는 것이 아니라, String, Drawable, Color등도 가능하다.
+    @BindString(R.string.app_name)
+    String appName;
+
+    @BindColor(R.color.colorPrimary)
+    int primaryColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //findViewById를 선언할 수 있는 곳이면, 어디든 .bind()를 사용할 수 있다.
         ButterKnife.bind(this);
         textView1.setText("Test Text");
+
 
         /**ButterKnife를 사용하지 않으면?
         * TextView noButtertextView1 = findViewById(R.id.textView1);
@@ -52,7 +71,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void btnChange(Button button){
         button.setText("Hello!");
         textView2.setText("Hello World!");
+        //@BindString으로 선언한 변수 활용
+
     }
+
+    //6) 여러개의 OnClickListener 역할도 아래와 같이 ButterKnife로 해결할 수 있다.
+    @OnClick({R.id.btnButton2, R.id.btnButton3})
+    public void btnChangeTwo(Button button){
+        if(button == btnButton2){
+            textView3.setText(appName);
+            //@BindColor로 선언한 변수 활용
+            textView3.setTextColor(primaryColor);
+        } else {
+            textView3.setTextColor(Color.BLUE);
+        }
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -63,8 +97,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btnButton1:
                 btnButton1.setText("Hello");
                 textView2.setText("Hello World!");
+                textView3.setText(appName);
+                textView3.setTextColor(primaryColor);
             break;
         }
          */
     }
+
 }

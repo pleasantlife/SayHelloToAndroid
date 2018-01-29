@@ -66,10 +66,11 @@
         button.setText("Hello!");
         textView2.setText("Hello World!");
     }
-
     </code></pre>
+    
+## 4. 버터나이프도 귀찮다면?
 
-#4. ButterKnife도 귀찮다면?
-- ['findViewByMe'](https://github.com/laobie/FindViewByMe)를 추천한다.
-- FindViewByMe는 안드로이드스튜디오와 같은 JetBrain IDE 한정 라이브러리로서, View를 바인딩하기를 원하는 레이아웃 XML 이름에 마우스를 가져다 댄 후, 오른쪽 클릭을 하고 메뉴에서 findViewByMe를 선택하기만 하면 된다.
+### 1. [FindViewByMe](https://github.com/laobie/FindViewByMe)
+- FindViewByMe는 안드로이드스튜디오와 같은 JetBrain IDE 한정 라이브러리
+- View를 바인딩하기를 원하는 레이아웃 XML 이름에 마우스를 가져다 댄 후, 오른쪽 클릭을 하고 메뉴에서 findViewByMe를 선택하기만 하면 된다.
 
