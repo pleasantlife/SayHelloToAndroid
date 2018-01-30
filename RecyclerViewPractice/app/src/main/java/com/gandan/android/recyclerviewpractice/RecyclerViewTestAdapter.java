@@ -13,6 +13,8 @@ import java.util.List;
  * Created by XPS on 2018-01-26.
  */
 
+
+//리사이클러와 데이터의 아이템 별 뷰를 연결해주는 어댑터.
 public class RecyclerViewTestAdapter extends RecyclerView.Adapter<RecyclerViewTestHolder> {
 
 
