@@ -1,0 +1,15 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- 외곽선 색상, 두께 넣기
+    <stroke
+        android:width="1dip"
+        android:color="#bd5426" /-->
+    <!-- 배경 색상 넣기. 각도, 시작색상, 중간색상, 마무리색상 선택 가능 -->
+    <gradient
+        android:angle="270"
+        android:startColor="#0e1f43"
+        android:centerColor="#0e1f43"
+        android:endColor="#6fb3d0" />
+
+
+</shape>

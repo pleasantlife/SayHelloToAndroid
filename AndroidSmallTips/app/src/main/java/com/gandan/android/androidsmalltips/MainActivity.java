@@ -1,6 +1,7 @@
 package com.gandan.android.androidsmalltips;
 
 import android.graphics.Color;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -32,6 +33,13 @@ public class MainActivity extends AppCompatActivity {
         /**
          *  2. 라이브러리를 build.gradle에 등록할 때 문제가 생기면 exclude를 사용한다.(build.gradle 참고)
          */
+
+        /**
+         *  3. 그라데이션 배경 넣기
+         */
+        //1) 그라데이션 배경을 넣을 뷰 선언
+        ConstraintLayout backLayout = findViewById(R.id.backLayout);
+        backLayout.setBackgroundResource(R.drawable.gradient);
 
     }
 }
