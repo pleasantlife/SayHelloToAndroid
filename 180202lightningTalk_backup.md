@@ -1,42 +1,6 @@
 # 2018년 2월 2일 안드로이드 라이트닝 토크
 
-## 1. Dagger2 라이트하게 훑기 : 드라마앤컴퍼니 이승민님
-### Dagger를 위한 기본 개념 이해하기
- - Dagger는 Dependencies Injection(의존성 주입) 프레임워크
- - 의존성 주입은? A class가 B class를 의존할 때, B Object 생성을 A에서 하지 않고 외부에서 생성하여 넘겨주는 것
- - 자바 스프링은 그 자체가 DI 프레임워크
-
- - IOC : Inversion of Control(제어 역전) : Di는 IoC구현방법 중 하나이다.
- - IOC를 구현하는 방법은 템플릿도 있다!
-
- - DI는 왜 필요할까? : 객체생성을 외부에 위임 -> Constructor Parameter 등의 보일러 플레이트 코드를 제거
- - 보일러 플레이트 코드를 제거하면 뭐가 좋은가?
- - 귀찮지 않다 / 코드를 유연하게 변경할 수 있다 / 
-
-### Dagger 개념 이해하기
- - Dagger를 이루는 중요 개념들 : Inject, Component, Subcomponent, Module, Scope
- - Inject : Component에게 의존성 주입을 요청
- - Component : Module로부터 생성된 의존성 객체를 주입
- - SubComponent : 부모 컴포넌트의 Inner 컴포넌트 : 서브컴포넌트의 모듈로 주입이 실패하면, 부모 컴포넌트 모듈을 검색.
- - 안드로이드에서는 화면의 상속구조가 갖춰져 있는데, 이와 Dagger를 1:1로 매칭할 수 있다.
- - Module : 의존성 객체를 생성
- - Scope : 생성된 객체의 Lifecycle 범위
- - 흐름도 : Inject->Subcomponent->Module->Scope에 있으면 return / 없으면 생성
- - 흐름도 2 : Inject->Subcomponent에서 없음->상위 컴포넌트->Module검색->이후 같음.(아무데서도 못 찾으면 컴파일 에러.)
-
-### 추가 개념
- - Inject 생성자 : 생성자 자체에도 Inject 어노테이션이 쓰일 수 있다.
- - 테스트 객체 : 테스트 객체, 실제 객체를 쉽게 나눌 수 있다.
-
-### 마무리
- - 러닝커브가 높지만, 장점이 크다.
- - 한번에 하려고 하면 어려우니, 호흡을 길게 두고 공부할 것.
-
-### Q&A
- - Q1 : 생성되는 타이밍을 컨트롤 할 수 있는가?
-    - A1 : Lazy Class 안에 주입받고 싶은 객체를 넣으면, Lazy Class안에 객체.get()을 하면 주입을 요구함.
- - Q2 : DI/BI라는 개념이 서버쪽에서는 친숙하고, 많이 사용하는 개념인데.. 안드로이드 개발할 때 DI를 쓰면 어떤 장점을 갖는지?
-    - A2 : 파라미터의 변경, 클래스 명세의 변경 등에 신속하고 편하게 대응할 수 있다.
+## 1. Dagger2 라이트하게 훑어보기 : (http://www.github.com/pleasantlife)
 
 ## 2. Clean Architecture with socket.io
 
