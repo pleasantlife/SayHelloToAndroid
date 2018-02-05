@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
     //리퀘스트 코드를 설정해야한다.
     public static int REQ_CAMERA = 107;
     //또한 AndroidManifest.xml에 uses-permission을 설정해줘야 한다.
+    //uses-permission을 설정해주지 않을 경우, 퍼미션 확인을 아예 무시한다.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -37,9 +37,23 @@ public class MainActivity extends AppCompatActivity {
         /**
          *  3. 그라데이션 배경 넣기
          */
-        //1) 그라데이션 배경을 넣을 뷰 선언
+        //1) drawable 폴더에 gradident 속성을 정한 xml 파일을 저장한다.
+        //2) 그라데이션 배경을 넣을 뷰를 선언한다.
         ConstraintLayout backLayout = findViewById(R.id.backLayout);
+        //3) 2에서 선언한 뷰에 setBackgroundResource를 통해 설정해준다.
         backLayout.setBackgroundResource(R.drawable.gradient);
+        //3-1) 만약 layout 폴더에 등록된 레이아웃 xml의 배경에 넣는다면 직접 xml을 수정하여, 배경등록도 가능하다.
+        //참고 : 아래와 같은 방식으로 #으로 표현되는 컬러코드를 등록하는 것도 가능하다.
+        Color.parseColor("#66666");
 
+        /**
+         *  4. 한글 줄바꿈 자연스럽게 하기
+         */
+        //TextView로 긴 글을 쓰면, 특정한 줄의 오른쪽 끝에 공간이 많이 남는 경우가 있다.
+        //그럴 때에는 TextView의 속성에서 breakStrategy를 simple로 적용하면, 남는 공간을 크게 줄일 수 있다.
+        TextView textViewBefore = findViewById(R.id.textViewBefore);
+        TextView textViewAfter = findViewById(R.id.textVIewAfter);
+        textViewBefore.setText(getString(R.string.long_text));
+        textViewAfter.setText(getString(R.string.long_text));
     }
 }
