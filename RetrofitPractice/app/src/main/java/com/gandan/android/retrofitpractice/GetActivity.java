@@ -1,12 +1,14 @@
 package com.gandan.android.retrofitpractice;
 
-import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -27,20 +29,33 @@ public class GetActivity extends AppCompatActivity {
     //해당 URL은 공개적인 URL이며, 여러 클래스에서 사용할 수도 있기 때문에 static으로 선언해두었다.
     public static String SERVER_URL = "https://jsonplaceholder.typicode.com/";
 
-    LinearLayout getContents;
+    LinearLayout getContents, queryContents, responseContents;
+    Button btnGoQueryActivity;
+    EditText editTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         TextView textView = findViewById(R.id.textView);
+        editTitle = findViewById(R.id.editTitle);
         getContents = findViewById(R.id.getContents);
-        setRetrofit();
-        postRetrofit();
+        queryContents = findViewById(R.id.queryContents);
+        responseContents = findViewById(R.id.responseContents);
+        btnGoQueryActivity = findViewById(R.id.btnGoQueryActivity);
+        btnGoQueryActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                postRetrofit();
+            }
+        });
+        getRetrofit();
+        queryRetrofit();
+
     }
 
     //레트로핏 코드를 적어넣기 전에 AndroidManifest.xml에 인터넷 퍼미션을 꼭 주도록 한다!
-    private void setRetrofit(){
+    private void getRetrofit(){
         //Retrofit.Builder()를 이용해 Retrofit을 생성한다.
         //addConverterFactory를 하고 괄호 안에 GsonConverterFactory를 생성해준 이유는
         //Gson이 json 데이터를, 지정된 자바의 클래스를 선언한 변수를 통해 클래스에 넣어줄 수 있기 때문이다.
@@ -56,13 +71,13 @@ public class GetActivity extends AppCompatActivity {
                 //연결이 성공했을 때
                 if(call.isExecuted()){
                     //해줄 명령을 적으면 된다.
-                    TextView[] textView = new TextView[response.body().size()];
-                    for(int i=0; i < response.body().size(); i++){
-                        String responseContent = response.body().get(i).getBody();
-                        TextView textResponseBody = new TextView(getApplicationContext());
-                        textResponseBody.setText(responseContent);
-                        getContents.addView(textResponseBody);
-                        textView[i] = textResponseBody;
+                    TextView[] textView = new TextView[10];
+                    for(int i=0; i < 10; i++){
+                        String responseContent = response.body().get(i).getTitle();
+                        TextView textResponseTitle = new TextView(getApplicationContext());
+                        textResponseTitle.setText(responseContent);
+                        getContents.addView(textResponseTitle);
+                        textView[i] = textResponseTitle;
                     }
 
                 }
@@ -77,16 +92,42 @@ public class GetActivity extends AppCompatActivity {
         });
     }
 
+    private void queryRetrofit(){
+        Retrofit retrofitBuilder = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).build();
+        CRUDService crudService = retrofitBuilder.create(CRUDService.class);
+        Call<PostInfo> postList = crudService.getPost(1);
+        postList.enqueue(new Callback<PostInfo>() {
+            @Override
+            public void onResponse(Call<PostInfo> call, Response<PostInfo> response) {
+                if(call.isExecuted()){
+
+                    String responseBody = response.body().getTitle();
+                    TextView queryBody = new TextView(getApplicationContext());
+                    queryBody.setText(responseBody);
+                    queryContents.addView(queryBody);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostInfo> call, Throwable t) {
+
+            }
+        });
+
+    }
+
 
 
     private void postRetrofit(){
         Retrofit retrofitBuilder = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).build();
         CRUDService crudService = retrofitBuilder.create(CRUDService.class);
         PostInfo newInfo = new PostInfo();
-        newInfo.setTitle("foo");
+        String newTitle = editTitle.getText().toString();
+        newInfo.setTitle(newTitle);
         newInfo.setBody("bar");
         newInfo.setUserId(16);
-        /**POST를 할 때 List에 넣은 object들이 아닌 하나의 object만 POST하기 때문에
+        /**
+         * POST를 할 때 List에 넣은 object들이 아닌 하나의 object만 POST하기 때문에
          * getRetrofit()떄처럼 Call<List<PostInfo>>로 Call을 하면,
          * 'Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path $' 에러가 난다.
          * 말 그대로, Array타입을 기대했으나 Object 타입이 와서 에러가 났다는 것.
@@ -96,7 +137,12 @@ public class GetActivity extends AppCompatActivity {
         postPostList.enqueue(new Callback<PostInfo>() {
             @Override
             public void onResponse(Call<PostInfo> call, Response<PostInfo> response) {
-                Log.e("response:", response.body().getTitle().toString()+"");
+                if(call.isExecuted()) {
+                    String responseTitle = response.body().getTitle();
+                    TextView txtResponse = new TextView(getApplicationContext());
+                    txtResponse.setText(responseTitle);
+                    responseContents.addView(txtResponse);
+                }
             }
 
             @Override
