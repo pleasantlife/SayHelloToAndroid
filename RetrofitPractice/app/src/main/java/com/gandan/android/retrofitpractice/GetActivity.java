@@ -1,8 +1,10 @@
 package com.gandan.android.retrofitpractice;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,20 +21,22 @@ import retrofit2.converter.gson.GsonConverterFactory;
  *  (RecyclerView 사용)
  */
 
-public class MainActivity extends AppCompatActivity {
+public class GetActivity extends AppCompatActivity {
 
     //레트로핏 연습에서 사용할 SERVER_URL을 미리 지정해준다.
     //해당 URL은 공개적인 URL이며, 여러 클래스에서 사용할 수도 있기 때문에 static으로 선언해두었다.
     public static String SERVER_URL = "https://jsonplaceholder.typicode.com/";
+
+    LinearLayout getContents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         TextView textView = findViewById(R.id.textView);
+        getContents = findViewById(R.id.getContents);
         setRetrofit();
         postRetrofit();
-        queryRetrofit();
     }
 
     //레트로핏 코드를 적어넣기 전에 AndroidManifest.xml에 인터넷 퍼미션을 꼭 주도록 한다!
@@ -52,7 +56,14 @@ public class MainActivity extends AppCompatActivity {
                 //연결이 성공했을 때
                 if(call.isExecuted()){
                     //해줄 명령을 적으면 된다.
-                    Log.e("response:", response.body().get(0).getTitle().toString()+"");
+                    TextView[] textView = new TextView[response.body().size()];
+                    for(int i=0; i < response.body().size(); i++){
+                        String responseContent = response.body().get(i).getBody();
+                        TextView textResponseBody = new TextView(getApplicationContext());
+                        textResponseBody.setText(responseContent);
+                        getContents.addView(textResponseBody);
+                        textView[i] = textResponseBody;
+                    }
 
                 }
             }
@@ -66,24 +77,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void queryRetrofit(){
-        Retrofit retrofitBuilder = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).build();
-        CRUDService crudService = retrofitBuilder.create(CRUDService.class);
-        Call<PostInfo> postList = crudService.getPost(1);
-        postList.enqueue(new Callback<PostInfo>() {
-            @Override
-            public void onResponse(Call<PostInfo> call, Response<PostInfo> response) {
-                Log.e("title", response.body().getTitle());
 
-            }
-
-            @Override
-            public void onFailure(Call<PostInfo> call, Throwable t) {
-
-            }
-        });
-
-    }
 
     private void postRetrofit(){
         Retrofit retrofitBuilder = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).build();
