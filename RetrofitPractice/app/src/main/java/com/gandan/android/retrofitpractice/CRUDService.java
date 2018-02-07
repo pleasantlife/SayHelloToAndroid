@@ -22,7 +22,7 @@ public interface CRUDService {
 
     //3. RestAPI 서버에서 id이외에도 원하는 값을 통해 데이터를 가져올 수 있도록, Query 파라미터도 지원한다.
     @GET("posts/")
-    Call<PostInfo> getPostQuery(@Query("userId") int id);
+    Call<List<PostInfo>> getPostQuery(@Query("id") int id);
 
     @POST("posts/")
     Call<PostInfo> postPostList(@Body PostInfo postInfo);

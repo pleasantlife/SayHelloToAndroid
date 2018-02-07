@@ -1,6 +1,5 @@
 package com.gandan.android.retrofitpractice;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,9 +28,10 @@ public class GetActivity extends AppCompatActivity {
     //해당 URL은 공개적인 URL이며, 여러 클래스에서 사용할 수도 있기 때문에 static으로 선언해두었다.
     public static String SERVER_URL = "https://jsonplaceholder.typicode.com/";
 
-    LinearLayout getContents, queryContents, responseContents;
-    Button btnGoQueryActivity;
-    EditText editTitle;
+    LinearLayout getContents, queryContents, responseContents, deepQueryContents;
+    Button btnGoQueryActivity, btnQueryResponse;
+    EditText editTitle, editQuery;
+    TextView queryUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +39,20 @@ public class GetActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         TextView textView = findViewById(R.id.textView);
         editTitle = findViewById(R.id.editTitle);
+        editQuery = findViewById(R.id.editQuery);
         getContents = findViewById(R.id.getContents);
         queryContents = findViewById(R.id.queryContents);
         responseContents = findViewById(R.id.responseContents);
+        deepQueryContents = findViewById(R.id.deepQueryContents);
         btnGoQueryActivity = findViewById(R.id.btnGoQueryActivity);
+        queryUrl = findViewById(R.id.queryUrl);
+        btnQueryResponse = findViewById(R.id.btnQueryResponse);
+        btnQueryResponse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                queryRetrofit();
+            }
+        });
         btnGoQueryActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,7 +60,8 @@ public class GetActivity extends AppCompatActivity {
             }
         });
         getRetrofit();
-        queryRetrofit();
+        restApiRetrofit();
+
 
     }
 
@@ -92,7 +103,7 @@ public class GetActivity extends AppCompatActivity {
         });
     }
 
-    private void queryRetrofit(){
+    private void restApiRetrofit(){
         Retrofit retrofitBuilder = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).build();
         CRUDService crudService = retrofitBuilder.create(CRUDService.class);
         Call<PostInfo> postList = crudService.getPost(1);
@@ -148,6 +159,33 @@ public class GetActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<PostInfo> call, Throwable t) {
                 Log.e("failure:", t.getMessage().toString()+"");
+            }
+        });
+    }
+
+    private void queryRetrofit(){
+        Retrofit retrofitBuilder = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).build();
+        CRUDService crudService = retrofitBuilder.create(CRUDService.class);
+        Call<List<PostInfo>> queryList = crudService.getPostQuery(Integer.parseInt(editQuery.getText().toString()));
+        queryList.enqueue(new Callback<List<PostInfo>>() {
+            @Override
+            public void onResponse(Call<List<PostInfo>> call, Response<List<PostInfo>> response) {
+                queryUrl.setText(call.request().toString()+"");
+                TextView[] textQuery = new TextView[response.body().size()];
+                if(call.isExecuted()){
+                    for(PostInfo postInfo : response.body()){
+                        String query = postInfo.getTitle();
+                        TextView newQuery = new TextView(getApplicationContext());
+                        newQuery.setText(query);
+                        deepQueryContents.addView(newQuery);
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PostInfo>> call, Throwable t) {
+                Log.e("t", t.getMessage()+"");
             }
         });
     }
