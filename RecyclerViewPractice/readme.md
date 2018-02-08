@@ -39,5 +39,11 @@
  - 리사이클러뷰와 어댑터 연결
  - 리사이클러뷰와 레이아웃매니저 연결(Grid형태, Linear형태 등)
 
+## 7. Endless Scrolling 구현하기
+ - 엄청난 양의 데이터(몇만개의 리스트)를 모두 받아오면 서버에도 부담되고, 받아오는 시간도 매우 길어질 것이며 그 동안 앱은 멈추는 끔찍한 일이 벌어질 것이다.(물론 별도의 Thread를 돌리면 되겠지만...)
+ - 뷰를 재활용하지 않는 리스트뷰는 이를 구현하는 것이 한결 수월하겠으나, 리사이클러뷰는 뷰를 재사용하기 때문에 구현 난이도가 더 높다.
+ - 이를 막기 위해 Endless Scrolling을 구현하는 것이 권장된다.
+ - Endless Scrolling 관련 구현 예제 사이트(영어 주의!) : https://guides.codepath.com/android/Endless-Scrolling-with-AdapterViews-and-RecyclerView
+
 ## 7. 관련 라이브러리
  - [FlexboxLayout by Google](https://github.com/google/flexbox-layout) 

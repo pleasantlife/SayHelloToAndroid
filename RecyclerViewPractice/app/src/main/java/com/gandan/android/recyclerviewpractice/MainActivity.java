@@ -16,7 +16,8 @@ public class MainActivity extends AppCompatActivity {
 
     //List<String>을 미리 선언해주고, 추후에 내용을 채운 후 adapter에 넣는다.
     List<String> dummyList = new ArrayList<>();
-
+    private EndlessRecyclerViewScrollListener endlessRecyclerViewScrollListener;
+    RecyclerViewTestAdapter testAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,22 +34,32 @@ public class MainActivity extends AppCompatActivity {
         });
         //2) 리사이클러뷰와 어댑터 변수를 선언한다.
         RecyclerView recyclerViewTest = findViewById(R.id.recyclerViewTest);
-        RecyclerViewTestAdapter testAdapter = new RecyclerViewTestAdapter(this, dummyList);
+        testAdapter = new RecyclerViewTestAdapter(this, dummyList);
         //3) 리사이클러뷰와 어댑터를 결합한다.
         recyclerViewTest.setAdapter(testAdapter);
         //4) 어떻게 보일지(격자, 리스트 형태 등)를 결정하는 레이아웃매니저를 결합한다.
-        recyclerViewTest.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerViewTest.setLayoutManager(linearLayoutManager);
         //5) 데이터를 넣는다.
-        setData();
+        setData(100);
+
+        endlessRecyclerViewScrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                          setData(100);
+            }
+        };
+        recyclerViewTest.addOnScrollListener(endlessRecyclerViewScrollListener);
 
     }
 
     //가장먼저, 리사이클러뷰에 표시할 데이터를 생성한다.
-    private void setData(){
+    private void setData(int offset){
 
-        for(int i =0; i < 10; i++){
-            String dummyString = "Hello" + i;
+        for(int i =0; i < offset; i++){
+            String dummyString = "Hello" + dummyList.size()+i;
             dummyList.add(dummyString);
         }
+        testAdapter.notifyDataSetChanged();
     }
 }
