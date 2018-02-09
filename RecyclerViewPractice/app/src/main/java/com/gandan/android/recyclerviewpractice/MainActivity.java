@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private void setData(int offset){
 
         for(int i =0; i < offset; i++){
-            String dummyString = "Hello" + dummyList.size()+i;
+            String dummyString = "Hello" + dummyList.size();
             dummyList.add(dummyString);
         }
         testAdapter.notifyDataSetChanged();
