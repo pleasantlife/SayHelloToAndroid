@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        
+
         /*SimpleDateFormat dDayFormat = new SimpleDateFormat("yyyy년 MM월 DD일", Locale.KOREA);
         String startTime = dDayFormat.format(getTime());
         String nowTime = dDayFormat.format(System.currentTimeMillis());
