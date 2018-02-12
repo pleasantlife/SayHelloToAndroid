@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         inputMonth = findViewById(R.id.inputMonth);
         inputDate = findViewById(R.id.inputDate);
         txtResult = findViewById(R.id.txtResult);
-
+        btnCalculate.setOnClickListener(this);
 
 
 
@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     e.printStackTrace();
                 }
                 txtResult.setText("D-"+ dDaylong + "일");
+                break;
         }
     }
 }
