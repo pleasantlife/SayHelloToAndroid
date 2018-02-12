@@ -46,4 +46,7 @@
  - Endless Scrolling 관련 구현 예제 사이트(영어 주의!) : https://guides.codepath.com/android/Endless-Scrolling-with-AdapterViews-and-RecyclerView
 
 ## 7. 관련 라이브러리
- - [FlexboxLayout by Google](https://github.com/google/flexbox-layout) 
+ 1) [FlexboxLayout by Google](https://github.com/google/flexbox-layout)
+  - 웹 개발자들에게 좀 더 유연한 레이아웃을 제공하는 FlextBox Layout을 안드로이드에서도 사용할 수 있도록 구글에서 제공한 라이브러리
+  - FlexboxLayout 뷰에서는 자식을 순서대로 배치하기 때문에, 향상된 LinearLayout이라고 볼 수 있다.
+  - FlexboxLayout 추가 참고 사이트 : https://academy.realm.io/kr/posts/exploring-new-android-layouts/
