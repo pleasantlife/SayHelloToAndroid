@@ -2,7 +2,7 @@
 
 ## 1. 원형배경 넣기
  - TextView를 사용할 때 원형 배경을 넣고 싶을 때가 있다. 그럴 때, 사용하면 좋은 방법.
- <pre><code>
+```java
  @Override
      protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,13 +20,13 @@
         //5) 글자 색상 변경 (여기서는 흰색으로 변경)
         textViewCircleBorder.setTextColor(Color.WHITE);
       }
-  </code></pre>
+```
 
 ## 2. build.gradle에 라이브러리를 추가할 때, 충돌 해결하기
   - 쓰고 싶은 라이브러리가 있어서 build.gradle을 통해 추가하려는데 문제가 생길때가 있다.
   - 그럴때는 아래의 코드처럼 'exclude'를 활용한다.
 
-  <pre><code>
+```java
   dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.1.0'
@@ -38,4 +38,4 @@
       exclude group: "com.android.support"
       }
     }
-  </code></pre>
+```

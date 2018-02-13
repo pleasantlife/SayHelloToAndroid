@@ -7,20 +7,19 @@
 
 ## 2. 버터나이프 설치
 - Gradle(app)에 아래와 같이 입력한다.
-    <pre><code>
+```java
     dependencies{
         compile 'com.jakewharton:butterknife:8.8.1'
         annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     }
-    </code></pre>
+```
 
 ## 3. 버터나이프 사용
 - 버터나이프로 바인딩해보기
     - 버터나이프는 Annotation을 적극적으로 활용한다.
      > 간혹 블로그나 사이트에서 Annotation 구문을 @BindView가 아닌 @InjectView나 @Bind로 알려주기도 하지만, 예전 버전에서 사용하던 구문으로 지금은 쓰이지 않으니 유의!
 
-    <pre><code>
-
+```java
     public class MainActivity extends AppCompatActivity {   
         
         /** 1) ButterKnife를 사용하기 위해 Annotation으로 BindView를 선언해준다.
@@ -48,10 +47,10 @@
 
     }
 
-    </code></pre>
+ ```
 - 바인딩 후 변경점 적용시키기
-    <pre><code>
     
+```java    
     //위에 코드와 이어짐.
     ButterKnife.bind(this);
 
@@ -66,7 +65,7 @@
         button.setText("Hello!");
         textView2.setText("Hello World!");
     }
-    </code></pre>
+```
     
 ## 4. 버터나이프도 귀찮다면?
 
