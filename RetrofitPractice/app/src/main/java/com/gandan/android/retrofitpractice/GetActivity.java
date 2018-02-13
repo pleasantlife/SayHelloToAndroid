@@ -9,12 +9,20 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -29,9 +37,10 @@ public class GetActivity extends AppCompatActivity {
     public static String SERVER_URL = "https://jsonplaceholder.typicode.com/";
 
     LinearLayout getContents, queryContents, responseContents, deepQueryContents;
-    Button btnGoQueryActivity, btnQueryResponse;
-    EditText editTitle, editQuery;
-    TextView queryUrl;
+    Button btnGoQueryActivity, btnQueryResponse, btnObservable;
+    EditText editTitle, editQuery, editCommentsId;
+    TextView queryUrl, observableComments;
+    List<PostInfo> commentList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +54,15 @@ public class GetActivity extends AppCompatActivity {
         responseContents = findViewById(R.id.responseContents);
         deepQueryContents = findViewById(R.id.deepQueryContents);
         btnGoQueryActivity = findViewById(R.id.btnGoQueryActivity);
+        observableComments = findViewById(R.id.observableComments);
+        btnObservable = findViewById(R.id.btnObservable);
+        btnObservable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                observableRetrofit();
+            }
+        });
+        editCommentsId = findViewById(R.id.editCommentsId);
         queryUrl = findViewById(R.id.queryUrl);
         btnQueryResponse = findViewById(R.id.btnQueryResponse);
         btnQueryResponse.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +79,7 @@ public class GetActivity extends AppCompatActivity {
         });
         getRetrofit();
         restApiRetrofit();
+
 
 
     }
@@ -186,6 +205,38 @@ public class GetActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<PostInfo>> call, Throwable t) {
                 Log.e("t", t.getMessage()+"");
+            }
+        });
+    }
+
+    //Retrofit2에서는 RxJavaAdapter를 통해 RxJava를 지원한다.
+    //따라서 Call이 아닌 Observable을 통해 데이터를 받을 수도 있다.
+    private void observableRetrofit(){
+        final int commentsId = Integer.parseInt(editCommentsId.getText().toString());
+        //addCallAdapterFactory에 RxJava2CallAdapterFacotry를 지정해준다.
+        Retrofit observableRetrofit = new Retrofit.Builder().baseUrl(SERVER_URL).addCallAdapterFactory(RxJava2CallAdapterFactory.create()).addConverterFactory(GsonConverterFactory.create()).build();
+        CRUDService crudService = observableRetrofit.create(CRUDService.class);
+        Observable<List<PostInfo>> info = crudService.getComments(commentsId);
+        //observeOn에 AndroidSchedulers.mainThread()를 지정해주지 않으면 android.os.NetworkOnMainThreadException 에러가 난다.
+        info.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<List<PostInfo>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(List<PostInfo> postInfos) {
+                commentList = postInfos;
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+                observableComments.setText(commentList.get(commentsId).getBody());
             }
         });
     }

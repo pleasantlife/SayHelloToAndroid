@@ -30,10 +30,10 @@
 
 ## 1) 데이터를 저장할 Class 생성
 ## 2) Retrofit 선언
+- 원하는 액티비티나 클래스에서 아래와 같이 선언하면 된다.
 
-    - 원하는 액티비티나 클래스에서 아래와 같이 선언하면 된다.
-
-    '''
+<pre>
+    '''java
     //Json 데이터를 받아서 처리할 것이기 때문에, 
     //GsonConverterFactory를 사용한다.
     //(GsonConverterFactory는 별도로 그래들에서 implementation을 수행해야 한다.)   
@@ -42,10 +42,73 @@
                                 .addConverterFactory(GsonConverterFactor.create())
                                 .build();
     '''
+</pre>
 ## 3) Retrofit과 연결할 Interface 생성 및 CRUD에 따른 로직 등록    
 ## 4) Interface와 연결
 ## 5) CRUD 수행
-    'Java
-    //1. Read("GET")
+
+# 4. okHttp와 결합하여 사용하기
+ - okHttp를 결합하면, 서버와 통신하는 상황에 대한 제어는 물론, Interceptor를 통해 통신 로그를 확인할 수도 있다.
 
 
+# 5. RxAndroid와 결합하여 사용하기
+ - Retrofit2에는 기본적으로 RxJava2Adapter가 있어서 Call 대신 Observable과 Flowable로 데이터를 받을 수 있다.
+ 
+## 1) 그래들 설정하기
+ - App gradle에 아래 세 라이브러리를 추가한다.
+<pre>
+'''java
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.9'   
+'''
+</pre>
+
+## 2) Retrofit에 어댑터 추가
+ - addCallAdapterFactory(RxJava2CallAdapterFactory.create())를 추가한다.
+<pre>
+'''java
+
+    Retrofit retrofitBuilder = new Retrofit.Builder().baseUrl("SERVER_URL").addCallAdapterFactory(RxJava2CallAdapterFactory.create()).addConverterFactory(GsonConveterFactory.create()).build();
+'''
+</pre>
+
+## 3) Interface에 선언하기
+ - Rx를 사용하지 않는 경우 Call<T>를 사용했으나, Rx는 Observable<T> / Flowable<T>를 사용할 수 있다.
+
+<pre><code>
+ '''java
+    
+    @GET("posts/{id}")
+    Observable<PostInfo> getPost(@Path ("id") int id);
+
+ '''
+</code></pre>
+
+## 4) Retrofit 선언 후 사용하기
+
+<pre>
+'''java
+Retrofit retrofitBuilder = new Retrofit.Builder().baseUrl("SERVER_URL").addCallAdapterFactory(RxJava2CallAdapterFactory.create()).addConverterFactory(GsonConveterFactory.create()).build();
+
+PostService postService = retrofitBuilder.create(PostService.class);
+
+Observable<PostInfo> post = postService.getPost(1);
+post.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.MainThread()).observe(new Observble<PostInfo>(){
+    @Override
+    public void onSubscribe(Disposable d) {
+    }
+
+    @Override
+    public void onNext(PortfolioForDetail portfolioForDetail) {
+    }
+
+    @Override
+    public void onError(Throwable e) {
+    }
+
+    @Override
+    public void onComplete() {
+});
+'''
+</pre>
