@@ -76,18 +76,18 @@
 ## 3) Interface에 선언하기
  - Rx를 사용하지 않는 경우 Call<T>를 사용했으나, Rx는 Observable<T> / Flowable<T>를 사용할 수 있다.
 
-<pre><code>
+
  '''java
     
     @GET("posts/{id}")
     Observable<PostInfo> getPost(@Path ("id") int id);
 
  '''
-</code></pre>
+
 
 ## 4) Retrofit 선언 후 사용하기
 
-<pre>
+
 '''java
 Retrofit retrofitBuilder = new Retrofit.Builder().baseUrl("SERVER_URL").addCallAdapterFactory(RxJava2CallAdapterFactory.create()).addConverterFactory(GsonConveterFactory.create()).build();
 
@@ -111,4 +111,3 @@ post.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.MainThread()).obse
     public void onComplete() {
 });
 '''
-</pre>
