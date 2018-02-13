@@ -55,23 +55,15 @@
  
 ## 1) 그래들 설정하기
  - App gradle에 아래 세 라이브러리를 추가한다.
-<<<<<<< HEAD
 
 ```java
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
-=======
-```java
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.9'   
->>>>>>> 7786c23b4e488cacae9083333a7bfd267eb00c0f
 ```
 
 ## 2) Retrofit에 어댑터 추가
  - addCallAdapterFactory(RxJava2CallAdapterFactory.create())를 추가한다.
-<<<<<<< HEAD
 
 ```java
 Retrofit retrofitBuilder = new Retrofit.Builder().baseUrl("SERVER_URL").addCallAdapterFactory(RxJava2CallAdapterFactory.create()).addConverterFactory(GsonConveterFactory.create()).build();
@@ -93,27 +85,6 @@ Retrofit retrofitBuilder = new Retrofit.Builder().baseUrl("SERVER_URL")
 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
 .addConverterFactory(GsonConveterFactory.create())
 .build();
-=======
-```java
-
-    Retrofit retrofitBuilder = new Retrofit.Builder().baseUrl("SERVER_URL").addCallAdapterFactory(RxJava2CallAdapterFactory.create()).addConverterFactory(GsonConveterFactory.create()).build();
-```
-</pre>
-
-## 3) Interface에 선언하기
- - Rx를 사용하지 않는 경우 Call<T>를 사용했으나, Rx는 Observable<T> / Flowable<T>를 사용할 수 있다.
- ```java
-    
-    @GET("posts/{id}")
-    Observable<PostInfo> getPost(@Path ("id") int id);
- ```
-
-
-## 4) Retrofit 선언 후 사용하기
-
-```java
-Retrofit retrofitBuilder = new Retrofit.Builder().baseUrl("SERVER_URL").addCallAdapterFactory(RxJava2CallAdapterFactory.create()).addConverterFactory(GsonConveterFactory.create()).build();
->>>>>>> 7786c23b4e488cacae9083333a7bfd267eb00c0f
 
 PostService postService = retrofitBuilder.create(PostService.class);
 
@@ -134,8 +105,4 @@ post.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.MainThread()).obse
     @Override
     public void onComplete() {
 });
-<<<<<<< HEAD
 ```
-=======
-```
->>>>>>> 7786c23b4e488cacae9083333a7bfd267eb00c0f
