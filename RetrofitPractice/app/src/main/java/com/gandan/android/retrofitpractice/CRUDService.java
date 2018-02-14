@@ -2,6 +2,7 @@ package com.gandan.android.retrofitpractice;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -30,5 +31,8 @@ public interface CRUDService {
 
     @GET("posts/{id}/comments/")
     Observable<List<PostInfo>> getComments(@Path("id") int id);
+
+    @GET("posts/{id}/comments/")
+    Flowable<List<PostInfo>> getFlowableComments (@Path("id") int id);
 
 }
