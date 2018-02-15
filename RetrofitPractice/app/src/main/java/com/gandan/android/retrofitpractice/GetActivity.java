@@ -9,9 +9,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.reactivestreams.Subscription;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Flowable;
+import io.reactivex.FlowableSubscriber;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.Scheduler;
@@ -41,7 +45,7 @@ public class GetActivity extends AppCompatActivity {
     EditText editTitle, editQuery, editCommentsId;
     TextView queryUrl, observableComments;
     List<PostInfo> commentList = new ArrayList<>();
-
+    List<PostInfo> flowableList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,9 +83,7 @@ public class GetActivity extends AppCompatActivity {
         });
         getRetrofit();
         restApiRetrofit();
-
-
-
+        flowableRetrofit();
     }
 
     //레트로핏 코드를 적어넣기 전에 AndroidManifest.xml에 인터넷 퍼미션을 꼭 주도록 한다!
@@ -237,6 +239,36 @@ public class GetActivity extends AppCompatActivity {
             @Override
             public void onComplete() {
                 observableComments.setText(commentList.get(commentsId).getBody());
+            }
+        });
+    }
+
+    //Retrofit에서 지원하는 RxJava2 Adapter를 이용해 Flowable로도 데이터를 받을 수 있다.
+    private void flowableRetrofit(){
+        Retrofit flowableRetrofit = new Retrofit.Builder().baseUrl(SERVER_URL).addCallAdapterFactory(RxJava2CallAdapterFactory.create()).addConverterFactory(GsonConverterFactory.create()).build();
+        CRUDService crudService = flowableRetrofit.create(CRUDService.class);
+        Flowable<List<PostInfo>> flowInfo = crudService.getFlowableComments(3);
+        flowInfo.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new FlowableSubscriber<List<PostInfo>>() {
+            @Override
+            public void onSubscribe(Subscription s) {
+
+            }
+
+            @Override
+            public void onNext(List<PostInfo> postInfos) {
+                flowableList = postInfos;
+                Log.e("postInfos", postInfos.toString()+"");
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+
+            @Override
+            public void onComplete() {
+                Log.e("complete", flowableList.toString());
+
             }
         });
     }
