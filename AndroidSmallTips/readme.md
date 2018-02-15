@@ -39,3 +39,7 @@
       }
     }
 ```
+
+## 3. 레이아웃 인스펙터로 레이아웃 디버깅 하기
+  - 안드로이드 스튜디오 내에는 레이아웃에 대한 디버깅을 위해 '레이아웃 인스펙터' 기능이 내장되어 있다.
+  - 레이아웃 인스펙터 관련 공식사이트 소개 : https://developer.android.com/studio/debug/layout-inspector.html

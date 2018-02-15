@@ -6,16 +6,18 @@
 
 ## 2. RxAndroid를 위해 반드시 알아야 하는 개념들
 1) Observable
+2) Flowable
+3) Subscribe
 
 ## 2. RxAndroid 설치하기
  - ReactiveX는 Android용이 따로 존재한다.
  - App gradle에 아래와 같이 바이너리를 추가해준다.
- <pre><code>
+ ```java
  dependencies{
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.8'
  }
- </code></pre>
+ ```
 
 ## 3. 리액티브 앱 만들어보기
  - [Realm Academy의 게시물](https://academy.realm.io/kr/posts/rxandroid/) 등을 참조하여, 리액티브 앱을 만들어보고자 한다.
