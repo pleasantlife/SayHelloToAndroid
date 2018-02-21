@@ -22,6 +22,7 @@ import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -84,6 +85,7 @@ public class GetActivity extends AppCompatActivity {
         getRetrofit();
         restApiRetrofit();
         flowableRetrofit();
+        retrofitWithOkhttp();
     }
 
     //레트로핏 코드를 적어넣기 전에 AndroidManifest.xml에 인터넷 퍼미션을 꼭 주도록 한다!
@@ -271,5 +273,10 @@ public class GetActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void retrofitWithOkhttp(){
+        Retrofit retrofitOkhttp = new Retrofit.Builder().baseUrl(SERVER_URL).client(new OkHttpClient.Builder().retryOnConnectionFailure(true).build()).addConverterFactory(GsonConverterFactory.create()).build();
+
     }
 }
