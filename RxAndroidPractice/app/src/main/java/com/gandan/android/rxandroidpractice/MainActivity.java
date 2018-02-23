@@ -6,10 +6,16 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.jakewharton.rxbinding2.widget.RxTextView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
@@ -19,31 +25,37 @@ public class MainActivity extends AppCompatActivity {
     TextView textView;
     EditText editText;
 
+    String[] keyWord = {"spring", "springfield", "springton", "sparkle", "spark", "hello", "world", "eight", "friday", "church", "computer", "kotlin", "java", "android", "studio", "google", "milk", "money", "password"};
+    List<String> purifiedWord = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.textView);
         editText = findViewById(R.id.editText);
-        Observable<String> setTextObservable = createButtonClickObservable();
-        setTextObservable.subscribe(new Consumer<String>() {
-            @Override
-            public void accept(String s) throws Exception {
-                //textView.setText(s);
-            }
-        });
 
-        setTextObservable.subscribe(new Observer<String>() {
+        //RxBinding 라이브러리를 설치하면, RxTextView를 사용할 수 있다.
+        Observable<CharSequence> etObservable = RxTextView.textChanges(editText);
+        //MainTHread를 사용하거나, Looper를 통해 Observer를 지정할 수 있다.
+        etObservable.subscribe(new Observer<CharSequence>() {
             @Override
             public void onSubscribe(Disposable d) {
-                if(d.isDisposed()){
-                    d.dispose();
-                }
+
             }
 
             @Override
-            public void onNext(String s) {
-                textView.setText(s);
+            public void onNext(CharSequence charSequence) {
+                //editText에 글자를 입력하는대로 textView에 나타난다.
+                textView.setText(charSequence);
+                //입력한 값 중에서 일치하는 값 저장하기
+                for(String string : keyWord){
+                    //CharSequence를 String으로 변환해야 상호비교가 가능하다.
+                    if(string.equals(String.valueOf(charSequence))){
+                        purifiedWord.add(string);
+                        Log.e("purifiedWord", purifiedWord.toString()+"");
+                    }
+                }
             }
 
             @Override
@@ -53,18 +65,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onComplete() {
-
+                //EditText는 계속 입력을 받을 수 있기 때문에, onComplete에서 받는 것은 없다.
             }
         });
-    }
 
-    private Observable<String> createButtonClickObservable(){
-        return Observable.create(new ObservableOnSubscribe<String>() {
-            @Override
-            public void subscribe(ObservableEmitter<String> emitter) throws Exception {
-                String abc = editText.getText().toString();
-                emitter.onNext(abc);
-            }
-        });
     }
 }

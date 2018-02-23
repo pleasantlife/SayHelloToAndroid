@@ -19,6 +19,10 @@
  }
  ```
 
+ ## 3. RxBinding
+ - Android UI widget(EditText, TextView, RecyclerView 등)을 처리하기 위해서는 RxBinding 라이브러리를 별도로 설치해야한다.
+ - 관련사이트 : https://github.com/JakeWharton/RxBinding
+
 ## 3. 리액티브 앱 만들어보기
  - [Realm Academy의 게시물](https://academy.realm.io/kr/posts/rxandroid/) 등을 참조하여, 리액티브 앱을 만들어보고자 한다.
  - 참고사이트 1 : https://www.slideshare.net/StellaKim9/rxandroid-71638745
