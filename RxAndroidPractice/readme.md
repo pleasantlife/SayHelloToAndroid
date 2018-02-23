@@ -21,6 +21,7 @@
 
  ## 3. RxBinding
  - Android UI widget(EditText, TextView, RecyclerView 등)을 처리하기 위해서는 RxBinding 라이브러리를 별도로 설치해야한다.
+ - 코틀린도 지원한다.
  - 관련사이트 : https://github.com/JakeWharton/RxBinding
 
 ## 3. 리액티브 앱 만들어보기
