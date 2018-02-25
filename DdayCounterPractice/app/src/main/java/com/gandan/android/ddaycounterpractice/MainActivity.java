@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 //Calnedar에서 Month는 0~11월까지로 인식하기 때문에 사용자가 입력한 월에서 하나를 뺴야 한다.
                 setCalendar.set(setYear, setMonth-1, setDate);
+
                 //Calendar를 long값으로 변환한 후 현재 시간에서 뺀다.
                 long dDaylong = System.currentTimeMillis() - setCalendar.getTimeInMillis();
                 //계산한 값에 따라 D-Day를 기록한다.

@@ -4,10 +4,14 @@ import java.util.List;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -29,10 +33,16 @@ public interface CRUDService {
     @POST("posts/")
     Call<PostInfo> postPostList(@Body PostInfo postInfo);
 
+    //4. RxJava2Adapter를 이용하여, Observable 객체를 등록하여 사용할 수 있다.
     @GET("posts/{id}/comments/")
     Observable<List<PostInfo>> getComments(@Path("id") int id);
 
     @GET("posts/{id}/comments/")
     Flowable<List<PostInfo>> getFlowableComments (@Path("id") int id);
 
+    @POST("posts/")
+    //Multipart Annotation은 file을 보내야할 떄 사용한다.
+    //Formurlencoded 규격으로는 file을 보낼 수 없다.
+    @Multipart
+    Observable<String> multiPartPost(@Part("title") RequestBody title, @Part MultipartBody.Part bodyString);
 }

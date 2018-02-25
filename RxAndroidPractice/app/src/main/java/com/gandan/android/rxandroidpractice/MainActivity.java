@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView textView;
     EditText editText;
-
+    //미리 키워드를 할당해보았다.
     String[] keyWord = {"spring", "springfield", "springton", "sparkle", "spark", "hello", "world", "eight", "friday", "church", "computer", "kotlin", "java", "android", "studio", "google", "milk", "money", "password"};
     List<String> purifiedWord = new ArrayList<>();
 
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         editText = findViewById(R.id.editText);
 
         //RxBinding 라이브러리를 설치하면, RxTextView를 사용할 수 있다.
-        Observable<CharSequence> etObservable = RxTextView.textChanges(editText);
+        Observable < CharSequence > etObservable = RxTextView.textChanges(editText);
         //MainTHread를 사용하거나, Looper를 통해 Observer를 지정할 수 있다.
         etObservable.subscribe(new Observer<CharSequence>() {
             @Override

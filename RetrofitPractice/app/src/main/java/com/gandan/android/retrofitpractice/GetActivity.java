@@ -22,7 +22,10 @@ import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -86,6 +89,7 @@ public class GetActivity extends AppCompatActivity {
         restApiRetrofit();
         flowableRetrofit();
         retrofitWithOkhttp();
+        multipartPostRetrofit();
     }
 
     //레트로핏 코드를 적어넣기 전에 AndroidManifest.xml에 인터넷 퍼미션을 꼭 주도록 한다!
@@ -278,5 +282,40 @@ public class GetActivity extends AppCompatActivity {
     private void retrofitWithOkhttp(){
         Retrofit retrofitOkhttp = new Retrofit.Builder().baseUrl(SERVER_URL).client(new OkHttpClient.Builder().retryOnConnectionFailure(true).build()).addConverterFactory(GsonConverterFactory.create()).build();
 
+    }
+
+    private void multipartPostRetrofit(){
+        Retrofit retrofitMultipart = new Retrofit.Builder().baseUrl(SERVER_URL).addCallAdapterFactory(RxJava2CallAdapterFactory.create()).addConverterFactory(GsonConverterFactory.create()).build();
+        CRUDService service = retrofitMultipart.create(CRUDService.class);
+        PostInfo multipartInfo = new PostInfo();
+        String titleString = "이것은 타이틀입니다.";
+        String bodyString = "이것은 내용입니다.";
+
+        //Multipart Annotation을 이용하는경우, 한글을 업로드하면 앞뒤로 따옴표가 붙는다.
+        //따라서 RequestBody 객체를 통해 plain text임을 명기시켜야한다.
+        RequestBody titlePlain = RequestBody.create(MediaType.parse("text/plain"), titleString);
+        MultipartBody.Part bodyPlain = MultipartBody.Part.createFormData("body", String.valueOf(RequestBody.create(MediaType.parse("text/plain"), bodyString)));
+        Observable<String> multiPost = service.multiPartPost(titlePlain, bodyPlain);
+        multiPost.subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(String s) {
+                Log.e("string", s+"");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 }
