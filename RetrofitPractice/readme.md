@@ -106,3 +106,36 @@ post.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.MainThread()).obse
     public void onComplete() {
 });
 ```
+
+## 5) 기타 팁!
+- Retrofit에서 로그아웃 등 Response를 받지 않아도 되는 작업을 수행하고자 한다면, Void Type을 사용할 수 있다.
+```java
+
+Retrofit retrofitBuilder = new Retrofit.Builder().baseUrl("SERVER_URL")
+.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+.addConverterFactory(GsonConveterFactory.create())
+.build();
+
+Call<Void> voidResponse = retrofitBuilder.doLogout();
+voidResponse.enqueue(new Callback<Void>() {
+   
+    @Override
+    public void onResponse(Call<Void> call, Response<Void> response){
+        //연결이 성공했을 때 할 일을 지정
+    }
+    @Override
+    public void onFailure(Call<Void> call, Throwable t){
+        //연결이 실패했을 때 할 일을 지정
+    }
+
+});
+
+```
+- Retrofit에서 Multipart Annotation을 사용하면, text이외에 파일도 POST 할 수 있으나 한글을 POST할 경우 앞 뒤로 따옴표가 붙는다.
+- 따라서, RequestBody 객체를 통해 plain text임을 명시적으로 밝혀야 한다.
+
+```java
+String titleString = "한글";
+RequestBody titlePlain = RequestBody.create(MediaType.parse("text/plain"), titleString);
+```
+

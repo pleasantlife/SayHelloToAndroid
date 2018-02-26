@@ -8,6 +8,8 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -45,4 +47,8 @@ public interface CRUDService {
     //Formurlencoded 규격으로는 file을 보낼 수 없다.
     @Multipart
     Observable<String> multiPartPost(@Part("title") RequestBody title, @Part MultipartBody.Part bodyString);
+
+    @POST("posts/")
+    @FormUrlEncoded
+    Observable<Void> logoutPost(@Field("title") String title);
 }

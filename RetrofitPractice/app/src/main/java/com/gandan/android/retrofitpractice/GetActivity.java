@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.reactivestreams.Subscription;
 
@@ -18,7 +19,6 @@ import io.reactivex.Flowable;
 import io.reactivex.FlowableSubscriber;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -90,6 +90,7 @@ public class GetActivity extends AppCompatActivity {
         flowableRetrofit();
         retrofitWithOkhttp();
         multipartPostRetrofit();
+        voidRetrofit();
     }
 
     //레트로핏 코드를 적어넣기 전에 AndroidManifest.xml에 인터넷 퍼미션을 꼭 주도록 한다!
@@ -315,6 +316,34 @@ public class GetActivity extends AppCompatActivity {
             @Override
             public void onComplete() {
 
+            }
+        });
+    }
+
+    private void voidRetrofit(){
+        //로그아웃 등 response를 반드시 받을 필요가 없을 때에는 Void type으로 Retrofit Call이나 Observable을 호출할 수 있다.
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).addCallAdapterFactory(RxJava2CallAdapterFactory.create()).build();
+        CRUDService service = retrofit.create(CRUDService.class);
+        Observable<Void> logout = service.logoutPost("logout");
+        logout.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Void>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(Void aVoid) {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+                Toast.makeText(GetActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
             }
         });
     }
