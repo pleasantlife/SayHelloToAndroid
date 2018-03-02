@@ -1,5 +1,9 @@
 # 안드로이드 공부하기
 
+# 1. 안드로이드 에뮬레이터에 한글키보드 설치하기
+ - [구글 한국어 입력기 apk](http://github.com/pleasantlife/SayHelloToAndroid/tree/master/koreankeyboard_v1.5.4.apk)
+ - [에뮬레이터에 한글키보드 설치하기](http://bemeal2.tistory.com/42)
+
 # 1. 리사이클러뷰
  - [리사이클러뷰 만들어보기](http://github.com/pleasantlife/SayHelloToAndroid/tree/master/RecyclerViewPractice)
 
