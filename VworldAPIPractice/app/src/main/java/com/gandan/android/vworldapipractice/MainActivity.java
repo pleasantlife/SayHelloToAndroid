@@ -25,6 +25,11 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.gandan.android.vworldapipractice.RetrofitInit.AUTH_KEY;
 
+/**
+ *  국토교통부의 지리정보 관련 사이트인 'Vworld'에서 제공하는 주소검색 API를 이용하여, 원하는 주소를 검색하고
+ * 검색 결과를 RecyclerView에 출력해본다.
+ */
+
 public class MainActivity extends AppCompatActivity {
 
     RetrofitInit retrofitInit = new RetrofitInit();
@@ -42,7 +47,12 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(recycleAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        /**
+         *  RxJava와 RxBinding 라이브러리를 이용해 InputText에 입력되는 글자를 실시간으로 확인할 수 있다.
+         */
+        //Observable의 Type을 String으로 하면, 내용을 제대로 받아오지 못한다.
         Observable<CharSequence> addressInput = RxTextView.textChanges(inputRoadAdress);
+        //안드로이드의 메인스레드에서 observe를 해야한다.
         addressInput.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<CharSequence>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -51,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onNext(CharSequence charSequence) {
+                //글자를 한 자라도 입력하면 바로 주소를 검색하도록 했다.
                 if(charSequence.length() >= 1) {
                     String query = charSequence.toString();
                     getAddressList(query);
@@ -72,6 +83,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *  Retrofit을 통해 검색한 주소를 받아오는 메소드이다.
+     */
     private void getAddressList(String query){
         Observable<AddressQuery> getAddress = retrofitInit.vworldService.getAddress(AUTH_KEY, "search", "address", "road", "json", 1000, query);
 
@@ -88,16 +102,6 @@ public class MainActivity extends AppCompatActivity {
                     roadList.add(item.getAddress().getRoad());
                     recycleAdapter.notifyDataSetChanged();
                 }
-                ;
-                /*for(AddressQuery addressQuery : addressQueries){
-                    Log.e("addressQuery", addressQuery.toString()+"");
-                }*/
-               /* for(AddressQuery addressQuery : addressQueries){
-                    for(Item item : addressQuery.getResponse().getResult().getItems()){
-                        Log.e("address", item.getAddress()+"");
-                    }
-
-                }*/
             }
 
             @Override
