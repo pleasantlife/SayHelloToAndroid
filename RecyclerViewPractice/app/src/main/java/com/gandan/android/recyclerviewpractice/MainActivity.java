@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         };
         recyclerViewTest.addOnScrollListener(endlessRecyclerViewScrollListener);
 
+
+
     }
 
     //가장먼저, 리사이클러뷰에 표시할 데이터를 생성한다.
@@ -61,5 +63,13 @@ public class MainActivity extends AppCompatActivity {
             dummyList.add(dummyString);
         }
         testAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //setResult를 통해서도 onActivityResult에 접근할 수 있으며,
+        //setResult로 들어오면 돌아가는 액티비티에서 했던 작업들이 모두 남아있는 상태가 된다.
+        //예: 주소입력창에 입력해둔 주소가 남아있음.
     }
 }
