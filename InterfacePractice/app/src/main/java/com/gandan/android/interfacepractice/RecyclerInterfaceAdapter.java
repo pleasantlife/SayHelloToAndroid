@@ -40,14 +40,15 @@ public class RecyclerInterfaceAdapter extends RecyclerView.Adapter<RecyclerInter
     public void onBindViewHolder(Holder holder, int position) {
         final String string = hundredList.get(position);
         holder.txtItem.setText(string);
-        holder.constraintItem.setOnClickListener(new View.OnClickListener() {
+        holder.constraintItem.setOnClickListener( v -> dataListener.sendData(string));
+        /*holder.constraintItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //아이템을 눌렀을 때, 해줄 행동을 선언하는 과정에
                 //구현된 인터페이스를 사용하여 데이터를 MainActivity로 전달.
                 dataListener.sendData(string);
             }
-        });
+        });*/
     }
 
     @Override
