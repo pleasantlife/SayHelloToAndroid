@@ -2,6 +2,7 @@ package com.gandan.android.lambdapractice;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -26,6 +27,27 @@ public class MainActivity extends AppCompatActivity {
         });
         //람다식 사용
         btnLambda.setOnClickListener( v -> Toast.makeText(this, "람다 썼어요!", Toast.LENGTH_SHORT).show());
-        
+
+        makeThread();
+    }
+    private void count(){
+        for(int i =1; i <= 100; i++) {
+            Log.d("Count", i+"");
+        }
+    }
+
+    private void makeThread(){
+        //람다식 미사용
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                count();
+            }
+        });
+        //람다식 사용
+        Thread lambdaThread = new Thread(() -> count() );
+
+        //람다식 심화사용
+        Thread lambdaAdvanceThread = new Thread(this::count);
     }
 }
