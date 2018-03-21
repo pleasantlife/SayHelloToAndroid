@@ -48,10 +48,72 @@
 
 # 4. okHttp와 결합하여 사용하기
  - okHttp를 결합하면, 서버와 통신하는 상황에 대한 제어는 물론, Interceptor를 통해 통신 로그를 확인할 수도 있다.
+ - okHttp 라이브러리를 Gradle에서 설치한 후 아래와 같이 필요한 기능을 커스텀 하여 사용할 수 있다.
+ ```java
 
 
-# 5. RxAndroid와 결합하여 사용하기
- - Retrofit2에는 기본적으로 RxJava2Adapter가 있어서 Call 대신 Observable과 Flowable로 데이터를 받을 수 있다.
+
+ OkHttpClient client = new OkHttpClient.Builder()
+                            .addInterceptor(setHttpLoggingInterceptor())
+                            .retryOnConnectionFailure(true)
+                            .readTimeout(10, TimeUnit.MINUTES)
+                            .connectTimeout(10, TimeUnit.MINUTES)
+                            .dispatcher(getDispatcher())
+                            .build();
+
+//Retrofit을 통한 통신을 수행하면서, 주고받는 값을 확인할 수 있다. (헤더, get값, json 등)
+  private HttpLoggingInterceptor setHttpLoggingInterceptor(){
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+            @Override
+            public void log(String message) {
+                Log.d("okhttp", message.toString()+"");
+            }
+        });
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        Log.e("interceptor", httpLoggingInterceptor.toString()+"");
+        return httpLoggingInterceptor;
+    }
+//.client() 메소드를 통해 okHttp를 결합한다.
+Retrofit retrofit = new Retrofit.Builder().baseUrl(SERVER_URL).client(client).addConverterFactory(GsonConverFactory.create()).build();
+```
+
+
+# 5. RxJava와 결합하여 사용하기
+ - Retrofit2에는 기본적으로 RxJava2Adapter가 있어서 Call 대신 Observable과 Flowable로 데이터를 주고 받을 수 있다.
+```java
+
+//데이터 클래스
+public class DataClass {
+   //편의상 public 변수로 정의
+   public String name;
+   public int age;
+}
+
+//인터페이스
+public interface CRUDService {
+    @GET("loaddata/{id}/")
+
+    Observable<DataClass> loadData(@Path("id") int id);
+
+    @GET("loaddata/{id}/")
+    Call<DataClass> callData(@Path("id") int id);
+}
+
+public class LoadData {
+
+    Retrofit retrofit = new Retrofit.Builder().baseUrl(SERVER_URL).addCallAdapterFactory(RxJava2CallAdapterFactory.create()).addConverFactory(GsonConverFactory.create()).build();
+
+    //CRUDService는 임의로 만든, 서버와 통신하는 인터페이스이다.
+    CRUDService service = retrofit.create(CRUDService.class);
+    
+    //RxJava2Adapter를 사용하지 않았을 때
+    Call<DataClass> data = retrofit.service.callData(16);
+
+    //RxJava2Adapter를 사용했을 떄
+    Observable<DataClass> getData = retrofit.service.loadData(16);
+}
+```
+- 또한, 리턴받을 값이 없다면 Observable<Void> 대신 Completable로 통신을 수행할 수 있다.
  
 ## 1) 그래들 설정하기
  - App gradle에 아래 세 라이브러리를 추가한다.
