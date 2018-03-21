@@ -2,6 +2,7 @@ package com.gandan.android.retrofitpractice;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
@@ -48,7 +49,12 @@ public interface CRUDService {
     @Multipart
     Observable<String> multiPartPost(@Part("title") RequestBody title, @Part MultipartBody.Part bodyString);
 
+
     @POST("posts/")
     @FormUrlEncoded
     Observable<Void> logoutPost(@Field("title") String title);
+
+    @POST("posts/")
+    @FormUrlEncoded
+    Completable logout(@Field("title") String title);
 }

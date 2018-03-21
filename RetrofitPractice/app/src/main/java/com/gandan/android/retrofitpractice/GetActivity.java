@@ -15,6 +15,8 @@ import org.reactivestreams.Subscription;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableSubscriber;
 import io.reactivex.Observable;
@@ -91,6 +93,7 @@ public class GetActivity extends AppCompatActivity {
         retrofitWithOkhttp();
         multipartPostRetrofit();
         voidRetrofit();
+        completableRetrofit();
     }
 
     //레트로핏 코드를 적어넣기 전에 AndroidManifest.xml에 인터넷 퍼미션을 꼭 주도록 한다!
@@ -346,5 +349,29 @@ public class GetActivity extends AppCompatActivity {
                 Toast.makeText(GetActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    //리턴 받을 것이 없다거나, 리턴이 필요하지 않은 경우 'Completable'을 사용할 수 있다.
+    private void completableRetrofit(){
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).addCallAdapterFactory(RxJava2CallAdapterFactory.create()).build();
+        CRUDService service = retrofit.create(CRUDService.class);
+        Completable comLogout = service.logout("Completable Logout!");
+        //Completable을 사용했다면, 일반적인 Observer가 아닌 CompletableObserver를 사용할 수 있다.
+        comLogout.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onComplete() {
+                Toast.makeText(GetActivity.this, "완전히 로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Toast.makeText(GetActivity.this, "에러가 발생했습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }
