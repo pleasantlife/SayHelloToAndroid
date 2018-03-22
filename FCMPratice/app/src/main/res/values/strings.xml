@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">FCMPratice</string>
+    <string name="fcm">테스트 노티</string>
+</resources>
