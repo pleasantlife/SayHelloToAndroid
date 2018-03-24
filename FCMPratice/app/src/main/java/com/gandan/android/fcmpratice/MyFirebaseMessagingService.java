@@ -31,15 +31,22 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         message = remoteMessage.getNotification().getBody();
         Log.e("messageReceived", message+"");
 
+        //Oreo 버전부터는 노티를 받을 떄 알림채널을 설정해줘야 한다.
         if(Build.VERSION.SDK_INT >= 26){
+            int id = 3;
             Log.e("test", message+"");
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationChannel = new NotificationChannel(getString(R.string.fcm), "notiName", NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel = notificationManager.getNotificationChannel(getString(R.string.fcm));
             notificationChannel.setDescription("notification Test");
             notificationManager.createNotificationChannel(notificationChannel);
-            Notification.Builder notiBuilder = new Notification.Builder(this, getString(R.string.fcm));
-            notiBuilder.setContentText(message).setSmallIcon(R.drawable.ic_launcher_foreground).setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background)).setChannelId(getString(R.string.fcm)).build();
-        } else {
+            Notification notiBuilder = new Notification.Builder(this).setContentTitle("Testing...").setContentText(message).setSmallIcon(R.drawable.ic_launcher_foreground).setChannelId(getString(R.string.fcm)).build();
+            //아래의 int id는 정하기 나름~!
+            //파이어베이스 콘솔에서 보내는 알림채널 id와 클라이언트 앱에서 받는 id가 같아야 온다! => 선택사항이라고 안쓰면 안된다.
+            notificationManager.notify(3, notiBuilder);
+
+        }
+        //26버전 이하면 적용되지 않음.
+        else {
 
         }
     }
