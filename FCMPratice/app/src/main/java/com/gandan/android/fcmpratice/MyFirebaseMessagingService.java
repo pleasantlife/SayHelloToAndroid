@@ -32,7 +32,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.e("messageReceived", message+"");
 
         //Oreo 버전부터는 노티를 받을 떄 알림채널을 설정해줘야 한다.
-        if(Build.VERSION.SDK_INT >= 26){
+        if(Build.VERSION.SDK_INT >= 27){
             int id = 3;
             Log.e("test", message+"");
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -47,7 +47,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
         //26버전 이하면 적용되지 않음.
         else {
-
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            Notification notification = new Notification.Builder(this).setContentTitle("Testing Under 27").setContentText(message).setSmallIcon(R.drawable.ic_launcher_foreground).build();
+            notificationManager.notify("tag", 3, notification);
         }
     }
 
