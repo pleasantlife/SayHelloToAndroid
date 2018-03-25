@@ -48,8 +48,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         //26버전 이하면 적용되지 않음.
         else {
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            Notification notification = new Notification.Builder(this).setContentTitle("Testing Under 27").setContentText(message).setSmallIcon(R.drawable.ic_launcher_foreground).build();
-            notificationManager.notify("tag", 3, notification);
+            NotificationCompat.Builder notificationCompat = new NotificationCompat.Builder(this).setContentTitle("Test Under 26").setContentText(message).setSmallIcon(R.drawable.ic_launcher_foreground);
+            notificationManager.notify(3, notificationCompat.build());
         }
     }
 
