@@ -10,8 +10,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import org.reactivestreams.Subscription;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -373,5 +376,32 @@ public class GetActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    //만약 Http 200대가 아닌 Error가 발생했을 경우, Json으로 들어오는 ErrorBody를 받고 싶다면 아래와 같이 하면 된다.
+    private void errorHandle(){
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(SERVER_URL).addConverterFactory(GsonConverterFactory.create()).build();
+        CRUDService service = retrofit.create(CRUDService.class);
+        Call<String> error = service.getError("title");
+        error.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                try {
+                    //에러가 났을 경우 Json을 String 타입으로 받아올 수 있다.
+                    String errorJson = response.errorBody().string();
+                    //Gson은 String 타입인 Json을 Deserialize 해줄 수 있다.
+                    Gson gson = new Gson();
+                    String errorString = gson.fromJson(errorJson, String.class);
+                    Log.e("errorString", errorString+"");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
     }
 }

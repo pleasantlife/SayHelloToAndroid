@@ -57,4 +57,8 @@ public interface CRUDService {
     @POST("posts/")
     @FormUrlEncoded
     Completable logout(@Field("title") String title);
+
+    @POST("posts/")
+    @FormUrlEncoded
+    Call<String> getError(@Field("title") String title);
 }
