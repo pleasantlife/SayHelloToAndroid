@@ -22,18 +22,22 @@ import com.google.firebase.messaging.RemoteMessage;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     String message;
-
     NotificationChannel notificationChannel;
+    int id = 3;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        message = remoteMessage.getNotification().getBody();
+        //message = remoteMessage.getNotification().getBody();
+        if(remoteMessage.getData().size() > 0){
+            Log.e("remoteData", remoteMessage.getData()+"");
+            Log.e("test", remoteMessage.getData().get("hello")+"");
+            message = remoteMessage.getData().get("hello");
+        }
         Log.e("messageReceived", message+"");
 
         //Oreo 버전부터는 노티를 받을 떄 알림채널을 설정해줘야 한다.
-        if(Build.VERSION.SDK_INT >= 27){
-            int id = 3;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             Log.e("test", message+"");
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             notificationChannel = notificationManager.getNotificationChannel(getString(R.string.fcm));
@@ -42,14 +46,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Notification notiBuilder = new Notification.Builder(this).setContentTitle("Testing...").setContentText(message).setSmallIcon(R.drawable.ic_launcher_foreground).setChannelId(getString(R.string.fcm)).build();
             //아래의 int id는 정하기 나름~!
             //파이어베이스 콘솔에서 보내는 알림채널 id와 클라이언트 앱에서 받는 id가 같아야 온다! => 선택사항이라고 안쓰면 안된다.
-            notificationManager.notify(3, notiBuilder);
+            notificationManager.notify(id, notiBuilder);
 
         }
-        //26버전 이하면 적용되지 않음.
+        //26버전 이하면 알림채널을 설정하지 않은 노티를 만들어줘도 잘 받음.
         else {
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            NotificationCompat.Builder notificationCompat = new NotificationCompat.Builder(this).setContentTitle("Test Under 26").setContentText(message).setSmallIcon(R.drawable.ic_launcher_foreground);
-            notificationManager.notify(3, notificationCompat.build());
+            NotificationCompat.Builder notificationCompat = new NotificationCompat.Builder(this).setContentTitle("Test Under 26").setContentText(message).setSmallIcon(R.mipmap.ic_launcher, 0);
+            notificationManager.notify(id, notificationCompat.build());
         }
     }
 
