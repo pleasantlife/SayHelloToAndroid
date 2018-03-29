@@ -15,6 +15,9 @@ public class FCMSend {
     @SerializedName("to")
     @Expose
     private String to;
+    @SerializedName("android_channel_id")
+    @Expose
+    private String androidChannelId;
 
     public Data getData() {
         return data;
@@ -30,5 +33,13 @@ public class FCMSend {
 
     public void setTo(String to) {
         this.to = to;
+    }
+
+    public String getAndroidChannelId() {
+        return androidChannelId;
+    }
+
+    public void setAndroidChannelId(String androidChannelId) {
+        this.androidChannelId = androidChannelId;
     }
 }

@@ -33,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private static String FCM_URL = "https://fcm.googleapis.com/";
     private static String OLD_SERVER_KEY = "AIzaSyAEPoemVXtGVZNkxVl5kgA7-EWV1ocgTGk";
     private static String SERVER_KEY = "AAAA5FedaNQ:APA91bEHC0fr7D21EncvmRIIGNGq9kgTpSsLIBy5AdBpMqro4TYk5UI5mLLZdK0zcoh9OYpCz7duOMZzuH3wZi4asNiAFdj9pNkMrwC3Qf5E0JN593Eb3pRTi2rkc3g4tou-u1qJZkrP";
-    private static String TEST_TOKEN = "fLwNZV4dwiU:APA91bGt7OjF9r9aMpVZlnzFOsg79joMhYNRW_aEu1qsgZHRQW_DIGVlqnycioS2JOhNts62zqMN8_LNXizOAcrqyLI7e9aFXgYVMxckfMhnUzileCYjQttZrXu2vzx_1ntt-suwRFCr";
+    private static String TEST_TOKEN_LG = "dwWAhBc0b2k:APA91bG4GvRFxZsxyRn6NvciGp-E7lWyO_XqMcivsWImD39AOT3thgCVjgECVyzKletbdJEk2xd9jDLq3VKzqgjX3302FcFqDhw29Mc4QU-wpLS5vipZY51xwF1l2zkMV4venYXUKI0l";
+    private static String TEST_TOKEN = "dWLmIDCa6Q0:APA91bHfFUZ6uEivAp4qoewzrZNNGqzIZRNDH1d9Tne8o0csN0K9C6hxT1tgey4KEuqS6-D8RQ1ExOZTYoqTBoIS8ijlFa6t0FRwTLrmZgQBey011gMoXMMaSEnGhx4Lw6hxelqNFu4t";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
         FCMSend fcmSend = new FCMSend();
         fcmSend.setData(data);
         fcmSend.setTo(TEST_TOKEN);
+        //API 26버전 이상에 적용되는 '알림채널'에 대응하기 위해 채널 id를 기입했다.
+        //알림채널을 명시하지 않으면, 앱이 노티를 띄우지 않는다.
+        fcmSend.setAndroidChannelId(getString(R.string.fcm));
 
         Call<Void> sendMessage = fcmService.sendMessage("application/json", "key="+OLD_SERVER_KEY, fcmSend);
         sendMessage.enqueue(new Callback<Void>() {

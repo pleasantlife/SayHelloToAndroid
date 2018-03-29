@@ -16,6 +16,7 @@ public class Data {
     @Expose
     private String message;
 
+
     public String getTitle() {
         return title;
     }
@@ -31,6 +32,8 @@ public class Data {
     public void setMessage(String message) {
         this.message = message;
     }
+
+
 
 
 }
