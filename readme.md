@@ -13,7 +13,7 @@
  - [버터나이프 사용으로 findViewById 선언 줄이기](http://github.com/pleasantlife/SayHelloToAndroid/tree/master/ButterKnifePractice)
 
 # 5. Firebase Clud Message
- - [안드로이드앱애서 푸시 받아보기](https://github.com/pleasantlife/SayHelloToAndroid/tree/master/FCMPratice)
+ - [안드로이드앱애서 푸시 받고 보내보기](https://github.com/pleasantlife/SayHelloToAndroid/tree/master/FCMPratice)
 
 # 5. 샌드박스
  - [Vworld(공간정보 오픈플랫폼)를 활용한 주소검색 앱 만들기(RxAndroid, Retrofit 이용)]
