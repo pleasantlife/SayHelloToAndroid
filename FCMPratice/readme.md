@@ -7,11 +7,16 @@
 
 ## 2. 안드로이드 알림채널
 - API 버전 26부터 '알림 채널'(Notification Channel)이라는 개념이 생김.
-- 알림채널을 설정하지 않으면 노티가 뜨지 않음.
+- 알림채널을 설정하지 않으면 노티가 뜨지 않음. (아래의 예제에서는 'fcmid')
 - 알림채널을 통해 노티피케이션의 중요도 설정 가능.
 - NotificationChannel 클래스를 통해 설정 가능.
 ```java
-NotificationChannel notificationChannel = new NotificationCHannel(fcmid, name, importance);
+
+//NotificationChannel 생성 1
+NotificationChannel notificationChannel = new NotificationChannel(fcmid, name, importance);
+//NotificationChannel 생성 2
+NotificationManager notiManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+NotificationChannel notiChannel = notimanager.getNotificationChannel(fcmid);
 ```
 
 ## 3. 유의사항
@@ -23,7 +28,7 @@ NotificationChannel notificationChannel = new NotificationCHannel(fcmid, name, i
  3) xhdpi : 48px x 48px
  4) xxhdpi : 72px x 72px
  5) xxxhdpi : 96px x 96px
-- 위의 dpi 기준이 지켜지지 않으면, 'Can't Create ICON오류를 내면서 앱이 실행되지 않을 수 있다.
+- 위의 dpi 기준이 지켜지지 않으면, Couldn't create 
 
 ## 4. FCM 사용해보기(안드로이드!)
 
@@ -95,3 +100,17 @@ public class MyFirebaseMessagingService extneds FirebaseMessagingService {
     </service>            
 </application>        
 ``` 
+
+3) 메세지 받기
+- FCM을 통해 전송되는 메세지는 FirebaseMessagingService를 상속받은 서비스 내의 onMessageReceived() 메소드에서 받을 수 있따.
+```java
+public class MyFirebaseMessagingService extends FirebaseMessagingService {
+
+    @Override
+    public void onMessageReceived(RemoteMessage remoteMessage){
+        String message = remoteMessage.getNotification().getBody();
+
+        //TODO : NOTIFICATION
+    }
+}
+```
