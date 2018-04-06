@@ -3,6 +3,8 @@ package com.gandan.android.fcmpratice;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * Created by XPS on 2018-03-29.
  */
@@ -12,9 +14,9 @@ public class FCMSend {
     @SerializedName("data")
     @Expose
     private Data data;
-    @SerializedName("to")
+    @SerializedName("registration_ids")
     @Expose
-    private String to;
+    private List<String> to = null;
     @SerializedName("android_channel_id")
     @Expose
     private String androidChannelId;
@@ -27,11 +29,11 @@ public class FCMSend {
         this.data = data;
     }
 
-    public String getTo() {
+    public List<String> getTo() {
         return to;
     }
 
-    public void setTo(String to) {
+    public void setTo(List<String> to) {
         this.to = to;
     }
 

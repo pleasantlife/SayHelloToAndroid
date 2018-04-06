@@ -11,6 +11,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -71,7 +73,10 @@ public class MainActivity extends AppCompatActivity {
         data.setMessage("Send Message from Application!");
         FCMSend fcmSend = new FCMSend();
         fcmSend.setData(data);
-        fcmSend.setTo(TEST_TOKEN);
+        List<String> tokenList = new ArrayList<>();
+        tokenList.add(TEST_TOKEN);
+        tokenList.add(TEST_TOKEN_LG);
+        fcmSend.setTo(tokenList);
         //API 26버전 이상에 적용되는 '알림채널'에 대응하기 위해 채널 id를 기입했다.
         //알림채널을 명시하지 않으면, 앱이 노티를 띄우지 않는다.
         fcmSend.setAndroidChannelId(getString(R.string.fcm));
