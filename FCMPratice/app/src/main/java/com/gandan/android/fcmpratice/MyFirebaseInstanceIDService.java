@@ -11,6 +11,8 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
 
 public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
 
+
+    //FCM의 기기 토큰이 변경(기기가 변경되었을 떄)되면 실행되는 메소드.
     @Override
     public void onTokenRefresh() {
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();

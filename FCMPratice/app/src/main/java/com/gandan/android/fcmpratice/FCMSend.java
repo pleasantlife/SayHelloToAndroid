@@ -9,6 +9,8 @@ import java.util.List;
  * Created by XPS on 2018-03-29.
  */
 
+//보내는 메세지 데이터 클래스
+
 public class FCMSend {
 
     @SerializedName("data")

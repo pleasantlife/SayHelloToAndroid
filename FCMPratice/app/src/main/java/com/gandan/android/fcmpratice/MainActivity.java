@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     FCMService fcmService;
     Retrofit retrofit;
 
+
+    //FCM을 사용하기 위한 서버키 등을 static으로 선언한다.
     private static String SENDER_ID = "980722477268";
     private static String FCM_URL = "https://fcm.googleapis.com/";
     private static String OLD_SERVER_KEY = "AIzaSyAEPoemVXtGVZNkxVl5kgA7-EWV1ocgTGk";
@@ -49,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         btnSendNoti.setOnClickListener( v -> sendNoti());
         activeRetrofit();
     }
+
+    //레트로핏 객체 생성!
 
     private void activeRetrofit(){
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
