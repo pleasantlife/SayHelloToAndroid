@@ -75,6 +75,10 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    //SuppressWarning? : 컴파일 경고를 사용하지 않도록 설정해주는 어노테이션. 컴파일러에 특정 경고메시지가 나타나지 않게 해준다.
+    //자바 1.5버전부터 사용할 수 있다.
+    //상세 설명 페이지 : https://www.ibm.com/support/knowledgecenter/ko/SSRTLW_9.6.0/org.eclipse.jdt.doc.user/tasks/task-suppress_warnings.htm
+    //"StatementWithEmptyBody"토큰은 인텔리제이에서 추가한 옵션으로, 자바에서 기본적으로 제공하는 옵션은 아닌듯 하다.
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
