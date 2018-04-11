@@ -52,9 +52,10 @@ public class MainActivity extends AppCompatActivity {
         activeRetrofit();
     }
 
-    //레트로핏 객체 생성!
+    //레트로핏 객체 생성!(기기에서 기기로 노티를 보내기 위함.)
 
     private void activeRetrofit(){
+        //통신상황을 로그로 남기기 위해 LoggingInterceptor를 생성해주었다.
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
             @Override
             public void log(String message) {
@@ -63,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         });
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(loggingInterceptor).build();
         retrofit = new Retrofit.Builder().baseUrl(FCM_URL).client(client).addConverterFactory(GsonConverterFactory.create()).build();
         fcmService = retrofit.create(FCMService.class);
@@ -71,12 +71,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //firebase 콘솔을 통하지 않고, 기기에서 기기로 노티를 보낼 수 있다!
+    //앱이 실행중이지 않을때 (백그라운드) 노티를 받으려면 Notification이 아닌, Data 클래스에 데이터를 넣어서 보내야 한다.
+    //이 떄, title / body가 아닌 지정된 키-값 쌍으로 받는다는 약속만 제대로 되어있으면, 키 네임은 어떤 것으로 하든 오케이!
     private void sendNoti(){
+        //백그라운드 상태일때를 대비해 Data 오브젝트로 보내려면!
         Data data = new Data();
         data.setTitle("Hello from App");
         data.setMessage("Send Message from Application!");
+
+        //포그라운드 상태일때 노티를 띄우려면!
+        Notification notification = new Notification();
+        notification.setTitle("hello from App Foreground");
+        notification.setBody("Send message from Application to Application by Notification Class");
         FCMSend fcmSend = new FCMSend();
         fcmSend.setData(data);
+        fcmSend.setNotification(notification);
         List<String> tokenList = new ArrayList<>();
         tokenList.add(TEST_TOKEN);
         tokenList.add(TEST_TOKEN_LG);

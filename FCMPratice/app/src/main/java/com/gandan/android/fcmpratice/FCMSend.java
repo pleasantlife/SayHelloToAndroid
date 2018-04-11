@@ -22,6 +22,9 @@ public class FCMSend {
     @SerializedName("android_channel_id")
     @Expose
     private String androidChannelId;
+    @SerializedName("notification")
+    @Expose
+    private Notification notification;
 
     public Data getData() {
         return data;
@@ -45,5 +48,13 @@ public class FCMSend {
 
     public void setAndroidChannelId(String androidChannelId) {
         this.androidChannelId = androidChannelId;
+    }
+
+    public Notification getNotification() {
+        return notification;
+    }
+
+    public void setNotification(Notification notification) {
+        this.notification = notification;
     }
 }
