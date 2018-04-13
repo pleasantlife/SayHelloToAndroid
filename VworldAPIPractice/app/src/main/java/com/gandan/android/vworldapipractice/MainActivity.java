@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     *  Retrofit을 통해 검색한 주소를 받아오는 메소드이다.
+     *
      */
     private void getAddressList(String query){
         Observable<AddressQuery> getAddress = retrofitInit.vworldService.getAddress(AUTH_KEY, "search", "address", "road", "json", 1000, query);
@@ -98,9 +98,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onNext(AddressQuery addressQuery) {
                 roadList.clear();
-                for(Item item : addressQuery.getResponse().getResult().getItems()){
-                    roadList.add(item.getAddress().getRoad());
-                    recycleAdapter.notifyDataSetChanged();
+                if(addressQuery.getResponse().getResult().getItems() != null) {
+                    for (Item item : addressQuery.getResponse().getResult().getItems()) {
+                        roadList.add(item.getAddress().getRoad());
+                        recycleAdapter.notifyDataSetChanged();
+                    }
                 }
             }
 
@@ -111,8 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onComplete() {
-
-
+                Toast.makeText(MainActivity.this, "주소 검색이 완료되었습니다.", Toast.LENGTH_SHORT).show();
             }
         });
     }
