@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.gandan.android.kakaoaddress.AddressModel.Document;
 import com.gandan.android.kakaoaddress.AddressModel.StoreAddress;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     List<Document> documentList = new ArrayList<>();
     AddressAdapter addressAdapter;
     RecyclerView recyclerKakaoAddress;
+    TextView txtNoResult;
 
 
     @Override
@@ -48,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recyclerKakaoAddress = findViewById(R.id.recyclerKakaoAddress);
         recyclerKakaoAddress.setAdapter(addressAdapter);
         recyclerKakaoAddress.setLayoutManager(new LinearLayoutManager(this));
+        txtNoResult = findViewById(R.id.txtNoResult);
+        txtNoResult.setVisibility(View.GONE);
     }
 
     @Override
@@ -76,6 +80,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 //notify가 onComplete에 있으면 제대로 적용되지 않는다.
                 addressAdapter.notifyDataSetChanged();
+                if(documentList.size() == 0){
+                    txtNoResult.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override

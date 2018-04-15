@@ -37,6 +37,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.Holder> 
     public void onBindViewHolder(Holder holder, int position) {
         Document document = documentList.get(position);
         holder.txtAddressItem.setText(document.getAddressName());
+        holder.txtCityItem.setText(document.getAddress().getRegion1depthName()+"");
     }
 
     @Override
@@ -46,11 +47,12 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.Holder> 
 
     class Holder extends RecyclerView.ViewHolder{
 
-        TextView txtAddressItem;
+        TextView txtAddressItem, txtCityItem;
 
         public Holder(View itemView) {
             super(itemView);
             txtAddressItem = itemView.findViewById(R.id.txtAddressItem);
+            txtCityItem = itemView.findViewById(R.id.txtCityItem);
         }
     }
 }
