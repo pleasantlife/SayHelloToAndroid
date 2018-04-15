@@ -74,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 for(Document document : storeAddress.getDocuments()){
                     documentList.add(document);
                 }
+                //notify가 onComplete에 있으면 제대로 적용되지 않는다.
+                addressAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -83,22 +85,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onComplete() {
-                addressAdapter.notifyDataSetChanged();
-            }
-        });
-    }
-
-
-    private void getListByCall(){
-        Call<StoreAddress> getList = retrofitInit.kakaoAddressService.getList("KakaoAK"+KAKAO_KEY, inputSearchAddress.getText().toString());
-        getList.enqueue(new Callback<StoreAddress>() {
-            @Override
-            public void onResponse(Call<StoreAddress> call, Response<StoreAddress> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<StoreAddress> call, Throwable t) {
 
             }
         });
