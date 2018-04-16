@@ -15,10 +15,8 @@ import retrofit2.http.Query;
 
 public interface KakaoAddressService {
 
+    //'address.json'으로 return type을 지정해 주어야 한다.
     @GET("v2/local/search/address.json")
     Observable<StoreAddress> getData(@Header("Authorization") String token, @Query("query") String query);
-
-    @GET("v2/local/search/address.json")
-    Call<StoreAddress> getList(@Header("Authorization") String token, @Query("query") String query);
 
 }
