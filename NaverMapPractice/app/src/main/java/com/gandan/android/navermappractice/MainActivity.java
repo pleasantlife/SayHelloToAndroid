@@ -38,7 +38,6 @@ public class MainActivity extends NMapActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         permissionCheck();
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         naverMapView = findViewById(R.id.naverMapView);
         naverMapView.setClientId(NAVER_CLIENT_ID);
         naverMapView.setAutoRotateEnabled(true, true);
@@ -54,12 +53,13 @@ public class MainActivity extends NMapActivity {
                     naverMapView.setBuiltInZoomControls(true, null);
                     //naverGeoPoint.set(lat, lng);
                     //naverMapController.setMapCenter(naverGeoPoint, 16);
+
                     return true;
                 }
                 return false;
             }
         });
-
+        
     }
 
 
