@@ -12,14 +12,22 @@
 # 4. 버터나이프 (ButterKnife)
  - [버터나이프 사용으로 findViewById 선언 줄이기](http://github.com/pleasantlife/SayHelloToAndroid/tree/master/ButterKnifePractice)
 
-# 5. Firebase Clud Message
+# 5. Firebase Cloud Message
  - [안드로이드앱애서 푸시 받고 보내보기](https://github.com/pleasantlife/SayHelloToAndroid/tree/master/FCMPratice)
 
 # 5. 샌드박스
  - [Vworld(공간정보 오픈플랫폼)를 활용한 주소검색 앱 만들기(RxAndroid, Retrofit 이용)]
- (https://github.com/pleasantlife/SayHelloToAndroid/tree/master/VworldAPIPractice)
+ (https://github.com/pleasantlife/SayHelloToAndroid/tree/master/VworldAPIPractice) 
  - [깜빡이는 버튼 만들기(투명도 조절, RxAndroid와 람다 이용)]
  (https://github.com/pleasantlife/SayHelloToAndroid/tree/master/ButtonFlickering)
+ - [람다(Lambda)를 써보자!]
+ (https://github.com/pleasantlife/SayHelloToAndroid/tree/master/LambdaPractice)
+
+# 6. 지도 표시해보기
+ - [구글맵 (안드로이드 스튜디오 기본 제공) 액티비티 만들기]
+ (https://github.com/pleasantlife/SayHelloToAndroid/tree/master/GoogleMapPractice)
+ - [네이버 지도 표시 액티비티 만들기]
+ (https://github.com/pleasantlife/SayHelloToAndroid/tree/master/NaverMapPractice)
 
 # 6. 기타
 - [안드로이드에서 쓸 수 있는 아주아주아주 사소한 팁들](http://github.com/pleasantlife/SayHelloToAndroid/tree/master/AndroidSmallTips)
