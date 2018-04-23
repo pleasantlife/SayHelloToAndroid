@@ -29,6 +29,11 @@ public class MainActivity extends AppCompatActivity {
         btnLambda.setOnClickListener( v -> Toast.makeText(this, "람다 썼어요!", Toast.LENGTH_SHORT).show());
 
         makeThread();
+
+        //람다를 이용해 변수에 함수 대입.
+        Function function = (int a, int b) -> a + b;
+        int result = function.calc(3,4);
+        Log.e("function", result+"");
     }
     private void count(){
         for(int i =1; i <= 100; i++) {
@@ -50,4 +55,7 @@ public class MainActivity extends AppCompatActivity {
         //람다식 심화사용
         Thread lambdaAdvanceThread = new Thread(this::count);
     }
+
+
+
 }
