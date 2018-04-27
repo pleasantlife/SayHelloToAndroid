@@ -9,6 +9,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        // Android 지원 라이브러리 23.2부터 사용할 수 있는 벡터 라이브러리를 사용하도록 추가함.
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -26,5 +28,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:0.5'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
+    //최신버전이 있으나 2.2.0을 사용하는 이유는 이후의 버전을 사용하면 minSdk를 16으로 맞춰야 하기 떄문.
     implementation 'com.airbnb.android:lottie:2.2.0'
 }

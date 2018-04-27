@@ -14,8 +14,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         animationView = findViewById(R.id.lottieTest);
-        animationView.setAnimation("loading_animation.json");
-        animationView.playAnimation();
+        //XML에서 설정하면 아래 구문은 필요하지 않다.
+        //animationView.setAnimation("loading_material.json");
+        //animationView.playAnimation();
 
     }
 }
