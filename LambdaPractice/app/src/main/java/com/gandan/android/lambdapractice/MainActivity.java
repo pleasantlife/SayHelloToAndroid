@@ -12,12 +12,14 @@ import android.widget.Toast;
  */
 public class MainActivity extends AppCompatActivity {
 
+    StreamTest streamTest;
+
     Button btnLambda;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        btnLambda.findViewById(R.id.btnLambda);
+        btnLambda = findViewById(R.id.btnLambda);
         //람다식 미사용
         btnLambda.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,7 +36,12 @@ public class MainActivity extends AppCompatActivity {
         Function function = (int a, int b) -> a + b;
         int result = function.calc(3,4);
         Log.e("function", result+"");
+
+        streamTest = new StreamTest();
+        streamTest.setMyList();
     }
+
+
     private void count(){
         for(int i =1; i <= 100; i++) {
             Log.d("Count", i+"");
