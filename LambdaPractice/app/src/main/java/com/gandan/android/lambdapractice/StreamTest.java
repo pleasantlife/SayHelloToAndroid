@@ -6,6 +6,7 @@ import android.util.Log;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -25,7 +26,6 @@ public class StreamTest {
         listStream.filter(s -> s.startsWith("h"))
                 .sorted().forEach(s -> Log.e("result: ", s+""));
 
-        //forEach만 쓸 경우 .stream()을 생략할 수도 있다!
         myList.forEach(s -> Log.e("myListItem", s + ""));
 
         //주의사항 : Stream은 재사용이 불가능하다!
@@ -45,5 +45,8 @@ public class StreamTest {
 
         //위 Optional Stream을 람다로 줄인 형태.
         result.ifPresent(s -> Log.e("result Optional Lambda", result.get()+""));
+
+        //원시 자료형 중 숫자를 연산할 수 있는 IntStream, DoubleStream, LongStream이 따로 존재한다.
+        IntStream.range(1, 10).forEach(i -> Log.e("intStream : ", i+""));
     }
 }
