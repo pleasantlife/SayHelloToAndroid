@@ -20,7 +20,7 @@
  (https://github.com/pleasantlife/SayHelloToAndroid/tree/master/VworldAPIPractice) 
  - [깜빡이는 버튼 만들기(투명도 조절, RxAndroid와 람다 이용)]
  (https://github.com/pleasantlife/SayHelloToAndroid/tree/master/ButtonFlickering)
- - [람다(Lambda)를 써보자!]
+ - [람다(Lambda)를 써보고, 스트림(Stream)을 이해해보자!]
  (https://github.com/pleasantlife/SayHelloToAndroid/tree/master/LambdaPractice)
  - [Airbnb의 Lottie 라이브러리 사용해보기]
  (https://github.com/pleasantlife/SayHelloToAndroid/tree/master/LottiePractice)

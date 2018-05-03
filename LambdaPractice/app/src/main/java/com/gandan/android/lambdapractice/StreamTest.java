@@ -16,11 +16,32 @@ import java.util.stream.Stream;
 public class StreamTest {
 
     List<String> myList = Arrays.asList("test1", "test2", "test3", "test4", "test5", "hello1", "hello2", "hello3");
+    String[] helloList = {"Welcome", "환영합니다.", "Willkommen", "Hola"};
+
+    private void sayHello(String text){
+        Log.e("Say Hello : ", text+"");
+    }
 
     @SuppressLint("NewApi")
     public void setMyList(){
 
+        //Stream을 생성하는 다양한 방법.
         Stream<String> listStream = myList.stream();
+        Stream<String> helloStream = Stream.of(helloList);
+        //Stream<String> byeStream = Stream.of(new String[]{"안녕","bye"});
+        Stream<String> byeStream = Stream.of("안녕", "bye");
+
+        //Stream 중간 연산 종류 (일부)
+        //필터링 (조건에 맞는 요소만 뽑아낸다.)
+        Stream<String> filterStream = helloStream.filter(s -> s.contains("W"));
+        //중복제거
+        Stream<String> distinctStream = helloStream.distinct();
+        //정렬
+        Stream<String> sortStream = helloStream.sorted();
+        //갯수에 맞게 자르기
+        Stream<String> cutStream = helloStream.limit(1);
+        //스트림의 요소에 작업을 수행함.
+        Stream<String> peekStream = helloStream.peek(this::sayHello);
 
         //stream을 사용하는 방법(필터 적용 및 소팅)
         listStream.filter(s -> s.startsWith("h"))
