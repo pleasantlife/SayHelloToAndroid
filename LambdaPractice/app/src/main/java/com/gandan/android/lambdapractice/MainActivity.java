@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         makeThread();
 
-        //람다를 이용해 변수에 함수 대입.
+        //인터페이스를 람다식으로 대체!
         Function function = (int a, int b) -> a + b;
         int result = function.calc(3,4);
         Log.e("function", result+"");

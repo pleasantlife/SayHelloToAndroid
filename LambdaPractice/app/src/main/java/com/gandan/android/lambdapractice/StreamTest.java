@@ -42,6 +42,10 @@ public class StreamTest {
         Stream<String> cutStream = helloStream.limit(1);
         //스트림의 요소에 작업을 수행함.
         Stream<String> peekStream = helloStream.peek(this::sayHello);
+        //스트림의 요소가 한 개도 없는 '빈 스트림'을 생성할 수도 있다.
+        Stream emptyStream = Stream.empty();
+        //두 스트림을 하나로 연결할 수도 있다.(단, 두 요소는 같은 타입이어야 한다.)
+        Stream<String> conStream = Stream.concat(listStream, helloStream);
 
         //stream을 사용하는 방법(필터 적용 및 소팅)
         listStream.filter(s -> s.startsWith("h"))
