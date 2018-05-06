@@ -3,6 +3,7 @@ package com.gandan.android.lambdapractice;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -34,16 +35,50 @@ public class StreamTest {
         //Stream 중간 연산 종류 (일부)
         //필터링 (조건에 맞는 요소만 뽑아낸다.)
         Stream<String> filterStream = helloStream.filter(s -> s.contains("W"));
+
         //중복제거
         Stream<String> distinctStream = helloStream.distinct();
+
         //정렬
         Stream<String> sortStream = helloStream.sorted();
+
         //갯수에 맞게 자르기
         Stream<String> cutStream = helloStream.limit(1);
+
         //스트림의 요소에 작업을 수행함.
         Stream<String> peekStream = helloStream.peek(this::sayHello);
+
+        //배열의 일부에서 스트림을 생성할 수 있다.
+        Stream<String> partStream = Arrays.stream(helloList, 0, 3);
+
         //스트림의 요소가 한 개도 없는 '빈 스트림'을 생성할 수도 있다.
         Stream emptyStream = Stream.empty();
+
+        //무한 스트림을 생성할 수도 있다.
+        Stream<Double> infiniteStream = Stream.generate(Math::random);
+
+
+        //Stream의 메서드
+
+        //filter 메서드 : 새로운 스트림을 반환
+        partStream.filter(s -> s.startsWith("H"));
+
+        //map 메서드 : Stream에 있는 값들을 특정방식으로 변환하여 새로운 스트림을 반환
+        Stream<Character> mapStream = sortStream.map(s -> s.charAt(0));
+
+        //flatMap 메서드 : 여러 스트림들을 합쳐서 하나의 새로운 스트림을 반환
+        Stream<Character> flatStream = distinctStream.flatMap(s -> characterStream(s));
+
+
+        //서브스트림
+
+        //n개 요소 이후 끝나는 새로운 스트림을 반환
+        //31번째 부터 스트림으로 반환하는 예
+        Stream<Double> afterStream = Stream.generate(Math::random).limit(30);
+
+        //n개 요소를 버린 후 이어지는 스트림을 반환
+        Stream<String> skipStream = partStream.skip(0);
+
         //두 스트림을 하나로 연결할 수도 있다.(단, 두 요소는 같은 타입이어야 한다.)
         Stream<String> conStream = Stream.concat(listStream, helloStream);
 
@@ -73,5 +108,13 @@ public class StreamTest {
 
         //원시 자료형 중 숫자를 연산할 수 있는 IntStream, DoubleStream, LongStream이 따로 존재한다.
         IntStream.range(1, 10).forEach(i -> Log.e("intStream : ", i+""));
+    }
+
+    private Stream<Character> characterStream(String s){
+        List<Character> result = new ArrayList<>();
+        for (char c : s.toCharArray()){
+            result.add(c);
+        }
+        return result.stream();
     }
 }
