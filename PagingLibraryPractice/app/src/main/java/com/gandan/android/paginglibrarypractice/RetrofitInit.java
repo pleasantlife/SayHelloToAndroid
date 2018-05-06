@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitInit {
 
-    Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.github.com/").addCallAdapterFactory(RxJava2CallAdapterFactory.create()).addConverterFactory(GsonConverterFactory.create()).build();
+    Retrofit retrofit = new Retrofit.Builder().baseUrl("https://www.reddit.com/").addCallAdapterFactory(RxJava2CallAdapterFactory.create()).addConverterFactory(GsonConverterFactory.create()).build();
 
-    GithubService githubService = retrofit.create(GithubService.class);
+    RedditService redditService = retrofit.create(RedditService.class);
 }
