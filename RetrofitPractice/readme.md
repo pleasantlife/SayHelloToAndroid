@@ -201,3 +201,5 @@ String titleString = "한글";
 RequestBody titlePlain = RequestBody.create(MediaType.parse("text/plain"), titleString);
 ```
 
+#6. 심화 참고 사이트
+[레트로핏 설정 튜토리얼(token, SSL인증)](https://proandroiddev.com/configuring-retrofit-2-client-in-android-130455eaccbd)

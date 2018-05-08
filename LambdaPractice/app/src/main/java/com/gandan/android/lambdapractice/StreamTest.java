@@ -7,7 +7,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
+import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 /**
@@ -108,6 +111,18 @@ public class StreamTest {
 
         //원시 자료형 중 숫자를 연산할 수 있는 IntStream, DoubleStream, LongStream이 따로 존재한다.
         IntStream.range(1, 10).forEach(i -> Log.e("intStream : ", i+""));
+        //range()는 마지막 수가 범위에 미포함, rangeClosed()는 마지막 수가 범위에 포함.
+        IntStream.rangeClosed(1,10);
+
+        //무한 스트림 생성.
+        IntStream intsStream = new Random().ints();
+        LongStream longlongStream = new Random().longs();
+        DoubleStream doubledoubleStream = new Random().doubles();
+
+        //유한 스트림 생성(LongStream, DoubleStream 모두 적용)
+        IntStream intLimitStream = new Random().ints(100);
+        IntStream intRangeStream = new Random().ints(200, 0, 100);
+        IntStream rangeStream = new Random().ints(0, 100);
     }
 
     private Stream<Character> characterStream(String s){
