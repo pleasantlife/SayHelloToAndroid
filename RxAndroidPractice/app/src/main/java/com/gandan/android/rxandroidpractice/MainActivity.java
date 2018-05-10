@@ -12,11 +12,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.observables.ConnectableObservable;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -107,9 +111,41 @@ public class MainActivity extends AppCompatActivity {
         Observable<String> iterableObservable = Observable.fromIterable(testArray);
         iterableObservable.subscribe(this::printText);
 
+        //Observable을 Flowable로 바꿀 수도 있다.(반대로 바꾸는 경우도 가능하다.)
+        Flowable<String> iterableFlowable = iterableObservable.toFlowable(BackpressureStrategy.BUFFER);
+
+        //만약 여러 옵저버블을 동시에 배출 시키고 싶다면? => ConnectableObservable을 사용하면 된다!
+        ConnectableObservable<Integer> connectObservable = Observable.range(0,100).publish();
+
+        //구독은 일반적인 Observable과 동일하게 하면 된다.
+        connectObservable.subscribe(n -> Log.e("number 1 : ", n+""));
+        connectObservable.subscribe(n -> Log.e("number 2 :", n+""));
+
+        //단, 연결을 해야 배출을 한다.
+        connectObservable.connect();
+
+        //Maybe
+        Maybe<Integer> maybeInt = Maybe.just(1000);
+        maybeInt.subscribe(this::checkNumber);
+
+        Integer inte = 10;
+        Maybe<Integer> maybenullInt = Maybe.just(inte);
+        maybenullInt.subscribe(this::checkNumber, this::errorNumber);
+
+
+
     }
 
     private void printText(String string){
         Log.e("testObservable", string+"");
     }
+
+    private void checkNumber(Integer integer) {
+        Log.e("testNumber is : ", integer+"");
+    }
+
+    private void errorNumber(Throwable throwable){
+        Log.e("error", throwable+"");
+    }
+
 }
