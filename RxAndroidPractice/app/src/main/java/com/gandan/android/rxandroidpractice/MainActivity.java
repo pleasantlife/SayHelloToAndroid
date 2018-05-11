@@ -97,9 +97,10 @@ public class MainActivity extends AppCompatActivity {
                 emitter.onComplete();
             }
         });
+        //subscribe함수로 호출해야 Observable이 발행된다.(hot observable이기 때문!)
         testObservable.subscribe(this::printText);
 
-        //Observable 생성 단순화
+        //Observable 생성 단순화 (단, just를 쓸 때의 아이템 타입은 모두 같아야 한다.)
         Observable<String> simpleObservable = Observable.just("one", "two", "three", "four", "five");
         simpleObservable.subscribe(this::printText);
 
@@ -107,14 +108,21 @@ public class MainActivity extends AppCompatActivity {
         Observable<String> arrayObservable = Observable.fromArray(keyWord);
         arrayObservable.subscribe(this::printText);
 
+        //map()을 통해 원하는 값으로 변경할 수도 있다!
+        Observable<String> mapObservable = Observable.fromArray(keyWord).map(s -> s+" stamp : "+System.currentTimeMillis());
+        mapObservable.subscribe(this::printText);
+
         //위에서 생성한 testArray 가져와 Observer 생성
         Observable<String> iterableObservable = Observable.fromIterable(testArray);
         iterableObservable.subscribe(this::printText);
+        
 
         //Observable을 Flowable로 바꿀 수도 있다.(반대로 바꾸는 경우도 가능하다.)
         Flowable<String> iterableFlowable = iterableObservable.toFlowable(BackpressureStrategy.BUFFER);
+        iterableFlowable.map(s -> Log.e("time", System.currentTimeMillis()+s+""));
 
         //만약 여러 옵저버블을 동시에 배출 시키고 싶다면? => ConnectableObservable을 사용하면 된다!
+        //cold 옵저버블을 hot 옵저버블로 변경해주는 역할을 한다.
         ConnectableObservable<Integer> connectObservable = Observable.range(0,100).publish();
 
         //구독은 일반적인 Observable과 동일하게 하면 된다.
@@ -131,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
         Integer inte = 10;
         Maybe<Integer> maybenullInt = Maybe.just(inte);
         maybenullInt.subscribe(this::checkNumber, this::errorNumber);
-
 
 
     }
