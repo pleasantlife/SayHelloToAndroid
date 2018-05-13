@@ -20,7 +20,10 @@ import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.observables.ConnectableObservable;
+import io.reactivex.subjects.AsyncSubject;
+import io.reactivex.subjects.BehaviorSubject;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -108,9 +111,16 @@ public class MainActivity extends AppCompatActivity {
         Observable<String> arrayObservable = Observable.fromArray(keyWord);
         arrayObservable.subscribe(this::printText);
 
+
         //map()을 통해 원하는 값으로 변경할 수도 있다!
         Observable<String> mapObservable = Observable.fromArray(keyWord).map(s -> s+" stamp : "+System.currentTimeMillis());
         mapObservable.subscribe(this::printText);
+
+        //flatMap()에 Function을 조합하여 여러가지 데이터를 발행할 수 있다.
+        Function<String, Observable<String>> setDiamond = s -> Observable.just("<" + s + ">");
+        Observable<String> diamondTest = Observable.fromArray(keyWord).flatMap(setDiamond);
+        diamondTest.subscribe(s -> Log.e("diamond : ", s+""));
+
 
         //위에서 생성한 testArray 가져와 Observer 생성
         Observable<String> iterableObservable = Observable.fromIterable(testArray);
@@ -139,6 +149,27 @@ public class MainActivity extends AppCompatActivity {
         Integer inte = 10;
         Maybe<Integer> maybenullInt = Maybe.just(inte);
         maybenullInt.subscribe(this::checkNumber, this::errorNumber);
+
+        //AsyncSubject 클래스
+        //onComplete() 직전의 가장 최신 데이터만 발행한다.
+        //이전에 축적된 데이터는 발행하지 않으므로,
+        //아래의 예제에서 "하나"와 "둘", "넷"은 발행되지 않는다.
+        AsyncSubject<String> asyncSubject = AsyncSubject.create();
+        asyncSubject.subscribe(this::printText);
+        asyncSubject.onNext("하나");
+        asyncSubject.onNext("둘");
+        asyncSubject.onNext("셋");
+        asyncSubject.onComplete();
+        asyncSubject.onNext("넷");
+
+        //BehaviorSubject 클래스
+        //가장 최근 값 또는 기본값을 넘겨준다.
+        BehaviorSubject<String> behaviorSubject = BehaviorSubject.createDefault("default");
+        behaviorSubject.subscribe(this::printText);
+        behaviorSubject.onNext("11");
+        behaviorSubject.onNext("22");
+        behaviorSubject.onNext("33");
+        behaviorSubject.onComplete();
 
 
     }
