@@ -1,6 +1,5 @@
 package com.gandan.android.kotlinfb
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -10,30 +9,28 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import com.gandan.android.kotlinfb.R.id.btnDoLogin
-import com.gandan.android.kotlinfb.R.id.inputPW
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.jakewharton.rxbinding2.widget.RxTextView
 import com.jakewharton.rxbinding2.widget.textChanges
-import java.util.regex.Matcher
-import java.util.regex.Pattern
 
 class LoginActivity : AppCompatActivity()  {
 
     var firebaseAuth = FirebaseAuth.getInstance()
-    var firebaseUser = firebaseAuth.currentUser
+
     private var email = ""
     private var password  = ""
-    var inputEmail : EditText? = null
+    private var inputEmail : EditText? = null
     private var inputPW : EditText? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        if(firebaseAuth.currentUser != null){
+            intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            this.finish()
+        }
 
         inputEmail = findViewById(R.id.inputEmail)
         inputPW = findViewById(R.id.inputPW)
@@ -75,8 +72,9 @@ class LoginActivity : AppCompatActivity()  {
                 task ->
                 if(task.isSuccessful){
                     Toast.makeText(this, "로그인 성공!", Toast.LENGTH_SHORT).show()
-                    var intent  = Intent(this, MainActivity::class.java)
+                    val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
+                    finish()
                 } else {
                     Toast.makeText(this, "로그인 실패!", Toast.LENGTH_SHORT).show()
                 }
