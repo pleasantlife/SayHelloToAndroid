@@ -3,11 +3,20 @@ package com.gandan.android.kotlinfb
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -24,20 +33,35 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         var userEmail = firebaseUser?.email
         Log.e("userEmail", userEmail+"")
 
-        val btnDoLogout = findViewById<Button>(R.id.btnDoLogout)
-        btnDoLogout.setOnClickListener(this::onClick)
+        val btnDoSetting = findViewById<Button>(R.id.btnDoSetting)
+        btnDoSetting.setOnClickListener{
+                intent = Intent(this, SettingActivity::class.java)
+                startActivity(intent)
+        }
+
+        var txtCurrentTime = findViewById<TextView>(R.id.txtCurrentTime)
+        var sdf = SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분 ss초", Locale.KOREAN)
+        sdf.timeZone = TimeZone.getTimeZone("Asia/Seoul")
+
+        var realTimeClock = Observable.interval(1000, TimeUnit.MILLISECONDS)
+        realTimeClock.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe {
+            txtCurrentTime.text = sdf.format(System.currentTimeMillis())
+        }
+
+
+
     }
 
     //로그아웃!
     override fun onClick(v: View?) {
-        when(v?.id){
+        /*when(v?.id){
             R.id.btnDoLogout -> {
                 firebaseAuth.signOut()
                 var intent : Intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
             }
-        }
+        }*/
     }
 
 

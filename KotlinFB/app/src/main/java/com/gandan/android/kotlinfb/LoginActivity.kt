@@ -41,8 +41,7 @@ class LoginActivity : AppCompatActivity()  {
 
         //RxBinding으로 아이디가 Email 형식에 맞으면 '로그인하기' 버튼이 나타나고, 아니면 나타나지 않는다.
         inputEmail?.textChanges()?.subscribe{
-           text ->
-           if(Patterns.EMAIL_ADDRESS.matcher(inputEmail?.text.toString()).matches()){
+            if(Patterns.EMAIL_ADDRESS.matcher(inputEmail?.text.toString()).matches()){
                btnDoLogin.visibility = View.VISIBLE
            } else {
                btnDoLogin.visibility = View.GONE
