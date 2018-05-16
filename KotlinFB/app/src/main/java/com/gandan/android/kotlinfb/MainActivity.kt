@@ -20,49 +20,40 @@ import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
-
     private var pressedTime : Long = 0
     private var zero : Long = 0
     var firebaseAuth  = FirebaseAuth.getInstance()
-    val firebaseUser = firebaseAuth.currentUser
+    private var txtCurrentTime : TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        var userEmail = firebaseUser?.email
-        Log.e("userEmail", userEmail+"")
 
         val btnDoSetting = findViewById<Button>(R.id.btnDoSetting)
         btnDoSetting.setOnClickListener{
                 intent = Intent(this, SettingActivity::class.java)
                 startActivity(intent)
         }
+        txtCurrentTime = findViewById(R.id.txtCurrentTime)
 
-        var txtCurrentTime = findViewById<TextView>(R.id.txtCurrentTime)
-        var sdf = SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분 ss초", Locale.KOREAN)
+        displayRealTimeClock()
+
+    }
+
+    private fun displayRealTimeClock(){
+        val sdf = SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분 ss초", Locale.KOREA)
         sdf.timeZone = TimeZone.getTimeZone("Asia/Seoul")
-
         var realTimeClock = Observable.interval(1000, TimeUnit.MILLISECONDS)
         realTimeClock.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe {
-            txtCurrentTime.text = sdf.format(System.currentTimeMillis())
+            txtCurrentTime?.text = sdf.format(System.currentTimeMillis())
+
         }
-
-
-
     }
 
-    //로그아웃!
     override fun onClick(v: View?) {
-        /*when(v?.id){
-            R.id.btnDoLogout -> {
-                firebaseAuth.signOut()
-                var intent : Intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-        }*/
+        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
 
 
 
