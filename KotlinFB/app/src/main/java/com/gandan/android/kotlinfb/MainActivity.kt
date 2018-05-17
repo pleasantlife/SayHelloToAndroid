@@ -3,13 +3,14 @@ package com.gandan.android.kotlinfb
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import com.bumptech.glide.Glide
+import com.gandan.android.kotlinfb.adapter.MainRecyclerAdapter
 import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -37,17 +38,30 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         txtCurrentTime = findViewById(R.id.txtCurrentTime)
 
         displayRealTimeClock()
+        loadData()
+        setRecyclerView()
+    }
+
+
+    //실시간으로 시각을 표시하는 시계를 RxJava를 이용하여 생성.
+    private fun displayRealTimeClock() {
+        val sdf = SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분 ss초", Locale.KOREA)
+        sdf.timeZone = TimeZone.getTimeZone("Asia/Seoul")
+        var realTimeClock = Observable.interval(1, TimeUnit.SECONDS)
+        realTimeClock.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe {
+            txtCurrentTime?.text = sdf.format(System.currentTimeMillis())
+        }
+    }
+
+    private fun loadData() {
 
     }
 
-    private fun displayRealTimeClock(){
-        val sdf = SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분 ss초", Locale.KOREA)
-        sdf.timeZone = TimeZone.getTimeZone("Asia/Seoul")
-        var realTimeClock = Observable.interval(1000, TimeUnit.MILLISECONDS)
-        realTimeClock.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe {
-            txtCurrentTime?.text = sdf.format(System.currentTimeMillis())
-
-        }
+    private fun setRecyclerView() {
+        val recyclerMain = findViewById<RecyclerView>(R.id.recyclerMain)
+        val requestManager = GlideApp.with(this)
+        recyclerMain.adapter = MainRecyclerAdapter(this, requestManager)
+        recyclerMain.layoutManager = LinearLayoutManager(this)
     }
 
     override fun onClick(v: View?) {
