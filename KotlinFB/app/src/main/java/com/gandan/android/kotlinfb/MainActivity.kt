@@ -5,13 +5,18 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import com.bumptech.glide.Glide
+import com.gandan.android.kotlinfb.Model.UserDb
 import com.gandan.android.kotlinfb.adapter.MainRecyclerAdapter
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -23,7 +28,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private var pressedTime : Long = 0
     private var zero : Long = 0
-    var firebaseAuth  = FirebaseAuth.getInstance()
+    var firebaseAuth = FirebaseAuth.getInstance()
+    var firebaseDatabase = FirebaseDatabase.getInstance()
+    var databaseReference = firebaseDatabase.reference
     private var txtCurrentTime : TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +46,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         displayRealTimeClock()
         loadData()
+        setData()
         setRecyclerView()
     }
 
@@ -53,8 +61,41 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun loadData() {
+    //Firebase Realtime Database에서 로그인 한 유저의 정보 가져오기.
+    private fun initValueListener() : ValueEventListener{
+        var valueEventListener = object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError?) {
+                //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
 
+            override fun onDataChange(p0: DataSnapshot?) {
+                //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Log.e("p0", p0.toString()+"")
+                var db = p0?.getValue(UserDb::class.java)
+                Log.e("email", db?.email+"")
+                Log.e("uid", db?.uid+"")
+
+            }
+
+        }
+        return valueEventListener
+    }
+
+
+    //Firebase Realtime Database에 Email 주소와 uid 등록.
+    private fun setData(){
+        var email = firebaseAuth.currentUser?.email
+        var uid = firebaseAuth.currentUser?.uid
+        var userId = UserDb()
+        userId.email = email
+        userId.uid = uid
+        databaseReference.ref.child("userdb").child(uid).setValue(userId)
+
+    }
+
+
+    private fun loadData() {
+        databaseReference.ref.child("userdb").child(firebaseAuth.currentUser?.uid).addValueEventListener(initValueListener())
     }
 
     private fun setRecyclerView() {
