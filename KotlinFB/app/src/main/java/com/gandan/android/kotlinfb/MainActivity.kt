@@ -64,16 +64,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     //Firebase Realtime Database에서 로그인 한 유저의 정보 가져오기.
     private fun initValueListener() : ValueEventListener{
         var valueEventListener = object : ValueEventListener{
-            override fun onCancelled(p0: DatabaseError?) {
+            override fun onCancelled(error: DatabaseError?) {
                 //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Log.e("error in Loading", error?.message+"")
             }
 
-            override fun onDataChange(p0: DataSnapshot?) {
+            override fun onDataChange(dataSnapShot: DataSnapshot?) {
                 //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                Log.e("p0", p0.toString()+"")
-                var db = p0?.getValue(UserDb::class.java)
-                Log.e("email", db?.email+"")
-                Log.e("uid", db?.uid+"")
+                Log.e("p0", dataSnapShot.toString()+"")
+                var userDb = dataSnapShot?.getValue(UserDb::class.java)
+                Log.e("email", userDb?.email+"")
+                Log.e("uid", userDb?.uid+"")
 
             }
 

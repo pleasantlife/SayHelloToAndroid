@@ -1,12 +1,14 @@
 package com.gandan.android.kotlinfb.adapter
 
 import android.content.Context
+import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.module.AppGlideModule
@@ -31,6 +33,9 @@ class MainRecyclerAdapter(var context : Context, var requestManager: RequestMana
         holder.txtContentsItem?.text = "내용"
         holder.txtTitleItem?.text = "타이틀"
         requestManager.load("https://cdn.pixabay.com/photo/2018/05/12/16/45/paper-3393903__480.jpg").apply(RequestOptions.centerCropTransform()).into(holder.imgBackItem!!)
+        holder.cardViewItem?.setOnClickListener {
+            Toast.makeText(context, position.toString(), Toast.LENGTH_SHORT).show()
+        }
 
     }
 
@@ -40,6 +45,7 @@ class MainRecyclerAdapter(var context : Context, var requestManager: RequestMana
     }
 
     class Holder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+        var cardViewItem = itemView?.findViewById<CardView>(R.id.cardViewItem)
         var txtTitleItem = itemView?.findViewById<TextView>(R.id.txtTitleItem)
         var txtContentsItem = itemView?.findViewById<TextView>(R.id.txtContentsItem)
         var imgBackItem = itemView?.findViewById<ImageView>(R.id.imgBackItem)
