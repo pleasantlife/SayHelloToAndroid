@@ -23,6 +23,7 @@ import io.reactivex.schedulers.Schedulers
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -32,6 +33,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     var firebaseDatabase = FirebaseDatabase.getInstance()
     var databaseReference = firebaseDatabase.reference
     private var txtCurrentTime : TextView? = null
+    private var stringList = ArrayList<String>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,12 +72,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 Log.e("error in Loading", error?.message+"")
             }
 
-            override fun onDataChange(dataSnapShot: DataSnapshot?) {
+            override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                Log.e("p0", dataSnapShot.toString()+"")
-                var userDb = dataSnapShot?.getValue(UserDb::class.java)
+                Log.e("DataSnapshot", dataSnapshot.toString()+"")
+                var userDb = dataSnapshot?.getValue(UserDb::class.java)
                 Log.e("email", userDb?.email+"")
                 Log.e("uid", userDb?.uid+"")
+                stringList.add(userDb?.email+"")
+                stringList.add(userDb?.uid+"")
+                var filteredList = stringList.map { s -> "테스트 "+s }
+                Log.e("filteredList", filteredList.toString()+"")
 
             }
 

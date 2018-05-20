@@ -22,6 +22,7 @@ import com.gandan.android.kotlinfb.R
 class MainRecyclerAdapter(var context : Context, var requestManager: RequestManager) : RecyclerView.Adapter<MainRecyclerAdapter.Holder>() {
 
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         var view = LayoutInflater.from(parent.context).inflate(R.layout.recycler_item, parent, false)
