@@ -36,7 +36,7 @@ class MainRecyclerAdapter(var context : Context, var requestManager: RequestMana
         holder.txtTitleItem?.text = "타이틀"
         requestManager.load("https://cdn.pixabay.com/photo/2018/05/12/16/45/paper-3393903__480.jpg").apply(RequestOptions.centerCropTransform()).into(holder.imgBackItem!!)
         holder.cardViewItem?.setOnClickListener {
-            Toast.makeText(context, position.toString(), Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, stringText, Toast.LENGTH_SHORT).show()
         }
 
     }

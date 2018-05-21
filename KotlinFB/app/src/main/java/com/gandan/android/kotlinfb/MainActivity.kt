@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     var firebaseDatabase = FirebaseDatabase.getInstance()
     var databaseReference = firebaseDatabase.reference
     var recyclerMain : RecyclerView? = null
+    var btnDoWrite : Button? = null
     private var txtCurrentTime : TextView? = null
     private var stringList = ArrayList<String>()
 
@@ -51,6 +52,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         displayRealTimeClock()
         loadData()
         setData()
+
+        btnDoWrite = findViewById(R.id.btnDoWrite)
+        btnDoWrite?.setOnClickListener {
+            intent = Intent(this@MainActivity, WriteActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 

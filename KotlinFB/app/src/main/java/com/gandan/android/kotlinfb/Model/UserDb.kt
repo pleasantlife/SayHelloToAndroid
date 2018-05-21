@@ -7,4 +7,7 @@ class UserDb {
 
     var email : String? = ""
     var uid : String? = ""
+    var regDate : String? = ""
+    var memoList : List<MemoDb>? = null
+
 }
