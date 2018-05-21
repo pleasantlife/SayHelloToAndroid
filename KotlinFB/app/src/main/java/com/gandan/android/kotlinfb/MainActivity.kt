@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     var firebaseAuth = FirebaseAuth.getInstance()
     var firebaseDatabase = FirebaseDatabase.getInstance()
     var databaseReference = firebaseDatabase.reference
+    var recyclerMain : RecyclerView? = null
     private var txtCurrentTime : TextView? = null
     private var stringList = ArrayList<String>()
 
@@ -50,7 +51,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         displayRealTimeClock()
         loadData()
         setData()
-        setRecyclerView()
     }
 
 
@@ -82,6 +82,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 stringList.add(userDb?.uid+"")
                 var filteredList = stringList.map { s -> "테스트 "+s }
                 Log.e("filteredList", filteredList.toString()+"")
+                setRecyclerView(filteredList)
+
 
             }
 
@@ -106,11 +108,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         databaseReference.ref.child("userdb").child(firebaseAuth.currentUser?.uid).addValueEventListener(initValueListener())
     }
 
-    private fun setRecyclerView() {
-        val recyclerMain = findViewById<RecyclerView>(R.id.recyclerMain)
+    private fun setRecyclerView(lists : List<String>) {
+        recyclerMain = findViewById<RecyclerView>(R.id.recyclerMain)
         val requestManager = GlideApp.with(this)
-        recyclerMain.adapter = MainRecyclerAdapter(this, requestManager)
-        recyclerMain.layoutManager = LinearLayoutManager(this)
+        recyclerMain!!.adapter = MainRecyclerAdapter(this, requestManager, lists)
+        recyclerMain!!.layoutManager = LinearLayoutManager(this)
     }
 
     override fun onClick(v: View?) {

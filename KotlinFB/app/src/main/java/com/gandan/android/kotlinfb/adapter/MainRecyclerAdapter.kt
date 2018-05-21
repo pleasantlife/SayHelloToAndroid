@@ -19,7 +19,7 @@ import com.gandan.android.kotlinfb.R
 /**
  * Created by XPS on 2018-05-17.
  */
-class MainRecyclerAdapter(var context : Context, var requestManager: RequestManager) : RecyclerView.Adapter<MainRecyclerAdapter.Holder>() {
+class MainRecyclerAdapter(var context : Context, var requestManager: RequestManager, var lists : List<String>) : RecyclerView.Adapter<MainRecyclerAdapter.Holder>() {
 
 
 
@@ -31,7 +31,8 @@ class MainRecyclerAdapter(var context : Context, var requestManager: RequestMana
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        holder.txtContentsItem?.text = "내용"
+        var stringText = lists.get(position)
+        holder.txtContentsItem?.text = stringText
         holder.txtTitleItem?.text = "타이틀"
         requestManager.load("https://cdn.pixabay.com/photo/2018/05/12/16/45/paper-3393903__480.jpg").apply(RequestOptions.centerCropTransform()).into(holder.imgBackItem!!)
         holder.cardViewItem?.setOnClickListener {
@@ -42,7 +43,7 @@ class MainRecyclerAdapter(var context : Context, var requestManager: RequestMana
 
     override fun getItemCount(): Int {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        return 10
+        return lists.size
     }
 
     class Holder(itemView: View?) : RecyclerView.ViewHolder(itemView) {

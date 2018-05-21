@@ -15,7 +15,7 @@ import com.jakewharton.rxbinding2.widget.textChanges
 class LoginActivity : AppCompatActivity()  {
 
     var firebaseAuth = FirebaseAuth.getInstance()
-
+    var firebaseUser = firebaseAuth.currentUser
     private var email = ""
     private var password  = ""
     private var inputEmail : EditText? = null
@@ -63,9 +63,11 @@ class LoginActivity : AppCompatActivity()  {
     }
 
 
-    fun doLogin(){
-        email = inputEmail!!.text.toString()
-        password = inputPW!!.text.toString()
+    fun doLogin(code : Int = 16){
+        if(code == 16) {
+            email = inputEmail!!.text.toString()
+            password = inputPW!!.text.toString()
+        }
         if(email != "" && password != ""){
             firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, {
                 task ->
@@ -92,6 +94,7 @@ class LoginActivity : AppCompatActivity()  {
                 task ->
                 if(task.isSuccessful){
                     Toast.makeText(this, "성공!", Toast.LENGTH_SHORT).show()
+                    doLogin(27)
                 } else {
                     Log.e("error", task.result.toString()+"")
                     Toast.makeText(this, "실패!", Toast.LENGTH_SHORT).show()
