@@ -15,7 +15,6 @@ class FragmentWriteAdapter(fm: FragmentManager?, counts : Int) : FragmentStatePa
     var tabCount = counts
 
     override fun getItem(position: Int): Fragment {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         var fragment = Fragment()
         when(position){
             0 -> fragment = WriteOneFragment()
@@ -26,7 +25,6 @@ class FragmentWriteAdapter(fm: FragmentManager?, counts : Int) : FragmentStatePa
     }
 
     override fun getCount(): Int {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         return tabCount
     }
 }
