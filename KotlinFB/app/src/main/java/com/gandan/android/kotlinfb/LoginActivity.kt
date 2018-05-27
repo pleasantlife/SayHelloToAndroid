@@ -62,7 +62,9 @@ class LoginActivity : AppCompatActivity()  {
         }
     }
 
-
+    //로그인 버튼을 눌렀을 때의 동작을 정의한 함수.
+    //함수 내의 파라미터에 16으로 기본값을 넣음.
+    //기본값이 있으므로 파라미터에 값을 넣지 않아도 함수를 사용할 수 있다.
     fun doLogin(code : Int = 16){
         if(code == 16) {
             email = inputEmail.text.toString()
