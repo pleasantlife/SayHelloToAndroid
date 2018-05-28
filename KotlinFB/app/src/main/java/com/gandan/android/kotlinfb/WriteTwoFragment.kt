@@ -1,6 +1,7 @@
 package com.gandan.android.kotlinfb
 
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +14,15 @@ import android.view.ViewGroup
  */
 class WriteTwoFragment : Fragment() {
 
+    lateinit var listener : GetWriteDataListener
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if(context is GetWriteDataListener){
+            listener = context
+        }
+
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

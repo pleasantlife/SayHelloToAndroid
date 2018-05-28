@@ -8,14 +8,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.TextView
-import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
-import io.reactivex.Observable
-import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_write_one.*
-import kotlinx.android.synthetic.main.fragment_write_one.view.*
 
 
 /**
@@ -23,11 +17,11 @@ import kotlinx.android.synthetic.main.fragment_write_one.view.*
  */
 class WriteOneFragment : Fragment() {
 
-    lateinit var listener : GetWriteOneDataListener
+    lateinit var listener : GetWriteDataListener
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if(context is GetWriteOneDataListener){
+        if(context is GetWriteDataListener){
             listener = context
         }
     }
@@ -52,7 +46,7 @@ class WriteOneFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         Log.e("textActivity", txtWriteOne.text.toString()+"")
         txtWriteOne.setOnClickListener{ Log.e("text", txtWriteOne.text.toString())}
-        RxTextView.textChanges(inputWriteOne).subscribe { text -> listener.test(text.toString()) }
+        RxTextView.textChanges(inputWriteOne).subscribe { text -> listener.one(text.toString()) }
 
 
     }
