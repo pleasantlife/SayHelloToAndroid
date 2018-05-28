@@ -1,6 +1,7 @@
 package com.gandan.android.kotlinfb
 
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -11,6 +12,8 @@ import android.widget.EditText
 import android.widget.TextView
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
+import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_write_one.*
 import kotlinx.android.synthetic.main.fragment_write_one.view.*
 
@@ -20,6 +23,14 @@ import kotlinx.android.synthetic.main.fragment_write_one.view.*
  */
 class WriteOneFragment : Fragment() {
 
+    lateinit var listener : GetWriteOneDataListener
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if(context is GetWriteOneDataListener){
+            listener = context
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -41,7 +52,9 @@ class WriteOneFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         Log.e("textActivity", txtWriteOne.text.toString()+"")
         txtWriteOne.setOnClickListener{ Log.e("text", txtWriteOne.text.toString())}
-        RxTextView.textChanges(inputWriteOne).subscribe { text -> Log.e("writeOne", text.toString()+"") }
+        RxTextView.textChanges(inputWriteOne).subscribe { text -> listener.test(text.toString()) }
+
+
     }
 
     /**
@@ -50,5 +63,6 @@ class WriteOneFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.e("onCreate", "writeOne")
         super.onCreate(savedInstanceState)
+
     }
 }// Required empty public constructor
