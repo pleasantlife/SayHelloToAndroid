@@ -6,7 +6,7 @@ import android.util.Log
  * Created by XPS on 2018-05-28.
  */
 interface GetWriteDataListener {
-    fun one(thing : String)
+    fun one(thingOne : String)
     fun two(thingTwo : String)
     fun three(thingThree : String)
 }

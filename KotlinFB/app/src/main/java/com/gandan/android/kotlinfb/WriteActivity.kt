@@ -1,11 +1,17 @@
 package com.gandan.android.kotlinfb
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.content.pm.PermissionGroupInfo
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.widget.Toast
 import com.gandan.android.kotlinfb.adapter.FragmentWriteAdapter
 import kotlinx.android.synthetic.main.activity_write.*
+import java.security.Permissions
 
 class WriteActivity : AppCompatActivity(), GetWriteDataListener {
 
@@ -19,15 +25,28 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
         //ViewPager를 쓰기 위해 별도의 어댑터 클래스를 만들어 연결하였음.
         viewPagerWrite.adapter = FragmentWriteAdapter(supportFragmentManager, 3, this)
         btnDoWrite.setOnClickListener { nullCheck() }
+        permissionCheck()
     }
 
-    override fun one(thing: String) {
-        Log.e("String!!!", thing+"")
-        complimentOne = thing
+    private fun permissionCheck(){
+        var permission = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if(checkSelfPermission(permission[0]) != PackageManager.PERMISSION_GRANTED){
+                requestPermissions(permission, 166)
+            }
+        } else {
+            
+        }
+    }
+
+    override fun one(thingOne : String) {
+        Log.e("String!!!", thingOne+"")
+        complimentOne = thingOne
     }
 
     override fun two(thingTwo: String) {
         complimentTwo = thingTwo
+        Log.e("complimentTwo", complimentTwo)
     }
 
     override fun three(thingThree : String) {
@@ -44,7 +63,7 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
     }
 
     fun makeToast(currentItem : Int){
-        Toast.makeText(this, "$currentItem+1"+"번", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "${currentItem+1}번이 입력되지 않았습니다.", Toast.LENGTH_SHORT).show()
         viewPagerWrite.currentItem = currentItem
     }
 }
