@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     Button btnFlicker;
     String color, fontColor;
     int count = 0;
+    Thread thread;
 
 
     @Override
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getBaseContext(), FlickerKotlin.class));
+                thread.interrupt();
             }
         });
     }
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe();*/
 
         //람다식 사용
-        Thread thread = new Thread(this::setButtonColor);
+        thread = new Thread(this::setButtonColor);
 
         //람다를 사용하지 않았을 경우
         /*Thread thread = new Thread(new Runnable() {
