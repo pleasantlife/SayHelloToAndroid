@@ -4,8 +4,6 @@ package com.gandan.android.kotlinfb
 import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
-import android.database.Cursor
-import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.app.Fragment
@@ -62,8 +60,9 @@ class WriteOneFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         Log.e("textActivity", txtWriteOne.text.toString()+"")
         txtWriteOne.setOnClickListener{ Log.e("text", txtWriteOne.text.toString())}
-        RxTextView.textChanges(inputWriteOne).subscribe { text -> listener.one(text.toString()) }
-
+        RxTextView.textChanges(inputWriteOne).subscribe { listener.one(it.toString()) }
+        //string.xml에 넣어둔 string을 쓰려면 getString을 이용해야한다!
+        RxTextView.textChanges(inputWriteOne).subscribe { txtCountOne.text = getString(R.string.char_count, it.length)}
 
     }
 
@@ -80,6 +79,7 @@ class WriteOneFragment : Fragment() {
         }
     }
 
+    //업로드를 위해 real path를 string값으로 반환하는 함수.
     fun getRealData(dataIntent : Intent?) : String {
         var uri = dataIntent?.data
         var projection = arrayOf(MediaStore.Images.Media.DATA)

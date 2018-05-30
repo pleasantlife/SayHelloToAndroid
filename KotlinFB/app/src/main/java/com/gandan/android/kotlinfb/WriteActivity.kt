@@ -15,6 +15,8 @@ import java.security.Permissions
 
 class WriteActivity : AppCompatActivity(), GetWriteDataListener {
 
+    var WRITE_EX_STORAGE_OK = 166
+
     var complimentOne : String = ""
     var complimentTwo : String = ""
     var complimentThree : String = ""
@@ -32,10 +34,10 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
         var permission = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if(checkSelfPermission(permission[0]) != PackageManager.PERMISSION_GRANTED){
-                requestPermissions(permission, 166)
+                requestPermissions(permission, WRITE_EX_STORAGE_OK)
             }
         } else {
-            
+
         }
     }
 
