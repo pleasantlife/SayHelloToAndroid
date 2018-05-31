@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit
 
 class FlickerKotlin : AppCompatActivity() {
 
-    var count : Int = 0
+    private var count = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,18 +29,36 @@ class FlickerKotlin : AppCompatActivity() {
 
     fun printColorCode() {
         Observable.interval(10, TimeUnit.MILLISECONDS).take(100).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe {
-            when {
-                it < 10 -> btnKotlin.setBackgroundColor(Color.parseColor("#0${it}50C1F3"))
-                it in 10..98 -> btnKotlin.setBackgroundColor(Color.parseColor("#${it}50C1F3"))
-                it.toInt() == 99 -> {
-                    btnKotlin.setBackgroundColor(Color.parseColor("#9950C1F3"))
-                    printMinusColorCode()
+            when (count) {
+                0 -> {
+                    when {
+                        it < 10 -> btnKotlin.setBackgroundColor(Color.parseColor("#0${it}50C1F3"))
+                        it in 10..98 -> btnKotlin.setBackgroundColor(Color.parseColor("#${it}50C1F3"))
+                        it.toInt() == 99 -> {
+                            btnKotlin.setBackgroundColor(Color.parseColor("#9950C1F3"))
+                            count = 1
+                            printColorCode()
+                        }
+                    }
+                }
+                1 -> {
+                    when {
+                        it.toInt() == 0 -> btnKotlin.setBackgroundColor(Color.parseColor("#9950C1F3"))
+                        it.toInt() in 1..90 -> btnKotlin.setBackgroundColor(Color.parseColor("#${100-it}50C1F3"))
+                        it in 91..98 -> btnKotlin.setBackgroundColor(Color.parseColor("#0${100-it}50C1F3"))
+                        it.toInt() == 99 -> {
+                            btnKotlin.setBackgroundColor(Color.parseColor("#0150C1F3"))
+                            count = 0
+                            printColorCode()
+                        }
+                    }
                 }
             }
+
         }
     }
 
-    fun printMinusColorCode() {
+    /*fun printMinusColorCode() {
         Observable.interval(10, TimeUnit.MILLISECONDS).take(100).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe {
             when {
                 it.toInt() == 0 -> btnKotlin.setBackgroundColor(Color.parseColor("#9950C1F3"))
@@ -52,5 +70,5 @@ class FlickerKotlin : AppCompatActivity() {
                 }
             }
         }
-    }
+    }*/
 }
