@@ -3,6 +3,7 @@ package com.gandan.android.buttonflickering;
 import android.content.Intent;
 import android.graphics.Color;
 
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,7 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 /**
- *  안드로이드의 버튼색이 점차적으로 바뀌도록 하는 예제
+ *  안드로이드의 버튼색이 점차적으로 바뀌도록 하는 예제 (자바 사용)
  */
 
 public class MainActivity extends AppCompatActivity {
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe();*/
 
         //람다식 사용
-        thread = new Thread(this::setButtonColor);
+        //thread = new Thread(this::setButtonColor);
 
         //람다를 사용하지 않았을 경우
         /*Thread thread = new Thread(new Runnable() {
@@ -62,30 +63,59 @@ public class MainActivity extends AppCompatActivity {
                 setButtonColor();
             }
         }); */
-        thread.start();
+        //thread.start();
+
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        setButtonColor();
     }
 
     //자기자신을 호출하여 끊임없이 코드를 수행하는 재귀함수가 됨.
     private String setButtonColor() {
 
         if(count == 0) {
-            for (int i = 0; i <= 99; i++) {
-                colorChange(i);
-            }
+            Handler emitter = new Handler();
+            emitter.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    for (int i = 0; i <= 99; i++) {
+                        colorChange(i);
+                    }
+                }
+            },1000);
+
             //카운트를 먼저 바꿔준 후,
             count = 1;
             //자기 자신을 호출(재귀)
-            setButtonColor();
+            Handler handler = new Handler();
+            handler.post(this::setButtonColor);
+            //setButtonColor();
             return color;
         }
         if(count == 1){
-            for (int i = 99; i >= 0; i--) {
-                colorChange(i);
-            }
+           Handler minusEmitter = new Handler();
+           minusEmitter.postDelayed(new Runnable() {
+               @Override
+               public void run() {
+                   for (int i = 99; i >= 0; i--) {
+               /* try {
+                    //Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }*/
+                       colorChange(i);
+                   }
+               }
+           }, 1000);
             //카운트를 먼저 바꿔준 후,
             count = 0;
             //자기 자신을 호출(재귀)
-            setButtonColor();
+            //setButtonColor();
+            Handler handler = new Handler();
+            handler.post(this::setButtonColor);
             return color;
         }
         return color;
@@ -93,28 +123,50 @@ public class MainActivity extends AppCompatActivity {
 
     //버튼 배경색과 글자색을 변하게 하는 메소드
     private void colorChange(int i){
+
         if(i < 10){
             color = "#0" + i + "50C1F3";
         } else if(i >= 10){
             color = "#" + i + "50c1f3";
         }
         btnFlicker.setBackgroundColor(Color.parseColor(color));
+
         int minus = 99-i;
         if(minus >= 10) {
             fontColor = "#"+ minus + "000000";
-            btnFlicker.setTextColor(Color.parseColor(fontColor));
+            /*runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    btnFlicker.setTextColor(Color.parseColor(fontColor));
+                }
+            });*/
+            //btnFlicker.setTextColor(Color.parseColor(fontColor));
         }
         if(minus < 10) {
             fontColor = "#0" + minus + "000000";
-            btnFlicker.setTextColor(Color.parseColor(fontColor));
+            /*runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    btnFlicker.setTextColor(Color.parseColor(fontColor));
+                }
+            });*/
+
         }
+        btnFlicker.setBackgroundColor(Color.parseColor(color));
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        },100);
         Log.e("colorSet", btnFlicker.getBackground() + "");
-        try {
+       /* try {
             //sleep 값의 변화로 색상이 변하는 시간을 조정할 수 있다.
-            Thread.sleep(10);
+
         }
         catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }

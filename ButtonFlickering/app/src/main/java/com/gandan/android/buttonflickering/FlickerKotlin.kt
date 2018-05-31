@@ -3,14 +3,18 @@ package com.gandan.android.buttonflickering
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
-import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_flicker_kotlin.*
 import java.util.concurrent.TimeUnit
-import kotlin.concurrent.thread
+
+/**
+ *  버튼의 색상이 바뀌도록 하는 예제 (코틀린 사용)
+ */
 
 class FlickerKotlin : AppCompatActivity() {
 
@@ -24,47 +28,29 @@ class FlickerKotlin : AppCompatActivity() {
     }
 
     fun printColorCode() {
-
-        var vib : Observable<Unit> = Observable.create { it.onNext(setColor()) }
-        vib.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe()
-
+        Observable.interval(10, TimeUnit.MILLISECONDS).take(100).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe {
+            when {
+                it < 10 -> btnKotlin.setBackgroundColor(Color.parseColor("#0${it}50C1F3"))
+                it in 10..98 -> btnKotlin.setBackgroundColor(Color.parseColor("#${it}50C1F3"))
+                it.toInt() == 99 -> {
+                    btnKotlin.setBackgroundColor(Color.parseColor("#9950C1F3"))
+                    printMinusColorCode()
+                }
+            }
+        }
     }
 
-    fun setColor() {
-
-        var rangeHundred =
-                if(count == 0){
-            (0..99) }
-                else {
-            (99 downTo 0)
+    fun printMinusColorCode() {
+        Observable.interval(10, TimeUnit.MILLISECONDS).take(100).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe {
+            when {
+                it.toInt() == 0 -> btnKotlin.setBackgroundColor(Color.parseColor("#9950C1F3"))
+                it.toInt() in 1..90 -> btnKotlin.setBackgroundColor(Color.parseColor("#${100-it}50C1F3"))
+                it in 91..98 -> btnKotlin.setBackgroundColor(Color.parseColor("#0${100-it}50C1F3"))
+                it.toInt() == 99 -> {
+                    btnKotlin.setBackgroundColor(Color.parseColor("#0150C1F3"))
+                    printColorCode()
                 }
-        rangeHundred.forEach{
-                Thread.sleep(10)
-                when{
-                    it == 0 -> {
-                        Log.e("zero", it.toString())
-                        btnKotlin.setBackgroundColor(Color.parseColor("#0${it}50C1F3"))
-                    }
-                    it < 10 -> {
-                        Log.e("under10", it.toString())
-                        Log.e("count", count.toString())
-                        btnKotlin.setBackgroundColor(Color.parseColor("#0${it}50C1F3"))
-                    }
-                    it in 10..98 -> {
-                        Log.e("10toNinety", it.toString())
-                        btnKotlin.setBackgroundColor(Color.parseColor("#${it}50C1F3"))
-                    }
-                    it == 99 -> {
-                        Log.e("99", it.toString())
-                        btnKotlin.setBackgroundColor(Color.parseColor("#${it}50C1F3"))
-                        count = if(count == 0){
-                            1
-                        } else {
-                            0
-                        }
-                    }
-                }
+            }
         }
-        setColor()
     }
 }
