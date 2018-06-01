@@ -10,12 +10,18 @@ import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.widget.Toast
 import com.gandan.android.kotlinfb.adapter.FragmentWriteAdapter
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_write.*
 import java.security.Permissions
 
 class WriteActivity : AppCompatActivity(), GetWriteDataListener {
 
     var WRITE_EX_STORAGE_OK = 166
+
+    var firebaseDatabase = FirebaseDatabase.getInstance()
+    var databaseReference = firebaseDatabase.reference
+    var firebaseUser = FirebaseAuth.getInstance().currentUser
 
     var complimentOne : String = ""
     var complimentTwo : String = ""
@@ -59,8 +65,8 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
         when {
             complimentOne == "" -> makeToast(0)
             complimentTwo == "" -> makeToast(1)
-            complimentThree == "" -> makeToast(2)
-            else -> Toast.makeText(this, "모든 항목 입력 완료.", Toast.LENGTH_SHORT).show()
+            //complimentThree == "" -> makeToast(2)
+            else -> upload()
         }
     }
 
@@ -68,4 +74,17 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
         Toast.makeText(this, "${currentItem+1}번이 입력되지 않았습니다.", Toast.LENGTH_SHORT).show()
         viewPagerWrite.currentItem = currentItem
     }
+
+    fun upload(){
+        var uploadClass = UploadWritten(complimentOne, complimentTwo, complimentThree)
+        databaseReference.ref.child(firebaseUser!!.uid).child("userdb").child("uploadDbTest").setValue(uploadClass).addOnCompleteListener{
+            if(it.isSuccessful) {
+                Toast.makeText(this, "업로드 완료!", Toast.LENGTH_SHORT).show()
+            }
+        }.addOnFailureListener{
+            Toast.makeText(this, "업로드 실패!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    data class UploadWritten(var first : String, var second : String, var third : String)
 }

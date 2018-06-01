@@ -1,8 +1,11 @@
 package com.gandan.android.kotlinfb
 
+import android.app.Dialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
@@ -11,6 +14,7 @@ class SettingActivity : AppCompatActivity() {
 
     var firebaseAuth = FirebaseAuth.getInstance()
     var firebaseUser = firebaseAuth.currentUser
+    lateinit var dialog : AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,11 +30,21 @@ class SettingActivity : AppCompatActivity() {
             startActivity(intent)
         }
         linearLogout.setOnClickListener {
-            firebaseAuth.signOut()
-            intent = Intent(this, LoginActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
+
+            var positive = DialogInterface.OnClickListener { dialog,
+                                                             which -> logout()  }
+
+            var negative = DialogInterface.OnClickListener{ dialog, which -> dialog.dismiss()}
+            dialog = AlertDialog.Builder(this).setTitle("로그아웃 하시겠습니까?").setPositiveButton("아니오", negative).setNegativeButton("네", positive).create()
+            dialog.show()
         }
+    }
+
+    fun logout(){
+        firebaseAuth.signOut()
+        intent = Intent(this, LoginActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 }
