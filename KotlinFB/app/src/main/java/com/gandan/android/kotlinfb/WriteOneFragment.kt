@@ -69,11 +69,9 @@ class WriteOneFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == RESULT_OK && requestCode == 166){
-            Glide.with(this).load(data?.data).apply{
-                RequestOptions.circleCropTransform()
-                RequestOptions.placeholderOf(R.mipmap.ic_launcher)
-            }.into(imgOne)
+            Glide.with(this).load(data?.data).apply(RequestOptions.circleCropTransform()).apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher)).into(imgOne)
             Log.e("path", getRealData(data))
+            Toast.makeText(context, "사진 선택이 완료되었습니다!", Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(context, "사진 선택 취소!", Toast.LENGTH_SHORT).show()
         }
