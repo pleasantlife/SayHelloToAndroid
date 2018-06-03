@@ -17,13 +17,11 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         Thread.sleep(2000)
-        firebaseUser.let {
-            intent = when(it) {
-                null -> Intent(this, LoginActivity::class.java)
-                else -> Intent(this, MainActivity::class.java)
-            }
-            startActivity(intent)
-            this.finish()
+        intent = when(firebaseUser) {
+            null -> Intent(this, LoginActivity::class.java)
+            else -> Intent(this, MainActivity::class.java)
         }
+        startActivity(intent)
+        this.finish()
     }
 }
