@@ -2,18 +2,15 @@ package com.gandan.android.kotlinfb
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.content.pm.PermissionGroupInfo
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.widget.Toast
 import com.gandan.android.kotlinfb.adapter.FragmentWriteAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_write.*
-import java.security.Permissions
 
 class WriteActivity : AppCompatActivity(), GetWriteDataListener {
 
@@ -32,8 +29,8 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
         setContentView(R.layout.activity_write)
         //ViewPager를 쓰기 위해 별도의 어댑터 클래스를 만들어 연결하였음.
         viewPagerWrite.adapter = FragmentWriteAdapter(supportFragmentManager, 3, this)
-        btnDoWrite.setOnClickListener { nullCheck() }
         permissionCheck()
+        btnDoWrite.setOnClickListener { nullCheck() }
     }
 
     private fun permissionCheck(){

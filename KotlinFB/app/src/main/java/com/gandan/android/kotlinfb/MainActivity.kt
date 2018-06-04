@@ -19,56 +19,41 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity() {
 
     private var pressedTime : Long = 0
     private var zero : Long = 0
-    var firebaseAuth = FirebaseAuth.getInstance()
-    var firebaseDatabase = FirebaseDatabase.getInstance()
-    var databaseReference = firebaseDatabase.reference
-    var recyclerMain : RecyclerView? = null
-    var btnDoWrite : Button? = null
-    private var txtCurrentTime : TextView? = null
+    private var firebaseAuth = FirebaseAuth.getInstance()
+    private var firebaseDatabase = FirebaseDatabase.getInstance()
+    private var databaseReference = firebaseDatabase.reference
+    lateinit var requestManager : GlideRequests
+    private lateinit var clock : Disposable
+
     private var stringList = ArrayList<String>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        requestManager = GlideApp.with(this)
 
-        val btnDoSetting = findViewById<Button>(R.id.btnDoSetting)
-        btnDoSetting.setOnClickListener{
-                intent = Intent(this, SettingActivity::class.java)
-                startActivity(intent)
+        //실시간으로 시각을 표시하는 시계를 RxJava를 이용하여 생성.
+        clock = Observable.interval(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe {
+            txtCurrentTime.text = SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분 ss초", Locale.KOREA).apply { timeZone = TimeZone.getTimeZone("Asia/Seoul") }.format(System.currentTimeMillis())
         }
-        txtCurrentTime = findViewById(R.id.txtCurrentTime)
 
-        displayRealTimeClock()
-        loadData()
+        btnDoSetting.setOnClickListener { startActivity(Intent(this, SettingActivity::class.java))}
+        btnGoWrite.setOnClickListener { startActivity(Intent(this@MainActivity, WriteActivity::class.java)) }
+        databaseReference.ref.child("userdb").child(firebaseAuth.currentUser?.uid).addValueEventListener(initValueListener())
         setData()
-
-        btnDoWrite = findViewById(R.id.btnDoWrite)
-        btnDoWrite?.setOnClickListener {
-            intent = Intent(this@MainActivity, WriteActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
-
-    //실시간으로 시각을 표시하는 시계를 RxJava를 이용하여 생성.
-    private fun displayRealTimeClock() {
-        val sdf = SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분 ss초", Locale.KOREA)
-        sdf.timeZone = TimeZone.getTimeZone("Asia/Seoul")
-        var realTimeClock = Observable.interval(1, TimeUnit.SECONDS)
-        realTimeClock.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe {
-            txtCurrentTime?.text = sdf.format(System.currentTimeMillis())
-        }
     }
 
     //Firebase Realtime Database에서 로그인 한 유저의 정보 가져오기.
@@ -89,9 +74,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 stringList.add(userDb?.uid+"")
                 var filteredList = stringList.map { s -> "테스트 "+s }
                 Log.e("filteredList", filteredList.toString()+"")
-                setRecyclerView(filteredList)
-
-
+                filteredList.apply {
+                    with(recyclerMain){
+                        adapter = MainRecyclerAdapter(this@MainActivity, requestManager, filteredList)
+                        layoutManager = LinearLayoutManager(this@MainActivity)
+                    }
+                }
             }
 
         }
@@ -101,33 +89,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     //Firebase Realtime Database에 Email 주소와 uid 등록.
     private fun setData(){
-        var email = firebaseAuth.currentUser?.email
-        var uid = firebaseAuth.currentUser?.uid
         var userId = UserDb()
-        userId.email = email
-        userId.uid = uid
-        databaseReference.ref.child("userdb").child(uid).setValue(userId)
+        userId.email = firebaseAuth.currentUser?.email
+        userId.uid = firebaseAuth.currentUser?.uid
+        databaseReference.ref.child("userdb").child(firebaseAuth.currentUser?.uid).setValue(userId)
 
     }
-
-
-    private fun loadData() {
-        databaseReference.ref.child("userdb").child(firebaseAuth.currentUser?.uid).addValueEventListener(initValueListener())
-    }
-
-    private fun setRecyclerView(lists : List<String>) {
-        recyclerMain = findViewById<RecyclerView>(R.id.recyclerMain)
-        val requestManager = GlideApp.with(this)
-        recyclerMain!!.adapter = MainRecyclerAdapter(this, requestManager, lists)
-        recyclerMain!!.layoutManager = LinearLayoutManager(this)
-    }
-
-    override fun onClick(v: View?) {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-
-
 
 
     //뒤로 가기를 3초 이내에 두 번 누르면 앱을 종료한다.
@@ -145,5 +112,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 finish()
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        //시간을 나타내는 Observable이 더이상 메모리를 점유하지 않도록 정리!
+        clock.dispose()
     }
 }

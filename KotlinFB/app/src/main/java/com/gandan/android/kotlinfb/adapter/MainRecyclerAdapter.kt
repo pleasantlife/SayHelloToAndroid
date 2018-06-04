@@ -15,6 +15,7 @@ import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
 import com.gandan.android.kotlinfb.GlideApp
 import com.gandan.android.kotlinfb.R
+import kotlinx.android.synthetic.main.recycler_item.view.*
 
 /**
  * Created by XPS on 2018-05-17.
@@ -31,14 +32,11 @@ class MainRecyclerAdapter(var context : Context, var requestManager: RequestMana
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        var stringText = lists.get(position)
-        holder.txtContentsItem?.text = stringText
-        holder.txtTitleItem?.text = "타이틀"
-        requestManager.load("https://cdn.pixabay.com/photo/2018/05/12/16/45/paper-3393903__480.jpg").apply(RequestOptions.centerCropTransform()).into(holder.imgBackItem!!)
-        holder.cardViewItem?.setOnClickListener {
-            Toast.makeText(context, stringText, Toast.LENGTH_SHORT).show()
-        }
-
+        var stringText = lists[position]
+        holder.itemView.txtTitleItem.text = "타이틀"
+        holder.itemView.txtContentsItem.text = stringText
+        requestManager.load("https://cdn.pixabay.com/photo/2018/05/12/16/45/paper-3393903__480.jpg").apply(RequestOptions.centerCropTransform()).into(holder.itemView.imgBackItem)
+        holder.itemView.cardViewItem.setOnClickListener { Toast.makeText(context, stringText, Toast.LENGTH_SHORT).show() }
     }
 
     override fun getItemCount(): Int {
@@ -46,11 +44,5 @@ class MainRecyclerAdapter(var context : Context, var requestManager: RequestMana
         return lists.size
     }
 
-    class Holder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-        var cardViewItem = itemView?.findViewById<CardView>(R.id.cardViewItem)
-        var txtTitleItem = itemView?.findViewById<TextView>(R.id.txtTitleItem)
-        var txtContentsItem = itemView?.findViewById<TextView>(R.id.txtContentsItem)
-        var imgBackItem = itemView?.findViewById<ImageView>(R.id.imgBackItem)
-
-    }
+    inner class Holder(itemView: View?) : RecyclerView.ViewHolder(itemView)
 }
