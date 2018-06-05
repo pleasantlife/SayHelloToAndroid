@@ -62,7 +62,7 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
         when {
             complimentOne == "" -> makeToast(0)
             complimentTwo == "" -> makeToast(1)
-            //complimentThree == "" -> makeToast(2)
+            complimentThree == "" -> makeToast(2)
             else -> upload()
         }
     }

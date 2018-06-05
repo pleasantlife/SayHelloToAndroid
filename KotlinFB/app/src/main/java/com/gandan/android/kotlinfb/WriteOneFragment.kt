@@ -24,6 +24,10 @@ import kotlinx.android.synthetic.main.fragment_write_one.view.*
  */
 class WriteOneFragment : Fragment() {
 
+    //java의 public static 변수처럼 사용하려면 'companion object'로 변수를 선언해야 한다!
+    companion object {
+        val REQUEST_PHOTO_ONE = 166
+    }
 
 
     lateinit var listener : GetWriteDataListener
@@ -45,9 +49,9 @@ class WriteOneFragment : Fragment() {
          */
         //view.txtWriteOne.setOnClickListener{ Log.e("text", txtWriteOne.text.toString())}
         view.imgOne.setOnClickListener {
-            var intent = Intent(Intent.ACTION_PICK)
-            intent.data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-            this.startActivityForResult(intent, 166)
+            this.startActivityForResult(Intent(Intent.ACTION_PICK).apply {
+                data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            }, REQUEST_PHOTO_ONE)
         }
         return view
     }
@@ -68,7 +72,7 @@ class WriteOneFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == RESULT_OK && requestCode == 166){
+        if(resultCode == RESULT_OK && requestCode == REQUEST_PHOTO_ONE){
             Glide.with(this).load(data?.data).apply(RequestOptions.circleCropTransform()).apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher)).into(imgOne)
             Log.e("path", getRealData(data))
             Toast.makeText(context, "사진 선택이 완료되었습니다!", Toast.LENGTH_SHORT).show()

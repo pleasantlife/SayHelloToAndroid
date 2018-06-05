@@ -16,7 +16,8 @@
         <activity android:name=".LoginActivity"/>
         <activity android:name=".SettingActivity" />
         <activity android:name=".OpenSourceActivity" />
-        <activity android:name=".WriteActivity" />
+        <activity android:name=".WriteActivity"
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
