@@ -53,6 +53,8 @@ class WriteOneFragment : Fragment() {
                 data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             }, REQUEST_PHOTO_ONE)
         }
+        //EditText에 포커스 가는 것 막기!
+        view.requestFocus()
         return view
     }
 
@@ -66,7 +68,12 @@ class WriteOneFragment : Fragment() {
         txtWriteOne.setOnClickListener{ Log.e("text", txtWriteOne.text.toString())}
         RxTextView.textChanges(inputWriteOne).subscribe { listener.one(it.toString()) }
         //string.xml에 넣어둔 string을 쓰려면 getString을 이용해야한다!
-        RxTextView.textChanges(inputWriteOne).subscribe { txtCountOne.text = getString(R.string.char_count, it.length)}
+        RxTextView.textChanges(inputWriteOne).subscribe {
+            txtCountOne.text = getString(R.string.char_count, it.length)
+            if(it.length >= 120){
+                Toast.makeText(context, "120자 이내로 작성해주세요.", Toast.LENGTH_SHORT).show()
+            }
+        }
 
     }
 

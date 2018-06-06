@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.jakewharton.rxbinding2.widget.RxTextView
 import kotlinx.android.synthetic.main.fragment_write_three.*
 import kotlinx.android.synthetic.main.fragment_write_three.view.*
 
@@ -36,15 +37,24 @@ class WriteThreeFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        var view = inflater.inflate(R.layout.fragment_write_three, container, false)
-        view.imgThree.setOnClickListener {
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        imgThree.setOnClickListener {
             startActivityForResult(Intent(Intent.ACTION_PICK).apply {
                 data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             }, REQUEST_PHOTO_THREE)
         }
+        RxTextView.textChanges(inputWriteThree).subscribe {
+            listener.three(it.toString())
+        }
+
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        // Inflate the layout for this fragment
+        var view = inflater.inflate(R.layout.fragment_write_three, container, false)
         return view
     }
 
