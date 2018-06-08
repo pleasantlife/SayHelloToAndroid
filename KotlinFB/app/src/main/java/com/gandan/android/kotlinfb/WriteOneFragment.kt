@@ -15,8 +15,10 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.jakewharton.rxbinding2.widget.RxTextView
+import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.fragment_write_one.*
 import kotlinx.android.synthetic.main.fragment_write_one.view.*
+import kotlinx.android.synthetic.main.fragment_write_three.*
 
 
 /**
@@ -54,7 +56,7 @@ class WriteOneFragment : Fragment() {
             }, REQUEST_PHOTO_ONE)
         }
         //EditText에 포커스 가는 것 막기!
-        view.requestFocus()
+        //view.requestFocus()
         return view
     }
 
@@ -70,6 +72,7 @@ class WriteOneFragment : Fragment() {
         //string.xml에 넣어둔 string을 쓰려면 getString을 이용해야한다!
         RxTextView.textChanges(inputWriteOne).subscribe {
             txtCountOne.text = getString(R.string.char_count, it.length)
+            listener.one(it.toString())
             if(it.length >= 120){
                 Toast.makeText(context, "120자 이내로 작성해주세요.", Toast.LENGTH_SHORT).show()
             }
@@ -81,6 +84,8 @@ class WriteOneFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == RESULT_OK && requestCode == REQUEST_PHOTO_ONE){
             Glide.with(this).load(data?.data).apply(RequestOptions.circleCropTransform()).apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher)).into(imgOne)
+            Glide.with(this).load(data?.data).apply(RequestOptions.bitmapTransform(BlurTransformation(50, 3))).into(imgBlurOne)
+            imgBlurOne.visibility = View.VISIBLE
             Log.e("path", getRealData(data))
             Toast.makeText(context, "사진 선택이 완료되었습니다!", Toast.LENGTH_SHORT).show()
         } else {

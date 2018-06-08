@@ -7,10 +7,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.app.Fragment
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.bumptech.glide.Glide
 import com.gandan.android.kotlinfb.R.id.inputWriteTwo
 import com.jakewharton.rxbinding2.widget.RxTextView
 import kotlinx.android.synthetic.main.fragment_write_two.*
@@ -43,8 +46,17 @@ class WriteTwoFragment : Fragment() {
                 data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             }, REQUEST_PHOTO_TWO)
         }
-        RxTextView.textChanges(inputWriteTwo).subscribe { text -> listener.two(text.toString()) }
+        RxTextView.textChanges(inputWriteTwo).subscribe {
+            listener.two(it.toString())
+            txtCountTwo.text = getString(R.string.char_count, it.length)
+            if(it.length >= 120){
+                Toast.makeText(context, "120자 이내로 작성해주세요.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     }
+
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -57,7 +69,7 @@ class WriteTwoFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == RESULT_OK && requestCode == REQUEST_PHOTO_TWO) {
-
+            Glide.with(this).load(data?.data).into(imgTwo)
         } else {
             Toast.makeText(context, "사진 선택 취소!", Toast.LENGTH_SHORT).show()
         }
