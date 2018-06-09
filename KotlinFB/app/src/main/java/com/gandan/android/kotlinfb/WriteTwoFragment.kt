@@ -56,20 +56,17 @@ class WriteTwoFragment : Fragment() {
 
     }
 
-
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        var view = inflater.inflate(R.layout.fragment_write_two, container, false)
-
-        return view
+        return inflater.inflate(R.layout.fragment_write_two, container, false)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == RESULT_OK && requestCode == REQUEST_PHOTO_TWO) {
             Glide.with(this).load(data?.data).into(imgTwo)
+            Toast.makeText(context, "사진 선택 완료!", Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(context, "사진 선택 취소!", Toast.LENGTH_SHORT).show()
         }

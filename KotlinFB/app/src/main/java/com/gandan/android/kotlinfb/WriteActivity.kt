@@ -20,17 +20,18 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
     var databaseReference = firebaseDatabase.reference
     var firebaseUser = FirebaseAuth.getInstance().currentUser
 
-    var complimentOne : String = ""
-    var complimentTwo : String = ""
-    var complimentThree : String = ""
+    lateinit var complimentOne : String
+    lateinit var complimentTwo : String
+    lateinit var complimentThree : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_write)
         //ViewPager를 쓰기 위해 별도의 어댑터 클래스를 만들어 연결하였음.
         viewPagerWrite.adapter = FragmentWriteAdapter(supportFragmentManager, 3, this)
+        //사진을 가져와야 하기 때문에 메모리 읽기/쓰기 권한이 필요하다.
         permissionCheck()
-        btnDoWrite.setOnClickListener { nullCheck() }
+        btnDoWrite.setOnClickListener{ nullCheck() }
     }
 
     private fun permissionCheck(){
@@ -68,17 +69,17 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
     }
 
     fun makeToast(currentItem : Int){
-        Toast.makeText(this, "${currentItem+1}번이 입력되지 않았습니다.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "${currentItem+1}번 내용이 입력되지 않았습니다.", Toast.LENGTH_SHORT).show()
         viewPagerWrite.currentItem = currentItem
     }
 
     fun upload(){
-        var uploadClass = UploadWritten(complimentOne, complimentTwo, complimentThree)
-        databaseReference.ref.child(firebaseUser!!.uid).child("userdb").child("uploadDbTest").setValue(uploadClass).addOnCompleteListener{
+        databaseReference.ref.child(firebaseUser!!.uid).child("userdb").child("uploadDbTest").setValue(UploadWritten(complimentOne, complimentTwo, complimentThree)).addOnCompleteListener{
             if(it.isSuccessful) {
                 Toast.makeText(this, "업로드 완료!", Toast.LENGTH_SHORT).show()
             }
-        }.addOnFailureListener{
+        }.addOnFailureListener{ error ->
+            Log.e("error when upload", error.message+"")
             Toast.makeText(this, "업로드 실패!", Toast.LENGTH_SHORT).show()
         }
     }

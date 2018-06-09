@@ -84,6 +84,7 @@ class WriteOneFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == RESULT_OK && requestCode == REQUEST_PHOTO_ONE){
             Glide.with(this).load(data?.data).apply(RequestOptions.circleCropTransform()).apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher)).into(imgOne)
+            //뒷배경에 등록된 이미지를 띄우고, 이를 블러처리 하는 코드.
             Glide.with(this).load(data?.data).apply(RequestOptions.bitmapTransform(BlurTransformation(50, 3))).into(imgBlurOne)
             imgBlurOne.visibility = View.VISIBLE
             Log.e("path", getRealData(data))
