@@ -51,6 +51,18 @@ public class MainActivity extends AppCompatActivity {
         Observable<CharSequence> priceFourObservable = RxTextView.textChanges(inputPriceFour);
         Observable<CharSequence> priceFiveObservable = RxTextView.textChanges(inputPriceFive);
 
+
+        Observable<Observable<CharSequence>> sequence = Observable.just(priceOneObservable, priceTwoObservable, priceThreeObservable, priceFourObservable, priceFiveObservable);
+
+        sequence.subscribe( observable -> {
+            one -> Log.e("priceOne", one+"")
+        });
+
+        Observable<CharSequence> maps = Observable.concat(priceOneObservable, priceTwoObservable, priceThreeObservable, priceFourObservable);
+        maps.subscribe(
+                one -> Log.e("nextOne", one+"")
+        );
+
         priceOneObservable.subscribe( oneString -> {
             if (oneString.length() > 0) {
                 one = Integer.parseInt(oneString.toString());
@@ -141,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         txtSumPrice.setText((int) total + "원");
+
     }
 
 }
