@@ -52,11 +52,7 @@ class WriteThreeFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        var view = inflater.inflate(R.layout.fragment_write_three, container, false)
-        return view
-    }
+                              savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_write_three, container, false)
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

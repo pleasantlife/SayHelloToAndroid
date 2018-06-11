@@ -25,7 +25,11 @@ class FragmentWriteAdapter(fm: FragmentManager?, counts : Int, listener : GetWri
         return fragment
     }
 
+    // 복잡한 식이 아니라면, 함수의 return값을 아래와 같이 쓸 수도 있다.
+    override fun getCount(): Int = tabCount
+    /*
     override fun getCount(): Int {
         return tabCount
     }
+     */
 }

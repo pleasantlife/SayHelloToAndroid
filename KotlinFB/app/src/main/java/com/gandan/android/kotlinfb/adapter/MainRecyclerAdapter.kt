@@ -39,10 +39,10 @@ class MainRecyclerAdapter(var context : Context, var requestManager: RequestMana
         holder.itemView.cardViewItem.setOnClickListener { Toast.makeText(context, stringText, Toast.LENGTH_SHORT).show() }
     }
 
-    override fun getItemCount(): Int {
+    override fun getItemCount(): Int = lists.size /* {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         return lists.size
-    }
+    }*/
 
     inner class Holder(itemView: View?) : RecyclerView.ViewHolder(itemView)
 }
