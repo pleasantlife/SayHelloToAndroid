@@ -19,6 +19,7 @@ import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.fragment_write_one.*
 import kotlinx.android.synthetic.main.fragment_write_one.view.*
 import kotlinx.android.synthetic.main.fragment_write_three.*
+import java.io.File
 
 
 /**
@@ -68,11 +69,11 @@ class WriteOneFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         Log.e("textActivity", txtWriteOne.text.toString()+"")
         txtWriteOne.setOnClickListener{ Log.e("text", txtWriteOne.text.toString())}
-        RxTextView.textChanges(inputWriteOne).subscribe { listener.one(it.toString()) }
+        RxTextView.textChanges(inputWriteOne).subscribe { listener.contentOne(it.toString()) }
         //string.xml에 넣어둔 string을 쓰려면 getString을 이용해야한다!
         RxTextView.textChanges(inputWriteOne).subscribe {
             txtCountOne.text = getString(R.string.char_count, it.length)
-            listener.one(it.toString())
+            listener.contentOne(it.toString())
             if(it.length >= 120){
                 Toast.makeText(context, "120자 이내로 작성해주세요.", Toast.LENGTH_SHORT).show()
             }
@@ -88,6 +89,9 @@ class WriteOneFragment : Fragment() {
             Glide.with(this).load(data?.data).apply(RequestOptions.bitmapTransform(BlurTransformation(50, 3))).into(imgBlurOne)
             imgBlurOne.visibility = View.VISIBLE
             Log.e("path", getRealData(data))
+            File(getRealData(data)).let {
+                listener.imageOne(it)
+            }
             Toast.makeText(context, "사진 선택이 완료되었습니다!", Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(context, "사진 선택 취소!", Toast.LENGTH_SHORT).show()

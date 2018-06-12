@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.jakewharton.rxbinding2.widget.RxTextView
 import kotlinx.android.synthetic.main.fragment_write_three.*
 import kotlinx.android.synthetic.main.fragment_write_three.view.*
+import java.io.File
 
 
 /**
@@ -46,7 +47,7 @@ class WriteThreeFragment : Fragment() {
             }, REQUEST_PHOTO_THREE)
         }
         RxTextView.textChanges(inputWriteThree).subscribe {
-            listener.three(it.toString())
+            listener.contentThree(it.toString())
         }
 
     }
@@ -58,6 +59,9 @@ class WriteThreeFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == RESULT_OK && requestCode == REQUEST_PHOTO_THREE){
             Glide.with(this).load(getRealPath(data)).into(imgThree)
+            File(getRealPath(data)).let {
+                listener.imageThree(it)
+            }
         } else {
             Toast.makeText(context, "사진 선택 취소!", Toast.LENGTH_SHORT).show()
         }

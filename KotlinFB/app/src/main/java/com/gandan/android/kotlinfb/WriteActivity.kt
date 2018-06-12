@@ -11,6 +11,7 @@ import com.gandan.android.kotlinfb.adapter.FragmentWriteAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_write.*
+import java.io.File
 
 class WriteActivity : AppCompatActivity(), GetWriteDataListener {
 
@@ -23,6 +24,9 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
     lateinit var complimentOne : String
     lateinit var complimentTwo : String
     lateinit var complimentThree : String
+    lateinit var complimentImageOne : File
+    lateinit var complimentImageTwo : File
+    lateinit var complimentImageThree : File
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,18 +49,30 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
         }
     }
 
-    override fun one(thingOne : String) {
+    override fun contentOne(thingOne : String) {
         Log.e("String!!!", thingOne+"")
         complimentOne = thingOne
     }
 
-    override fun two(thingTwo: String) {
+    override fun contentTwo(thingTwo: String) {
         complimentTwo = thingTwo
         Log.e("complimentTwo", complimentTwo)
     }
 
-    override fun three(thingThree : String) {
+    override fun contentThree(thingThree : String) {
         complimentThree = thingThree
+    }
+
+    override fun imageOne(fileOne: File) {
+        complimentImageOne = fileOne
+    }
+
+    override fun imageTwo(fileTwo: File) {
+        complimentImageOne = fileTwo
+    }
+
+    override fun imageThree(fileThree: File) {
+        complimentImageOne = fileThree
     }
 
     fun nullCheck(){
@@ -64,6 +80,10 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
             complimentOne == "" -> makeToast(0)
             complimentTwo == "" -> makeToast(1)
             complimentThree == "" -> makeToast(2)
+            //initlized 되었는지를 check하는 방법!!
+            !::complimentImageOne.isInitialized -> makeToast(0)
+            !::complimentImageTwo.isInitialized -> makeToast(1)
+            !::complimentImageThree.isInitialized -> makeToast(2)
             else -> upload()
         }
     }

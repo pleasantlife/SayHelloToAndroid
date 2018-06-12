@@ -4,6 +4,7 @@ package com.gandan.android.kotlinfb
 import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
+import android.database.Cursor
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.app.Fragment
@@ -18,6 +19,7 @@ import com.gandan.android.kotlinfb.R.id.inputWriteTwo
 import com.jakewharton.rxbinding2.widget.RxTextView
 import kotlinx.android.synthetic.main.fragment_write_two.*
 import kotlinx.android.synthetic.main.fragment_write_two.view.*
+import java.io.File
 
 
 /**
@@ -47,7 +49,7 @@ class WriteTwoFragment : Fragment() {
             }, REQUEST_PHOTO_TWO)
         }
         RxTextView.textChanges(inputWriteTwo).subscribe {
-            listener.two(it.toString())
+            listener.contentTwo(it.toString())
             txtCountTwo.text = getString(R.string.char_count, it.length)
             if(it.length >= 120){
                 Toast.makeText(context, "120자 이내로 작성해주세요.", Toast.LENGTH_SHORT).show()
@@ -66,10 +68,23 @@ class WriteTwoFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == RESULT_OK && requestCode == REQUEST_PHOTO_TWO) {
             Glide.with(this).load(data?.data).into(imgTwo)
+            File(getRealPath(data)).let {
+                listener.imageTwo(it)
+            }
             Toast.makeText(context, "사진 선택 완료!", Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(context, "사진 선택 취소!", Toast.LENGTH_SHORT).show()
         }
+
+    }
+
+    fun getRealPath(data: Intent?) : String{
+        var uri = data?.data
+        var projection = arrayOf(MediaStore.Images.Media.DATA)
+        var cursor = context!!.contentResolver.query(uri, projection, null, null, null)
+        var columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        cursor.moveToFirst()
+        return cursor.getString(columnIndex)
 
     }
 }// Required empty public constructor
