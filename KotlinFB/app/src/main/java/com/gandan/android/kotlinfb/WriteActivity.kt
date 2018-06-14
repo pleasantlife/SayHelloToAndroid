@@ -25,7 +25,9 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
     var firebaseUser = FirebaseAuth.getInstance().currentUser
     var firebaseStorage = FirebaseStorage.getInstance()
     //괄호안에 넣은 String이 파일명이 된다!!
-    var storageReference = firebaseStorage.getReference("images")
+    var imageOne = firebaseStorage.getReference("imageOne")
+    var imageTwo = firebaseStorage.getReference("imageTwo")
+    var imageThree = firebaseStorage.getReference("imageThree")
 
     lateinit var complimentOne : String
     lateinit var complimentTwo : String
@@ -112,10 +114,21 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
     }
 
     fun uploadImages(){
-        storageReference.putFile(Uri.fromFile(complimentImageOne)).addOnCompleteListener{
-            task -> Log.e("url", task.result.downloadUrl.toString()+"")
+        //첫번째 이미지
+        imageOne.putFile(Uri.fromFile(complimentImageOne)).addOnCompleteListener{
+            task -> Log.e("urlOne", task.result.downloadUrl.toString()+"")
+        }
+        //두번쨰 이미지
+        imageTwo.putFile(Uri.fromFile(complimentImageTwo)).addOnCompleteListener{
+            task -> Log.e("urlTwo", task.result.downloadUrl.toString()+"")
+        }
+        //세번째 이미지
+        imageThree.putFile(Uri.fromFile(complimentImageThree)).addOnCompleteListener{
+            task -> Log.e("urlThree", task.result.downloadUrl.toString()+"")
         }
     }
+
+
 
     data class UploadWritten(var first : String, var second : String, var third : String)
 }
