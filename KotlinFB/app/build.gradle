@@ -45,6 +45,7 @@ dependencies {
     //Glide & Glide Annotation
     implementation 'com.github.bumptech.glide:glide:4.7.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
+
     kapt "android.arch.lifecycle:compiler:1.1.1"
     kapt 'com.github.bumptech.glide:compiler:4.7.1'
 
@@ -53,7 +54,7 @@ dependencies {
     implementation 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
 
     //implementation 'com.firebaseui:firebase-ui-storage:4.0.1'
-
+    implementation 'com.firebaseui:firebase-ui-storage:1.+'
 
 }
 

@@ -2,6 +2,7 @@ package com.gandan.android.kotlinfb
 
 
 import android.app.Activity.RESULT_OK
+import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
@@ -14,6 +15,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.jakewharton.rxbinding2.widget.RxTextView
 import kotlinx.android.synthetic.main.fragment_write_three.*
 import kotlinx.android.synthetic.main.fragment_write_three.view.*
@@ -29,13 +33,18 @@ class WriteThreeFragment : Fragment() {
         val REQUEST_PHOTO_THREE = 188
     }
 
+    var firebaseStorage = FirebaseStorage.getInstance()
+    var storageReference = firebaseStorage.getReference("imageThree")
+
     lateinit var listener : GetWriteDataListener
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         if(context is GetWriteDataListener){
             listener = context
+
         }
+
     }
 
 
@@ -49,6 +58,7 @@ class WriteThreeFragment : Fragment() {
         RxTextView.textChanges(inputWriteThree).subscribe {
             listener.contentThree(it.toString())
         }
+        Glide.with(context!!).load(storageReference).apply(RequestOptions.centerCropTransform()).into(imgThree)
 
     }
 
