@@ -58,7 +58,7 @@ class WriteThreeFragment : Fragment() {
         RxTextView.textChanges(inputWriteThree).subscribe {
             listener.contentThree(it.toString())
         }
-        Glide.with(context!!).load(storageReference).apply(RequestOptions.centerCropTransform()).into(imgThree)
+        Glide.with(context!!).load(storageReference).apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher).apply(RequestOptions.centerCropTransform())).into(imgThree)
 
     }
 
@@ -72,6 +72,7 @@ class WriteThreeFragment : Fragment() {
             File(getRealPath(data)).let {
                 listener.imageThree(it)
             }
+            Toast.makeText(context, "사진 선택 완료!", Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(context, "사진 선택 취소!", Toast.LENGTH_SHORT).show()
         }

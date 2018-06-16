@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.firebase.storage.FirebaseStorage
 import com.jakewharton.rxbinding2.widget.RxTextView
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.fragment_write_one.*
@@ -32,6 +33,7 @@ class WriteOneFragment : Fragment() {
         val REQUEST_PHOTO_ONE = 166
     }
 
+    var storageReference = FirebaseStorage.getInstance().getReference("imageTwo")
 
     lateinit var listener : GetWriteDataListener
 
@@ -78,6 +80,7 @@ class WriteOneFragment : Fragment() {
                 Toast.makeText(context, "120자 이내로 작성해주세요.", Toast.LENGTH_SHORT).show()
             }
         }
+        Glide.with(context!!).load(storageReference).apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher)).apply(RequestOptions.centerCropTransform()).into(imgOne)
 
     }
 
