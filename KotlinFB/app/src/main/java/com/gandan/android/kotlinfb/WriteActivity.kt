@@ -117,14 +117,23 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
         //첫번째 이미지
         imageOne.putFile(Uri.fromFile(complimentImageOne)).addOnCompleteListener{
             task -> Log.e("urlOne", task.result.downloadUrl.toString()+"")
+            databaseReference.ref.child(firebaseUser!!.uid).child("userdb").child("uploadDbTest").child("imageOne").setValue(task.result.downloadUrl).addOnCompleteListener{
+
+            }
         }
         //두번쨰 이미지
         imageTwo.putFile(Uri.fromFile(complimentImageTwo)).addOnCompleteListener{
             task -> Log.e("urlTwo", task.result.downloadUrl.toString()+"")
+            databaseReference.ref.child(firebaseUser!!.uid).child("userdb").child("uploadDbTest").child("imageTwo").setValue(task.result.downloadUrl).addOnCompleteListener{
+
+            }
         }
         //세번째 이미지
         imageThree.putFile(Uri.fromFile(complimentImageThree)).addOnCompleteListener{
             task -> Log.e("urlThree", task.result.downloadUrl.toString()+"")
+            databaseReference.ref.child(firebaseUser!!.uid).child("userdb").child("uploadDbTest").child("imageThree").setValue(task.result.downloadUrl).addOnCompleteListener{
+
+            }
         }
     }
 
