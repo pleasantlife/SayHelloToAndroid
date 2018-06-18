@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -58,7 +59,7 @@ class WriteThreeFragment : Fragment() {
         RxTextView.textChanges(inputWriteThree).subscribe {
             listener.contentThree(it.toString())
         }
-        Glide.with(context!!).load(storageReference).apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher).apply(RequestOptions.centerCropTransform())).into(imgThree)
+        Glide.with(context!!).load(storageReference).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)).apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher).apply(RequestOptions.centerCropTransform())).into(imgThree)
 
     }
 

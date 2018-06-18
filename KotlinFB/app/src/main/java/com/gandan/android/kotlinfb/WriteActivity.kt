@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.gandan.android.kotlinfb.R.id.viewPagerWrite
 import com.gandan.android.kotlinfb.adapter.FragmentWriteAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -41,6 +42,8 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
         setContentView(R.layout.activity_write)
         //ViewPager를 쓰기 위해 별도의 어댑터 클래스를 만들어 연결하였음.
         viewPagerWrite.adapter = FragmentWriteAdapter(supportFragmentManager, 3, this)
+        //Fragment의 상태를 저장하지 못해서, 상태가 날아가버리는 것을 방지!
+        viewPagerWrite.offscreenPageLimit = 3
         //사진을 가져와야 하기 때문에 메모리 읽기/쓰기 권한이 필요하다.
         permissionCheck()
         btnDoWrite.setOnClickListener{ nullCheck() }
@@ -106,6 +109,8 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
             if(it.isSuccessful) {
                 Toast.makeText(this, "업로드 완료!", Toast.LENGTH_SHORT).show()
                 uploadImages()
+                //이미지를 업로드하라고 한 뒤, Back을 해도 오류가 발생하지 않고, 업로드가 잘 된다!
+                onBackPressed()
             }
         }.addOnFailureListener{ error ->
             Log.e("error when upload", error.message+"")
@@ -117,23 +122,15 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
         //첫번째 이미지
         imageOne.putFile(Uri.fromFile(complimentImageOne)).addOnCompleteListener{
             task -> Log.e("urlOne", task.result.downloadUrl.toString()+"")
-            databaseReference.ref.child(firebaseUser!!.uid).child("userdb").child("uploadDbTest").child("imageOne").setValue(task.result.downloadUrl).addOnCompleteListener{
-
-            }
         }
         //두번쨰 이미지
         imageTwo.putFile(Uri.fromFile(complimentImageTwo)).addOnCompleteListener{
             task -> Log.e("urlTwo", task.result.downloadUrl.toString()+"")
-            databaseReference.ref.child(firebaseUser!!.uid).child("userdb").child("uploadDbTest").child("imageTwo").setValue(task.result.downloadUrl).addOnCompleteListener{
 
-            }
         }
         //세번째 이미지
         imageThree.putFile(Uri.fromFile(complimentImageThree)).addOnCompleteListener{
             task -> Log.e("urlThree", task.result.downloadUrl.toString()+"")
-            databaseReference.ref.child(firebaseUser!!.uid).child("userdb").child("uploadDbTest").child("imageThree").setValue(task.result.downloadUrl).addOnCompleteListener{
-
-            }
         }
     }
 

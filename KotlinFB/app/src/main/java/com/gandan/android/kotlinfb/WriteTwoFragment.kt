@@ -15,7 +15,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.gandan.android.kotlinfb.R.id.inputWriteTwo
+import com.google.firebase.storage.FirebaseStorage
 import com.jakewharton.rxbinding2.widget.RxTextView
 import kotlinx.android.synthetic.main.fragment_write_two.*
 import kotlinx.android.synthetic.main.fragment_write_two.view.*
@@ -31,6 +34,8 @@ class WriteTwoFragment : Fragment() {
         val REQUEST_PHOTO_TWO = 177
     }
 
+    var storageReference = FirebaseStorage.getInstance().getReference("imageTwo")
+
     lateinit var listener : GetWriteDataListener
 
     override fun onAttach(context: Context?) {
@@ -38,6 +43,7 @@ class WriteTwoFragment : Fragment() {
         if(context is GetWriteDataListener){
             listener = context
         }
+
 
     }
 
@@ -55,6 +61,7 @@ class WriteTwoFragment : Fragment() {
                 Toast.makeText(context, "120자 이내로 작성해주세요.", Toast.LENGTH_SHORT).show()
             }
         }
+        Glide.with(context!!).load(storageReference).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)).into(imgTwo)
 
     }
 
