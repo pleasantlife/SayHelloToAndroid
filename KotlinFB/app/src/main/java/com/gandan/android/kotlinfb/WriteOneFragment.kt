@@ -81,7 +81,7 @@ class WriteOneFragment : Fragment() {
                 Toast.makeText(context, "120자 이내로 작성해주세요.", Toast.LENGTH_SHORT).show()
             }
         }
-        Glide.with(context!!).load(storageReference).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)).apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher)).apply(RequestOptions.centerCropTransform()).into(imgOne)
+        Glide.with(context!!).load(storageReference).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)).apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher).apply(RequestOptions.circleCropTransform())).into(imgOne)
 
     }
 

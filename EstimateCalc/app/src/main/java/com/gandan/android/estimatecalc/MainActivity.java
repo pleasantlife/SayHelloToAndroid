@@ -20,6 +20,9 @@ import java.util.stream.Stream;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Function4;
+import io.reactivex.functions.Function5;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,7 +30,8 @@ public class MainActivity extends AppCompatActivity {
     RadioGroup vatGroup;
     RadioButton btnVatInclude, btnVatExclude;
     int one, two, three, four, five;
-    double total = 0;
+    int total = 0;
+    Integer charo = 0;
     TextView txtSumPrice;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,23 +58,61 @@ public class MainActivity extends AppCompatActivity {
 
         Observable<Observable<CharSequence>> sequence = Observable.just(priceOneObservable, priceTwoObservable, priceThreeObservable, priceFourObservable, priceFiveObservable);
 
-        sequence.subscribe( observable -> {
-            one -> Log.e("priceOne", one+"")
-        });
 
-        Observable<CharSequence> maps = Observable.concat(priceOneObservable, priceTwoObservable, priceThreeObservable, priceFourObservable);
-        maps.subscribe(
-                one -> Log.e("nextOne", one+"")
+
+
+        sequence.subscribe(
+                one -> Log.e("sequenceOne", one+"")
         );
 
-        priceOneObservable.subscribe( oneString -> {
+
+
+        Observable.combineLatest(priceOneObservable, priceTwoObservable, priceThreeObservable, priceFourObservable, priceFiveObservable, new Function5<CharSequence, CharSequence, CharSequence, CharSequence, CharSequence, Integer>() {
+            @Override
+            public Integer apply(CharSequence charSequence, CharSequence charSequence2, CharSequence charSequence3, CharSequence charSequence4, CharSequence charSequence5) throws Exception {
+                if(charSequence.length() != 0){
+                  one = Integer.parseInt(charSequence.toString());
+                } else {
+                    one = 0;
+                }
+
+                if(charSequence2.length() != 0){
+                    two = Integer.parseInt(charSequence2.toString());
+                } else {
+                    two = 0;
+                }
+
+                if(charSequence3.length() != 0){
+                    three = Integer.parseInt(charSequence3.toString());
+                } else {
+                    three = 0;
+                }
+
+                if(charSequence4.length() != 0){
+                    four = Integer.parseInt(charSequence4.toString());
+                } else {
+                    four = 0;
+                }
+
+                if(charSequence5.length() != 0){
+                    five = Integer.parseInt(charSequence5.toString());
+                } else {
+                    five = 0;
+                }
+                total = one+two+three+four+five;
+                txtSumPrice.setText(total+" 원");
+                return total;
+            }
+        }).subscribe();
+
+        /*priceOneObservable.subscribe( oneString -> {
             if (oneString.length() > 0) {
                 one = Integer.parseInt(oneString.toString());
             } else {
                 one = 0;
             }
             grandTotal();
-        });
+        });*/
 
         /*RxTextView.textChanges(inputPriceOne).subscribe(new Observer<CharSequence>() {
             @Override
@@ -101,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
-        priceTwoObservable.subscribe( twoString -> {
+       /* priceTwoObservable.subscribe( twoString -> {
             if (twoString.length() > 0) {
                 two = Integer.parseInt(twoString.toString());
             } else {
@@ -128,14 +170,14 @@ public class MainActivity extends AppCompatActivity {
             grandTotal();
         });
 
-        priceFiveObservable.subscribe( fiveString -> {
+        Disposable fiveObservable = priceFiveObservable.subscribe( fiveString -> {
             if (fiveString.length() > 0) {
                 five = Integer.parseInt(fiveString.toString());
             } else {
                 five = 0;
             }
             grandTotal();
-        });
+        });*/
 
     }
 
@@ -146,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if(checkedId == R.id.btnVatInclude){
-                    total = total * 1.1;
+                    //total = total * 1.1;
                     Log.e("checked", checkedId+"");
                     txtSumPrice.setText((int) total + "원");
                 }

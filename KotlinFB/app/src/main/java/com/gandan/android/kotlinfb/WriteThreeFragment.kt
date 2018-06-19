@@ -59,7 +59,7 @@ class WriteThreeFragment : Fragment() {
         RxTextView.textChanges(inputWriteThree).subscribe {
             listener.contentThree(it.toString())
         }
-        Glide.with(context!!).load(storageReference).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)).apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher).apply(RequestOptions.centerCropTransform())).into(imgThree)
+        Glide.with(context!!).load(storageReference).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher).apply(RequestOptions.circleCropTransform()))).into(imgThree)
 
     }
 

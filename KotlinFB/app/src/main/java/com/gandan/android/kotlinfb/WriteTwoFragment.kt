@@ -61,7 +61,8 @@ class WriteTwoFragment : Fragment() {
                 Toast.makeText(context, "120자 이내로 작성해주세요.", Toast.LENGTH_SHORT).show()
             }
         }
-        Glide.with(context!!).load(storageReference).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)).into(imgTwo)
+        Glide.with(context!!).load(storageReference).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)).apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher_round).apply(RequestOptions.circleCropTransform()))
+                .into(imgTwo)
 
     }
 
