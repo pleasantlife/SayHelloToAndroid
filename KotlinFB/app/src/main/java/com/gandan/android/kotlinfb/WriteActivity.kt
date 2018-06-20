@@ -11,7 +11,10 @@ import android.widget.Toast
 import com.gandan.android.kotlinfb.R.id.viewPagerWrite
 import com.gandan.android.kotlinfb.adapter.FragmentWriteAdapter
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_write.*
@@ -29,6 +32,7 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
     var imageOne = firebaseStorage.getReference("imageOne")
     var imageTwo = firebaseStorage.getReference("imageTwo")
     var imageThree = firebaseStorage.getReference("imageThree")
+    var written = ArrayList<UploadWritten>()
 
     lateinit var complimentOne : String
     lateinit var complimentTwo : String
@@ -47,6 +51,7 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
         //사진을 가져와야 하기 때문에 메모리 읽기/쓰기 권한이 필요하다.
         permissionCheck()
         btnDoWrite.setOnClickListener{ nullCheck() }
+        loadCompliments()
     }
 
     private fun permissionCheck(){
@@ -56,7 +61,7 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
                 requestPermissions(permission, WRITE_EX_STORAGE_OK)
             }
         } else {
-
+            Toast.makeText(this, "권한 획득에 실패하여 사진을 등록할 수 없습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -86,6 +91,25 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
         complimentImageThree = fileThree
     }
 
+    fun loadCompliments(){
+
+        databaseReference.ref.child("userdb").child(firebaseUser!!.uid).child("compliments").addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {
+                //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+                //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Log.e("dataSnapshot", p0!!.childrenCount.toString()+"")
+                p0!!.children.forEach {
+                    next -> Log.e("next", next.value.toString()+"")
+                }
+            }
+
+        })
+    }
+
+
     fun nullCheck(){
         when {
             complimentOne == "" -> makeToast(0, "내용")
@@ -104,8 +128,13 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
         viewPagerWrite.currentItem = currentItem
     }
 
+
+
     fun uploadTexts(){
-        databaseReference.ref.child(firebaseUser!!.uid).child("userdb").child("uploadDbTest").setValue(UploadWritten(complimentOne, complimentTwo, complimentThree)).addOnCompleteListener{
+
+        var newUpload = UploadWritten(complimentOne, complimentTwo, complimentThree)
+        written.add(newUpload)
+        databaseReference.ref.child("userdb").child(firebaseUser!!.uid).child("compliments").setValue(written).addOnCompleteListener{
             if(it.isSuccessful) {
                 Toast.makeText(this, "업로드 완료!", Toast.LENGTH_SHORT).show()
                 uploadImages()
@@ -133,6 +162,7 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
             task -> Log.e("urlThree", task.result.downloadUrl.toString()+"")
         }
     }
+
 
 
 

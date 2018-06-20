@@ -55,16 +55,11 @@ public class MainActivity extends AppCompatActivity {
         Observable<CharSequence> priceFourObservable = RxTextView.textChanges(inputPriceFour);
         Observable<CharSequence> priceFiveObservable = RxTextView.textChanges(inputPriceFive);
 
-
         Observable<Observable<CharSequence>> sequence = Observable.just(priceOneObservable, priceTwoObservable, priceThreeObservable, priceFourObservable, priceFiveObservable);
-
-
-
 
         sequence.subscribe(
                 one -> Log.e("sequenceOne", one+"")
         );
-
 
 
         Observable.combineLatest(priceOneObservable, priceTwoObservable, priceThreeObservable, priceFourObservable, priceFiveObservable, new Function5<CharSequence, CharSequence, CharSequence, CharSequence, CharSequence, Integer>() {

@@ -31,7 +31,8 @@ import java.io.File
 class WriteThreeFragment : Fragment() {
 
     companion object {
-        val REQUEST_PHOTO_THREE = 188
+        //상수로 만들려면 const!
+        const val REQUEST_PHOTO_THREE = 188
     }
 
     var firebaseStorage = FirebaseStorage.getInstance()
