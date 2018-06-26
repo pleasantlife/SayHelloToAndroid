@@ -51,7 +51,6 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
         //사진을 가져와야 하기 때문에 메모리 읽기/쓰기 권한이 필요하다.
         permissionCheck()
         btnDoWrite.setOnClickListener{ nullCheck() }
-        loadCompliments()
     }
 
     private fun permissionCheck(){
@@ -91,23 +90,6 @@ class WriteActivity : AppCompatActivity(), GetWriteDataListener {
         complimentImageThree = fileThree
     }
 
-    fun loadCompliments(){
-
-        databaseReference.ref.child("userdb").child(firebaseUser!!.uid).child("compliments").addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError?) {
-                //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onDataChange(p0: DataSnapshot?) {
-                //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                Log.e("dataSnapshot", p0!!.childrenCount.toString()+"")
-                p0!!.children.forEach {
-                    next -> Log.e("next", next.value.toString()+"")
-                }
-            }
-
-        })
-    }
 
 
     fun nullCheck(){

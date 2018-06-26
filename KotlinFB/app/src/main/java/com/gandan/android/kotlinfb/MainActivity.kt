@@ -54,7 +54,29 @@ class MainActivity : AppCompatActivity() {
         btnGoWrite.setOnClickListener { startActivity(Intent(this@MainActivity, WriteActivity::class.java)) }
         databaseReference.ref.child("userdb").child(firebaseAuth.currentUser?.uid).addValueEventListener(initValueListener())
         setData()
+        loadCompliments()
     }
+
+
+    fun loadCompliments(){
+
+        databaseReference.ref.child("userInfodb").child(firebaseAuth!!.uid).child("compliments").addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {
+                //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Log.e("error loading", p0!!.message.toString()+"")
+            }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+                //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Log.e("dataSnapshot", p0!!.childrenCount.toString()+"")
+                p0!!.children.forEach {
+                    next -> Log.e("next", next.value.toString()+"")
+                }
+            }
+
+        })
+    }
+
 
     //Firebase Realtime Database에서 로그인 한 유저의 정보 가져오기.
     private fun initValueListener() : ValueEventListener{
@@ -66,7 +88,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                 //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                Log.e("DataSnapshot", dataSnapshot.toString()+"")
+                Log.e("DataSnapshot Userdb", dataSnapshot.toString()+"")
                 var userDb = dataSnapshot?.getValue(UserDb::class.java)
                 Log.e("email", userDb?.email+"")
                 Log.e("uid", userDb?.uid+"")
