@@ -71,7 +71,7 @@ class LoginActivity : AppCompatActivity()  {
             password = inputPW.text.toString()
         }
         if(email != "" && password != ""){
-            firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, {
+            firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this) {
                 task ->
                 if(task.isSuccessful){
                     Toast.makeText(this, "로그인 성공!", Toast.LENGTH_SHORT).show()
@@ -81,7 +81,7 @@ class LoginActivity : AppCompatActivity()  {
                 } else {
                     Toast.makeText(this, "로그인 실패!", Toast.LENGTH_SHORT).show()
                 }
-            })
+            }
         } else {
             if(email != "") {
                 Toast.makeText(this, "이메일을 입력해주세요.", Toast.LENGTH_SHORT).show()
@@ -97,8 +97,7 @@ class LoginActivity : AppCompatActivity()  {
         password = inputPW.text.toString()
         if(email != "" && password != "") {
             //onCompleteListener에서 자바처럼 new로 Listener가 생성되지 않기 때문에, p0에 this를 넣고, Lambda로 처리한다.
-            firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, {
-                task ->
+            firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
                 if(task.isSuccessful){
                     Toast.makeText(this, "성공!", Toast.LENGTH_SHORT).show()
                     doLogin(27)
@@ -106,7 +105,7 @@ class LoginActivity : AppCompatActivity()  {
                     Log.e("error", task.result.toString()+"")
                     Toast.makeText(this, "실패!", Toast.LENGTH_SHORT).show()
                 }
-            })
+            }
         } else {
             Toast.makeText(this, "빠짐없이 입력해주세요!", Toast.LENGTH_SHORT).show()
         }

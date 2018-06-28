@@ -36,7 +36,9 @@ class MainRecyclerAdapter(var context : Context, var requestManager: RequestMana
         holder.itemView.txtTitleItem.text = "타이틀"
         holder.itemView.txtContentsItem.text = stringText
         requestManager.load("https://cdn.pixabay.com/photo/2018/05/12/16/45/paper-3393903__480.jpg").apply(RequestOptions.centerCropTransform()).into(holder.itemView.imgBackItem)
-        holder.itemView.cardViewItem.setOnClickListener { Toast.makeText(context, stringText, Toast.LENGTH_SHORT).show() }
+        with(holder.itemView.cardViewItem){
+            setOnClickListener { Toast.makeText(context, stringText, Toast.LENGTH_SHORT).show() }
+        }
     }
 
     override fun getItemCount(): Int = lists.size /* {
