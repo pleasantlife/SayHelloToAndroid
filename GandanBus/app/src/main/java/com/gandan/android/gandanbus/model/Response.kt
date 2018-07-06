@@ -1,7 +1,7 @@
 package com.gandan.android.gandanbus.model
 
-import com.tickaroo.tikxml.annotation.Xml
+import org.simpleframework.xml.Root
 
-@Xml(name = "response")
-data class Response(var msgHeader : MsgHeader, var msgBody : MsgBody, var comMsgHeader : String) {
+@Root(name = "response")
+class Response(var comMsgHeader: ComMsgHeader, var msgBody: MsgBody, var msgHeader: MsgHeader) {
 }
