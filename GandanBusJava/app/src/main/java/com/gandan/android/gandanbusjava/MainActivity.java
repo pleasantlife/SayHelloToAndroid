@@ -1,6 +1,5 @@
 package com.gandan.android.gandanbusjava;
 
-import android.media.DrmInitData;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,16 +9,14 @@ import android.util.Log;
 import com.gandan.android.gandanbusjava.adapter.LiveBusRecyclerAdapter;
 import com.gandan.android.gandanbusjava.model.BusLocationList;
 import com.gandan.android.gandanbusjava.model.Response;
-import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -40,7 +37,20 @@ public class MainActivity extends AppCompatActivity {
 
 
     public static final String SERVER_URL = "http://openapi.gbis.go.kr/ws/rest/";
-    public static final String SERVICE_KEY = "0WsFS6QJRLa99LZJSCNP1RrAMA5qREUR32%2FTE8xm74m3UbOcabnwh4vYiukMJ9Sd%2FQ6oE69E%2B66sWm%2BTpXRVEg%3D%3D";
+
+    public static final String SERVICE_KEY = "UMBgxAiRBI8%2F%2FYis4%2Fw6izsWAaF6EEsw%2FrsvWDXwMLt9G9jVvqHx2MlWfWcvNMm0pkKVqjN1axvN0Ecv5qPSbQ%3D%3D";
+
+
+    String decodedUrl;
+
+    {
+        try {
+            //서비스키에 있는 특수문자가 변형되지 않도록 디코딩을 꼭 해줘야 한다!!
+            decodedUrl = URLDecoder.decode(SERVICE_KEY, "EUC_KR");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     private HttpLoggingInterceptor interceptor(){
@@ -66,10 +76,9 @@ public class MainActivity extends AppCompatActivity {
 
         Service service = retrofit.create(Service.class);
 
-        RequestBody serviceKeyBody = RequestBody.create(MediaType.parse("text/plain"), SERVICE_KEY);
 
         //routeID는 수원여객/용남고속 98번 버스.
-        Observable<Response> getLive = service.getLiveBus(SERVICE_KEY, 200000085);
+        Observable<Response> getLive = service.getLiveBus(decodedUrl, 200000085);
         getLive.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Response>() {
             @Override
             public void onSubscribe(Disposable d) {
