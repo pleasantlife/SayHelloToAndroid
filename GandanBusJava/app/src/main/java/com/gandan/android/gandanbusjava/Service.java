@@ -10,5 +10,5 @@ import retrofit2.http.Query;
 public interface Service {
 
     @GET("buslocationservice")
-    Observable<Response> getLiveBus(@Query("serviceKey") RequestBody serviceKey, @Query("routeId") long routeId);
+    Observable<Response> getLiveBus(@Query(value="nickname", encoded = false) String serviceKey, @Query("routeId") long routeId);
 }
