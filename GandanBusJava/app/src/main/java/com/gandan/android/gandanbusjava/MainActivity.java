@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String SERVER_URL = "http://openapi.gbis.go.kr/ws/rest/";
 
-    public static final String SERVICE_KEY = "UMBgxAiRBI8%2F%2FYis4%2Fw6izsWAaF6EEsw%2FrsvWDXwMLt9G9jVvqHx2MlWfWcvNMm0pkKVqjN1axvN0Ecv5qPSbQ%3D%3D";
+    public static final String SERVICE_KEY = "iha9k%2Fpy8ZJHW06uAZYGNl96lgRO5XmyepEMK%2FC42uyJmcuZNLKk7xwxrvjc3Q9FVBCcwY0IA7A4MThDVoc7jw%3D%3D";
 
 
     String decodedUrl;
