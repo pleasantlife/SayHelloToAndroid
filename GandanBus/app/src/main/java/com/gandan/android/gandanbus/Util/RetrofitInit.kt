@@ -7,7 +7,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 
 const val SERVER_URL = "http://openapi.gbis.go.kr/ws/rest/"
-const val SERVICE_KEY = "0WsFS6QJRLa99LZJSCNP1RrAMA5qREUR32%2FTE8xm74m3UbOcabnwh4vYiukMJ9Sd%2FQ6oE69E%2B66sWm%2BTpXRVEg%3D%3D"
+const val SERVICE_KEY = "iha9k%2Fpy8ZJHW06uAZYGNl96lgRO5XmyepEMK%2FC42uyJmcuZNLKk7xwxrvjc3Q9FVBCcwY0IA7A4MThDVoc7jw%3D%3D"
 
 class RetrofitInit {
 

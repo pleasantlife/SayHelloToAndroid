@@ -5,5 +5,21 @@ import com.tickaroo.tikxml.annotation.Xml
 import org.simpleframework.xml.Element
 
 
-data class BusLocationList(var endBus : Int, var plateType : Int, var remainSeatCnt : Int, var stationSeq : Int, @PropertyElement var stationId : Long, @PropertyElement var routeId : Long, @PropertyElement var lowPlate : Int, @PropertyElement var plateNo : String) {
+class BusLocationList {
+
+    @field:Element(name = "endBus") var endBus : Int? = 0
+
+    @field:Element(name = "plateType") var plateType : Int? = 0
+
+    @field:Element(name = "remainSeatCnt") var remainSeatCnd : Int? = 0
+
+    @field:Element(name = "stationSeq") var stationSeq : Int? = 0
+
+    @field:Element(name = "stationId") var stationId : Long? = 0
+
+    @field:Element(name = "routeId") var routeId : Long? = 0
+
+    @field:Element(name = "lowPlate") var lowPlate : Int? = 0
+
+    @field:Element(name = "plateNo") var plateNo : String? = null
 }

@@ -1,4 +1,8 @@
 package com.gandan.android.gandanbus.model
 
-data class MsgBody(var busLocationList : Array<BusLocationList>) {
+import org.simpleframework.xml.Element
+
+class MsgBody {
+
+    @field:Element(name = "busLocationList") var busLocationList = null
 }

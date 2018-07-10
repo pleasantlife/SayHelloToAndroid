@@ -2,5 +2,11 @@ package com.gandan.android.gandanbus.model
 
 import org.simpleframework.xml.Element
 
-data class ComMsgHeader(@Element var returnCode : String, @Element var errMsg : String) {
+
+class ComMsgHeader {
+
+    @field:Element(name = "returnCode") var returnCode : String? = null
+
+    @field:Element(name = "errMsg") var errMsg : String? = null
+
 }
