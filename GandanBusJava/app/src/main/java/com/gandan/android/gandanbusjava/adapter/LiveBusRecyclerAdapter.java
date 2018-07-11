@@ -34,11 +34,17 @@ public class LiveBusRecyclerAdapter extends RecyclerView.Adapter<LiveBusRecycler
     public void onBindViewHolder(@NonNull Holder holder, int position) {
         BusLocationList locationList = liveBusList.get(position);
         holder.busPlateNo.setText(locationList.getPlateNo());
-        if(locationList.getLowPlate() == "1"){
+        if(locationList.getEndBus().equals("1")){
+            holder.busEndBus.setVisibility(View.VISIBLE);
+        } else {
+            holder.busEndBus.setVisibility(View.GONE);
+        }
+        if(locationList.getLowPlate().equals("1")){
             holder.busLow.setVisibility(View.VISIBLE);
         } else {
             holder.busLow.setVisibility(View.GONE);
         }
+        holder.busStationSeq.setText(locationList.getStationSeq()+"번째 정류장");
     }
 
     @Override
@@ -48,13 +54,15 @@ public class LiveBusRecyclerAdapter extends RecyclerView.Adapter<LiveBusRecycler
 
     class Holder extends RecyclerView.ViewHolder {
 
-        TextView busPlateNo, busLow;
+        TextView busPlateNo, busLow, busEndBus, busStationSeq;
 
         public Holder(View itemView) {
             super(itemView);
 
             busPlateNo = itemView.findViewById(R.id.busPlateNo);
             busLow = itemView.findViewById(R.id.busLow);
+            busEndBus = itemView.findViewById(R.id.busEndBus);
+            busStationSeq = itemView.findViewById(R.id.busStationSeq);
         }
     }
 }
