@@ -43,7 +43,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
 
     RecyclerView recyclerLiveBus;
@@ -104,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerLiveBus = findViewById(R.id.recyclerLiveBus);
         recyclerLiveBus.setLayoutManager(new LinearLayoutManager(this));
         liveBusRecyclerAdapter = new LiveBusRecyclerAdapter(this, liveBusList);
+        busNumberSearchAdapter = new BusNumberSearchAdapter(this, routeSearchList);
+        recyclerLiveBus.setAdapter(busNumberSearchAdapter);
         //recyclerLiveBus.setAdapter(liveBusRecyclerAdapter);
 
         OkHttpClient client = new OkHttpClient.Builder().addNetworkInterceptor(interceptor()).build();
@@ -127,14 +129,14 @@ public class MainActivity extends AppCompatActivity {
 
                     for(String string : routes.split("\\^")){
                         BusRoute route = new BusRoute();
-                        if(string.split(("\\|"))[0].isEmpty()) {
-                            route.setRouteId(Long.parseLong(string.split("\\|")[0]));
+                        if(!string.split(("\\|"))[0].isEmpty()) {
+                            route.setRouteId(string.split("\\|")[0]);
                         }
-                        if(string.split("\\|")[1].isEmpty()) {
+                        if(!string.split("\\|")[1].isEmpty()) {
                             route.setRouteNumber(string.split("\\|")[1]);
                         }
-                        if(string.split("\\|")[2].isEmpty()){
-                            route.setRouteTp(Integer.parseInt(string.split("\\|")[2]));
+                        if(!string.split("\\|")[2].isEmpty()){
+                            route.setRouteTp(string.split("\\|")[2]);
                         }
                         //Log.e("split", string.split("\\|")[0]);
                         //Log.e("splitTwo", string.split("\\|")[1]);
@@ -144,8 +146,8 @@ public class MainActivity extends AppCompatActivity {
                         //Log.e("splitSix", string.split("\\|")[5]);
                         routeList.add(route);
                     }
-                    busNumberSearchAdapter = new BusNumberSearchAdapter(MainActivity.this, routeSearchList);
-                    recyclerLiveBus.setAdapter(busNumberSearchAdapter);
+
+
                     Log.e("route", routeList.size()+"");
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -164,23 +166,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        btnDoRouteSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                for(BusRoute route : routeList){
-                    if(route.getRouteNumber().contains(inputBusRouteNumber.getText())){
-                        routeSearchList.add(route);
-                    }
-
-                }
-                if(routeList.size() > 0){
-                    busNumberSearchAdapter.notifyDataSetChanged();
-                } else {
-                    Toast.makeText(MainActivity.this, "검색결과 없음", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        btnDoRouteSearch.setOnClickListener(this);
 
 
 
@@ -218,5 +204,23 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete() {
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        switch(view.getId()){
+            case R.id.btnDoRouteSearch:
+                routeSearchList.clear();
+                Log.e("routeSize", routeList.size()+"");
+                for(BusRoute route : routeList){
+                    if(route.getRouteNumber().contains(inputBusRouteNumber.getText().toString())){
+                        routeSearchList.add(route);
+                    }
+                }
+                busNumberSearchAdapter.notifyDataSetChanged();
+                break;
+
+        }
     }
 }

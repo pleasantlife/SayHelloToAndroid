@@ -2,10 +2,10 @@ package com.gandan.android.gandanbusjava.model;
 
 public class BusRoute {
 
-    private long routeId;
+    private String routeId;
     private String routeNumber;
-    private int routeTp;
-    private long startStationId;
+    private String routeTp;
+    private String startStationId;
     private String routeStartStationName;
     private int routeStartStationNumber;
     private long endStationId;
@@ -22,11 +22,11 @@ public class BusRoute {
     private String regionName;
     private int districtCd;
 
-    public long getRouteId() {
+    public String getRouteId() {
         return routeId;
     }
 
-    public void setRouteId(long routeId) {
+    public void setRouteId(String routeId) {
         this.routeId = routeId;
     }
 
@@ -38,19 +38,19 @@ public class BusRoute {
         this.routeNumber = routeNumber;
     }
 
-    public int getRouteTp() {
+    public String getRouteTp() {
         return routeTp;
     }
 
-    public void setRouteTp(int routeTp) {
+    public void setRouteTp(String routeTp) {
         this.routeTp = routeTp;
     }
 
-    public long getStartStationId() {
+    public String getStartStationId() {
         return startStationId;
     }
 
-    public void setStartStationId(long startStationId) {
+    public void setStartStationId(String startStationId) {
         this.startStationId = startStationId;
     }
 
