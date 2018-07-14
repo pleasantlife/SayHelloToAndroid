@@ -25,9 +25,8 @@ class MainActivity : AppCompatActivity() {
 
         var locationList : Observable<Response> = retrofitInit.service.getLiveBus(key, 200000085)
         locationList.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe {
-            next -> Log.e("List", next.msgBody?.busLocationList+"")
+            //next -> Log.e("List", next.msgBody?.busLocationList?.get(0)?.plateNo+"")
         }
     }
-
 
 }

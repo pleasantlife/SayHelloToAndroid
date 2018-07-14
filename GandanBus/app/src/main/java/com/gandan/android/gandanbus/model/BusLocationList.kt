@@ -3,10 +3,12 @@ package com.gandan.android.gandanbus.model
 import com.tickaroo.tikxml.annotation.PropertyElement
 import com.tickaroo.tikxml.annotation.Xml
 import org.simpleframework.xml.Element
+import org.simpleframework.xml.Path
+import org.simpleframework.xml.Root
 
-
+@Root
 class BusLocationList {
-
+    @Path("busLocationList")
     @field:Element(name = "endBus") var endBus : Int? = 0
 
     @field:Element(name = "plateType") var plateType : Int? = 0
