@@ -9,8 +9,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.gandan.android.gandanbusjava.adapter.BusNumberSearchAdapter;
 import com.gandan.android.gandanbusjava.adapter.LiveBusRecyclerAdapter;
 import com.gandan.android.gandanbusjava.model.BusLocationList;
@@ -53,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     List<BusLocationList> liveBusList = new ArrayList<>();
 
     EditText inputBusRouteNumber;
-    Button btnDoRouteSearch;
+    ImageView btnDoRouteSearch;
 
 
     public static final String SERVER_URL = "http://openapi.gbis.go.kr/ws/rest/";
@@ -100,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         inputBusRouteNumber = findViewById(R.id.inputBusRouteNumber);
-        btnDoRouteSearch = findViewById(R.id.btnDoRouteSearch);
+
         recyclerLiveBus = findViewById(R.id.recyclerLiveBus);
         recyclerLiveBus.setLayoutManager(new LinearLayoutManager(this));
         liveBusRecyclerAdapter = new LiveBusRecyclerAdapter(this, liveBusList);
@@ -113,6 +117,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Retrofit retrofit = new Retrofit.Builder().baseUrl(SERVER_URL).client(client).addCallAdapterFactory(RxJava2CallAdapterFactory.create()).addConverterFactory(SimpleXmlConverterFactory.create()).build();
 
         service = retrofit.create(Service.class);
+
+
+        btnDoRouteSearch = findViewById(R.id.btnDoRouteSearch);
+
+        Glide.with(this).load("https://cdn.pixabay.com/photo/2018/07/08/14/16/cat-3523992_1280.jpg")
+                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).skipMemoryCache(true)).into(btnDoRouteSearch);
+
 
 
         Observable<ResponseBody> getRouteList = service.getRoutes(ROUTE_TXT);
