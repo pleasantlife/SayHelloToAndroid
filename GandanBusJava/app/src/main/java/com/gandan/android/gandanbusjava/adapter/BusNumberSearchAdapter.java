@@ -3,12 +3,14 @@ package com.gandan.android.gandanbusjava.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.gandan.android.gandanbusjava.R;
+import com.gandan.android.gandanbusjava.RouteIdListener;
 import com.gandan.android.gandanbusjava.model.BusRoute;
 
 import java.util.List;
@@ -34,6 +36,17 @@ public class BusNumberSearchAdapter extends RecyclerView.Adapter<BusNumberSearch
     public void onBindViewHolder(@NonNull Holder holder, int position) {
         BusRoute route = busRouteList.get(position);
         holder.textBusRouteNumber.setText(route.getRouteNumber());
+        String type = null;
+        Log.e("district", route.getRegionName()+"");
+        holder.textBusType.setText(route.getRegionName()+"시 버스");
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((RouteIdListener) context).getRouteId(Long.parseLong(route.getRouteId()));
+            }
+        });
+
+
     }
 
     @Override
@@ -43,12 +56,13 @@ public class BusNumberSearchAdapter extends RecyclerView.Adapter<BusNumberSearch
 
     class Holder extends RecyclerView.ViewHolder {
 
-        TextView textBusRouteNumber;
+        TextView textBusRouteNumber, textBusType;
 
         public Holder(View itemView) {
             super(itemView);
 
             textBusRouteNumber = itemView.findViewById(R.id.textBusRouteNumber);
+            textBusType = itemView.findViewById(R.id.textBusType);
         }
     }
 }

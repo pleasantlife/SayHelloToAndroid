@@ -47,7 +47,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, RouteIdListener {
 
 
     RecyclerView recyclerLiveBus;
@@ -149,12 +149,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if(!string.split("\\|")[2].isEmpty()){
                             route.setRouteTp(string.split("\\|")[2]);
                         }
-                        //Log.e("split", string.split("\\|")[0]);
-                        //Log.e("splitTwo", string.split("\\|")[1]);
-                        //Log.e("splitThree", string.split("\\|")[2]);
-                        //Log.e("splitFour", string.split("\\|")[3]);
-                        //Log.e("splitFive", string.split("\\|")[4]);
-                        //Log.e("splitSix", string.split("\\|")[5]);
+                        if(!string.split("\\|")[3].isEmpty()){
+                            route.setStartStationId(string.split("\\|")[3]);
+                        }
+                        if(!string.split("\\|")[4].isEmpty()){
+                            route.setRouteEndStationName(string.split("\\|")[4]);
+                        }
+                        if(!string.split("\\|")[5].isEmpty()){
+                            route.setRouteEndStationNumber(string.split("\\|")[5]);
+                        }
+                        if(!string.split("\\|")[6].isEmpty()){
+                            route.setEndStationId(string.split("\\|")[6]);
+                        }
+                        if(!string.split("\\|")[7].isEmpty()){
+                            route.setRouteEndStationName(string.split("\\|")[7]);
+                        }
+                        if(!string.split("\\|")[8].isEmpty()){
+                            route.setRouteEndStationNumber(string.split("\\|")[8]);
+                        }
+                        if(!string.split("\\|")[9].isEmpty()){
+                            route.setUpFirstTime(string.split("\\|")[9]);
+                        }
+                        if(!string.split("\\|")[10].isEmpty()){
+                            route.setUpLastTime(string.split("\\|")[10]);
+                        }
+                        if(!string.split("\\|")[11].isEmpty()){
+                            route.setDownFirstTime(string.split("\\|")[11]);
+                        }
+                        if(!string.split("\\|")[12].isEmpty()){
+                            route.setDownLastTime(string.split("\\|")[12]);
+                        }
+                        if(!string.split("\\|")[13].isEmpty()){
+                            route.setPeakAllocation(string.split("\\|")[13]);
+                        }
+                        if(!string.split("\\|")[14].isEmpty()){
+                            route.setnPeakAllocation(string.split("\\|")[14]);
+                        }
+                        if(!string.split("\\|")[15].isEmpty()){
+                            route.setCompanyId(string.split("\\|")[15]);
+                        }
+                        if(!string.split("\\|")[16].isEmpty()){
+                            route.setCompanyName(string.split("\\|")[16]);
+                        }
+                        if(!string.split("\\|")[17].isEmpty()){
+                            route.setTellNumber(string.split("\\|")[17]);
+                        }
+                        if(!string.split("\\|")[18].isEmpty()){
+                            route.setRegionName(string.split("\\|")[18]);
+                        }
+                        if(!string.split("\\|")[19].isEmpty()){
+                            route.setDistrictCd(string.split("\\|")[19]);
+                        }
+
                         routeList.add(route);
                     }
 
@@ -183,8 +229,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void searchResult(){
-        Observable<Response> getLive = service.getLiveBus(decodedUrl, 200000085);
+    private void searchResult(long routeId){
+        Observable<Response> getLive = service.getLiveBus(decodedUrl, routeId);
         getLive.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Response>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -199,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.e("busList", response.getMsgBody().getBusLocationList().get(0).getPlateNo());
                 for(BusLocationList locationList : response.getMsgBody().getBusLocationList()){
                     liveBusList.add(locationList);
-                    recyclerLiveBus.swapAdapter(liveBusRecyclerAdapter, true);
+
 
                 }
                 liveBusRecyclerAdapter.notifyDataSetChanged();
@@ -233,5 +279,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
         }
+    }
+
+    @Override
+    public void getRouteId(long routeId) {
+        recyclerLiveBus.setAdapter(liveBusRecyclerAdapter);
+        searchResult(routeId);
     }
 }

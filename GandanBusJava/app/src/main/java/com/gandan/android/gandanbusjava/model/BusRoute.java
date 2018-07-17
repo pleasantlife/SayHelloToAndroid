@@ -7,20 +7,21 @@ public class BusRoute {
     private String routeTp;
     private String startStationId;
     private String routeStartStationName;
-    private int routeStartStationNumber;
-    private long endStationId;
+    private String routeStartStationNumber;
+    private String endStationId;
     private String routeEndStationName;
-    private int routeEndStationNumber;
+    private String routeEndStationNumber;
     private String upFirstTime;
     private String upLastTime;
     private String downFirstTime;
     private String downLastTime;
-    private int peeakAllocation;
-    private long companyId;
+    private String peakAllocation;
+    private String nPeakAllocation;
+    private String companyId;
     private String companyName;
     private String tellNumber;
     private String regionName;
-    private int districtCd;
+    private String districtCd;
 
     public String getRouteId() {
         return routeId;
@@ -62,19 +63,19 @@ public class BusRoute {
         this.routeStartStationName = routeStartStationName;
     }
 
-    public int getRouteStartStationNumber() {
+    public String getRouteStartStationNumber() {
         return routeStartStationNumber;
     }
 
-    public void setRouteStartStationNumber(int routeStartStationNumber) {
+    public void setRouteStartStationNumber(String routeStartStationNumber) {
         this.routeStartStationNumber = routeStartStationNumber;
     }
 
-    public long getEndStationId() {
+    public String getEndStationId() {
         return endStationId;
     }
 
-    public void setEndStationId(long endStationId) {
+    public void setEndStationId(String endStationId) {
         this.endStationId = endStationId;
     }
 
@@ -86,11 +87,11 @@ public class BusRoute {
         this.routeEndStationName = routeEndStationName;
     }
 
-    public int getRouteEndStationNumber() {
+    public String getRouteEndStationNumber() {
         return routeEndStationNumber;
     }
 
-    public void setRouteEndStationNumber(int routeEndStationNumber) {
+    public void setRouteEndStationNumber(String routeEndStationNumber) {
         this.routeEndStationNumber = routeEndStationNumber;
     }
 
@@ -126,19 +127,27 @@ public class BusRoute {
         this.downLastTime = downLastTime;
     }
 
-    public int getPeeakAllocation() {
-        return peeakAllocation;
+    public String getPeakAllocation() {
+        return peakAllocation;
     }
 
-    public void setPeeakAllocation(int peeakAllocation) {
-        this.peeakAllocation = peeakAllocation;
+    public void setPeakAllocation(String peakAllocation) {
+        this.peakAllocation = peakAllocation;
     }
 
-    public long getCompanyId() {
+    public String getnPeakAllocation() {
+        return nPeakAllocation;
+    }
+
+    public void setnPeakAllocation(String nPeakAllocation) {
+        this.nPeakAllocation = nPeakAllocation;
+    }
+
+    public String getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(long companyId) {
+    public void setCompanyId(String companyId) {
         this.companyId = companyId;
     }
 
@@ -166,11 +175,11 @@ public class BusRoute {
         this.regionName = regionName;
     }
 
-    public int getDistrictCd() {
+    public String getDistrictCd() {
         return districtCd;
     }
 
-    public void setDistrictCd(int districtCd) {
+    public void setDistrictCd(String districtCd) {
         this.districtCd = districtCd;
     }
 }
