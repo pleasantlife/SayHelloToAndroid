@@ -47,6 +47,9 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
+import static com.gandan.android.gandanbusjava.RetrofitInit.ROUTE_TXT;
+import static com.gandan.android.gandanbusjava.RetrofitInit.SERVICE_KEY;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, RouteIdListener {
 
 
@@ -59,18 +62,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     EditText inputBusRouteNumber;
     ImageView btnDoRouteSearch;
 
+    RetrofitInit retrofitInit;
 
-    public static final String SERVER_URL = "http://openapi.gbis.go.kr/ws/rest/";
 
-    public static final String SERVICE_KEY = "iha9k%2Fpy8ZJHW06uAZYGNl96lgRO5XmyepEMK%2FC42uyJmcuZNLKk7xwxrvjc3Q9FVBCcwY0IA7A4MThDVoc7jw%3D%3D";
 
-    public final String ROUTE_TXT = "http://openapi.gbis.go.kr/ws/download?route"+today()+".txt";
 
     String decodedUrl;
 
     StringBuffer sb = new StringBuffer();
 
-    Service service;
 
     List<BusRoute> routeList = new ArrayList<>();
     List<BusRoute> routeSearchList = new ArrayList<>();
@@ -84,24 +84,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private String today(){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
-        return simpleDateFormat.format(System.currentTimeMillis());
-    }
-
-
-
-    private HttpLoggingInterceptor interceptor(){
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        return loggingInterceptor;
-    }
-
     @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        retrofitInit = new RetrofitInit();
 
         inputBusRouteNumber = findViewById(R.id.inputBusRouteNumber);
 
@@ -112,13 +101,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recyclerLiveBus.setAdapter(busNumberSearchAdapter);
         //recyclerLiveBus.setAdapter(liveBusRecyclerAdapter);
 
-        OkHttpClient client = new OkHttpClient.Builder().addNetworkInterceptor(interceptor()).build();
-
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(SERVER_URL).client(client).addCallAdapterFactory(RxJava2CallAdapterFactory.create()).addConverterFactory(SimpleXmlConverterFactory.create()).build();
-
-        service = retrofit.create(Service.class);
-
-
         btnDoRouteSearch = findViewById(R.id.btnDoRouteSearch);
 
         Glide.with(this).load("https://cdn.pixabay.com/photo/2018/07/08/14/16/cat-3523992_1280.jpg")
@@ -126,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-        Observable<ResponseBody> getRouteList = service.getRoutes(ROUTE_TXT);
+        Observable<ResponseBody> getRouteList = retrofitInit.service.getRoutes(ROUTE_TXT);
         getRouteList.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ResponseBody>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -230,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void searchResult(long routeId){
-        Observable<Response> getLive = service.getLiveBus(decodedUrl, routeId);
+        Observable<Response> getLive = retrofitInit.service.getLiveBus(decodedUrl, routeId);
         getLive.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Response>() {
             @Override
             public void onSubscribe(Disposable d) {
