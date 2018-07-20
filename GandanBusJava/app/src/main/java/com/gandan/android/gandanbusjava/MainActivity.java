@@ -1,6 +1,7 @@
 package com.gandan.android.gandanbusjava;
 
 import android.annotation.SuppressLint;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     List<BusLocationList> liveBusList = new ArrayList<>();
 
-    EditText inputBusRouteNumber;
+    TextInputEditText inputBusRouteNumber;
     ImageView btnDoRouteSearch;
 
     RetrofitInit retrofitInit;
@@ -93,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         retrofitInit = new RetrofitInit();
 
         inputBusRouteNumber = findViewById(R.id.inputBusRouteNumber);
+        //inputBusRouteNumber.setHint("BusNumber");
 
         recyclerLiveBus = findViewById(R.id.recyclerLiveBus);
         recyclerLiveBus.setLayoutManager(new LinearLayoutManager(this));
