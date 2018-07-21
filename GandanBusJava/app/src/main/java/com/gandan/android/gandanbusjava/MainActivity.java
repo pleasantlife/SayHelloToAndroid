@@ -48,6 +48,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
+import static com.gandan.android.gandanbusjava.RetrofitInit.ROUTE_LINE_TXT;
 import static com.gandan.android.gandanbusjava.RetrofitInit.ROUTE_TXT;
 import static com.gandan.android.gandanbusjava.RetrofitInit.SERVICE_KEY;
 
@@ -108,6 +109,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Glide.with(this).load("https://cdn.pixabay.com/photo/2018/07/08/14/16/cat-3523992_1280.jpg")
                 .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).skipMemoryCache(true)).into(btnDoRouteSearch);
 
+        Observable<ResponseBody> getRouteLineList = retrofitInit.service.getRouteLines(ROUTE_LINE_TXT);
+        getRouteLineList.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ResponseBody>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(ResponseBody responseBody) {
+                try {
+                    String routeLine = responseBody.string();
+                    Log.e("routeLine", routeLine+"");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("Error", e.getMessage()+"");
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
 
 
         Observable<ResponseBody> getRouteList = retrofitInit.service.getRoutes(ROUTE_TXT);
