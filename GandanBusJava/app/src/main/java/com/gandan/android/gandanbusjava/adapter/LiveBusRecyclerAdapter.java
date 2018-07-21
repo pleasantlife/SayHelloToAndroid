@@ -41,10 +41,14 @@ public class LiveBusRecyclerAdapter extends RecyclerView.Adapter<LiveBusRecycler
         }
         if(locationList.getLowPlate().equals("1")){
             holder.busLow.setVisibility(View.VISIBLE);
+            holder.busLow.setText("저상버스");
+        } else if (locationList.getPlateType().equals("4")) {
+            holder.busLow.setVisibility(View.VISIBLE);
+            holder.busLow.setText("2층버스");
         } else {
             holder.busLow.setVisibility(View.GONE);
         }
-        holder.busStationSeq.setText(locationList.getStationSeq()+"번째 정류장");
+        holder.busStationSeq.setText(locationList.getStationSeq()+"번째 정류장"+locationList.getStationId()+"");
     }
 
     @Override

@@ -106,8 +106,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         btnDoRouteSearch = findViewById(R.id.btnDoRouteSearch);
 
-        Glide.with(this).load("https://cdn.pixabay.com/photo/2018/07/08/14/16/cat-3523992_1280.jpg")
-                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).skipMemoryCache(true)).into(btnDoRouteSearch);
+        /*Glide.with(this).load("https://cdn.pixabay.com/photo/2018/07/08/14/16/cat-3523992_1280.jpg")
+                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).skipMemoryCache(true)).into(btnDoRouteSearch);*/
 
         Observable<ResponseBody> getRouteLineList = retrofitInit.service.getRouteLines(ROUTE_LINE_TXT);
         getRouteLineList.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ResponseBody>() {
