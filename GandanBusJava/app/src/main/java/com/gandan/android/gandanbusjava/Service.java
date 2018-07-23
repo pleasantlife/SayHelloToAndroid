@@ -20,4 +20,7 @@ public interface Service {
 
     @GET
     Observable<ResponseBody> getRouteLines (@Url String url);
+
+    @GET
+    Observable<ResponseBody> getRouteStation (@Url String url);
 }

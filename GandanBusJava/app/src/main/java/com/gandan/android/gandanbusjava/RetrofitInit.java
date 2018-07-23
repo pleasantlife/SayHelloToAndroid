@@ -17,6 +17,8 @@ public class RetrofitInit {
 
     public static final String ROUTE_LINE_TXT = "http://openapi.gbis.go.kr/ws/download?routeline"+today()+".txt";
 
+    public static final String ROUTE_STATION_TXT = "http://openapi.gbis.go.kr/ws/download?routestation"+today()+".txt";
+
     public static final String ROUTE_TXT = "http://openapi.gbis.go.kr/ws/download?route"+today()+".txt";
 
     OkHttpClient client = new OkHttpClient.Builder().addNetworkInterceptor(interceptor()).build();

@@ -48,7 +48,7 @@ public class LiveBusRecyclerAdapter extends RecyclerView.Adapter<LiveBusRecycler
         } else {
             holder.busLow.setVisibility(View.GONE);
         }
-        holder.busStationSeq.setText(locationList.getStationSeq()+"번째 정류장"+locationList.getStationId()+"");
+        holder.busStationSeq.setText(locationList.getStationSeq()+"번째 정류장 "+locationList.getStationId()+"");
     }
 
     @Override

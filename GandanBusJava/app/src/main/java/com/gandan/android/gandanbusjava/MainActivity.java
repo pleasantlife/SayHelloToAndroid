@@ -8,47 +8,30 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.gandan.android.gandanbusjava.adapter.BusNumberSearchAdapter;
 import com.gandan.android.gandanbusjava.adapter.LiveBusRecyclerAdapter;
 import com.gandan.android.gandanbusjava.model.BusLocationList;
 import com.gandan.android.gandanbusjava.model.BusRoute;
+import com.gandan.android.gandanbusjava.model.BusRouteStation;
 import com.gandan.android.gandanbusjava.model.Response;
-import com.jakewharton.rxbinding2.widget.RxTextView;
-import com.jakewharton.rxbinding2.widget.TextViewAfterTextChangeEvent;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
-import static com.gandan.android.gandanbusjava.RetrofitInit.ROUTE_LINE_TXT;
+import static com.gandan.android.gandanbusjava.RetrofitInit.ROUTE_STATION_TXT;
 import static com.gandan.android.gandanbusjava.RetrofitInit.ROUTE_TXT;
 import static com.gandan.android.gandanbusjava.RetrofitInit.SERVICE_KEY;
 
@@ -60,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     BusNumberSearchAdapter busNumberSearchAdapter;
 
     List<BusLocationList> liveBusList = new ArrayList<>();
+    List<BusRouteStation> routeStationList = new ArrayList<>();
 
     TextInputEditText inputBusRouteNumber;
     ImageView btnDoRouteSearch;
@@ -109,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         /*Glide.with(this).load("https://cdn.pixabay.com/photo/2018/07/08/14/16/cat-3523992_1280.jpg")
                 .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE).skipMemoryCache(true)).into(btnDoRouteSearch);*/
 
-        Observable<ResponseBody> getRouteLineList = retrofitInit.service.getRouteLines(ROUTE_LINE_TXT);
+        /*Observable<ResponseBody> getRouteLineList = retrofitInit.service.getRouteLines(ROUTE_LINE_TXT);
         getRouteLineList.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ResponseBody>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -120,7 +104,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onNext(ResponseBody responseBody) {
                 try {
                     String routeLine = responseBody.string();
-                    Log.e("routeLine", routeLine+"");
+                    BusRouteLine line = new BusRouteLine();
+
+                    for(String string : routeLine.split("\\^")){
+                        Log.e("routeLine", string+"");
+                    }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -129,6 +118,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onError(Throwable e) {
                 Log.e("Error", e.getMessage()+"");
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });*/
+
+        Observable<ResponseBody> getRouteStationList = retrofitInit.service.getRouteStation(ROUTE_STATION_TXT);
+        getRouteStationList.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ResponseBody>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(ResponseBody responseBody) {
+                try{
+                    String routeStation = responseBody.string();
+
+
+                    for(String string : routeStation.split("\\^")){
+                        BusRouteStation routeStationInfo = new BusRouteStation();
+                        if(!string.split("\\|")[0].isEmpty()){
+                            routeStationInfo.setRouteId(string.split("\\|")[0]);
+                        }
+                        if(!string.split("\\|")[1].isEmpty()){
+                            routeStationInfo.setStationId(string.split("\\|")[1]);
+                        }
+                        if(!string.split("\\|")[2].isEmpty()){
+                            routeStationInfo.setUpDown(string.split("\\|")[2]);
+                        }
+                        if(!string.split("\\|")[3].isEmpty()){
+                            routeStationInfo.setStationOrder(string.split("\\|")[3]);
+                        }
+                        if(!string.split("\\|")[4].isEmpty()){
+                            routeStationInfo.setRouteNumber(string.split("\\|")[4]);
+                        }
+                        if(!string.split("\\|")[5].isEmpty()){
+                            routeStationInfo.setStationNumber(string.split("\\|")[5]);
+                        }
+                        routeStationList.add(routeStationInfo);
+                        Log.e("routeStaSize", routeStationList.size()+"");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("error RouteSta", e.getMessage()+"");
             }
 
             @Override
