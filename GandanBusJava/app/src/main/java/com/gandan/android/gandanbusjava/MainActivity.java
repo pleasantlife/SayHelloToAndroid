@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         recyclerLiveBus = findViewById(R.id.recyclerLiveBus);
         recyclerLiveBus.setLayoutManager(new LinearLayoutManager(this));
-        liveBusRecyclerAdapter = new LiveBusRecyclerAdapter(this, liveBusList);
+        liveBusRecyclerAdapter = new LiveBusRecyclerAdapter(this, liveBusList, routeStationList);
         busNumberSearchAdapter = new BusNumberSearchAdapter(this, routeSearchList);
         recyclerLiveBus.setAdapter(busNumberSearchAdapter);
         //recyclerLiveBus.setAdapter(liveBusRecyclerAdapter);
@@ -125,59 +125,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });*/
-
-        Observable<ResponseBody> getRouteStationList = retrofitInit.service.getRouteStation(ROUTE_STATION_TXT);
-        getRouteStationList.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ResponseBody>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(ResponseBody responseBody) {
-                try{
-                    String routeStation = responseBody.string();
-
-
-                    for(String string : routeStation.split("\\^")){
-                        BusRouteStation routeStationInfo = new BusRouteStation();
-                        if(!string.split("\\|")[0].isEmpty()){
-                            routeStationInfo.setRouteId(string.split("\\|")[0]);
-                        }
-                        if(!string.split("\\|")[1].isEmpty()){
-                            routeStationInfo.setStationId(string.split("\\|")[1]);
-                        }
-                        if(!string.split("\\|")[2].isEmpty()){
-                            routeStationInfo.setUpDown(string.split("\\|")[2]);
-                        }
-                        if(!string.split("\\|")[3].isEmpty()){
-                            routeStationInfo.setStationOrder(string.split("\\|")[3]);
-                        }
-                        if(!string.split("\\|")[4].isEmpty()){
-                            routeStationInfo.setRouteNumber(string.split("\\|")[4]);
-                        }
-                        if(!string.split("\\|")[5].isEmpty()){
-                            routeStationInfo.setStationNumber(string.split("\\|")[5]);
-                        }
-                        routeStationList.add(routeStationInfo);
-                        Log.e("routeStaSize", routeStationList.size()+"");
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e("error RouteSta", e.getMessage()+"");
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        });
-
 
         Observable<ResponseBody> getRouteList = retrofitInit.service.getRoutes(ROUTE_TXT);
         getRouteList.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ResponseBody>() {
@@ -283,6 +230,63 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void searchResult(long routeId){
+
+        Observable<ResponseBody> getRouteStationList = retrofitInit.service.getRouteStation(ROUTE_STATION_TXT);
+        getRouteStationList.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ResponseBody>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(ResponseBody responseBody) {
+                try{
+                    String routeStation = responseBody.string();
+
+
+                    for(String string : routeStation.split("\\^")) {
+                        BusRouteStation routeStationInfo = new BusRouteStation();
+                        if (string.split("\\|")[0].equals(routeId)) {
+                            if (!string.split("\\|")[0].isEmpty()) {
+                                routeStationInfo.setRouteId(string.split("\\|")[0]);
+                            }
+                            if (!string.split("\\|")[1].isEmpty()) {
+                                routeStationInfo.setStationId(string.split("\\|")[1]);
+                            }
+                            if (!string.split("\\|")[2].isEmpty()) {
+                                routeStationInfo.setUpDown(string.split("\\|")[2]);
+                            }
+                            if (!string.split("\\|")[3].isEmpty()) {
+                                routeStationInfo.setStationOrder(string.split("\\|")[3]);
+                            }
+                            if (!string.split("\\|")[4].isEmpty()) {
+                                routeStationInfo.setRouteNumber(string.split("\\|")[4]);
+                            }
+                            if (!string.split("\\|")[5].isEmpty()) {
+                                routeStationInfo.setStationNumber(string.split("\\|")[5]);
+                            }
+                            routeStationList.add(routeStationInfo);
+                            Log.e("routeStaSize", routeStationList.size() + "");
+                        }
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("error RouteSta", e.getMessage()+"");
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+
+
         Observable<Response> getLive = retrofitInit.service.getLiveBus(decodedUrl, routeId);
         getLive.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Response>() {
             @Override
