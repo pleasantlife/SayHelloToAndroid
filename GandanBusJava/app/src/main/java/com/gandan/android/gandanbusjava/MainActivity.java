@@ -50,13 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     RetrofitInit retrofitInit;
 
-
-
-
     String decodedUrl;
-
-    StringBuffer sb = new StringBuffer();
-
 
     List<BusRoute> routeList = new ArrayList<>();
     List<BusRoute> routeSearchList = new ArrayList<>();
@@ -218,7 +212,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onComplete() {
-                Log.e("stringBuffer", sb.toString()+"");
                 Toast.makeText(MainActivity.this, "검색 가능", Toast.LENGTH_SHORT).show();
             }
         });
@@ -325,14 +318,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         switch(view.getId()){
             case R.id.btnDoRouteSearch:
-                routeSearchList.clear();
-                Log.e("routeSize", routeList.size()+"");
-                for(BusRoute route : routeList){
-                    if(route.getRouteNumber().contains(inputBusRouteNumber.getText().toString())){
-                        routeSearchList.add(route);
+                if(!recyclerLiveBus.getAdapter().equals(busNumberSearchAdapter)) {
+                    routeSearchList.clear();
+                    Log.e("routeSize", routeList.size() + "");
+                    for (BusRoute route : routeList) {
+                        if (route.getRouteNumber().contains(inputBusRouteNumber.getText().toString())) {
+                            routeSearchList.add(route);
+                        }
                     }
+
+                    recyclerLiveBus.swapAdapter(busNumberSearchAdapter, true);
+                    busNumberSearchAdapter.notifyDataSetChanged();
                 }
-                busNumberSearchAdapter.notifyDataSetChanged();
                 break;
 
         }
