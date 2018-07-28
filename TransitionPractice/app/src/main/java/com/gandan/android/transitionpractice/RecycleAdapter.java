@@ -1,5 +1,6 @@
 package com.gandan.android.transitionpractice;
 
+import android.animation.TimeInterpolator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -78,7 +79,14 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.Holder> 
                     intent.putExtra("secondTextView", txtTwo.getText().toString());
                     ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, imgItem,"image");
                     android.transition.Transition transition = new android.transition.TransitionSet();
-                    transition.setDuration(600000);
+                    transition.setInterpolator(new TimeInterpolator() {
+                        @Override
+                        public float getInterpolation(float v) {
+                            return 3600f;
+                        }
+                    });
+                    transition.setDuration(6000);
+                    transition.addTarget(((Activity) context).getWindow().getDecorView());
                     ((Activity) context).getWindow().setSharedElementExitTransition(transition);
                     context.startActivity(intent, optionsCompat.toBundle());
                 }
