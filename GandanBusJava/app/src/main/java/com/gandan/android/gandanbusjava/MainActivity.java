@@ -50,19 +50,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     RetrofitInit retrofitInit;
 
-    String decodedUrl;
+
 
     List<BusRoute> routeList = new ArrayList<>();
     List<BusRoute> routeSearchList = new ArrayList<>();
 
-    {
-        try {
-            //서비스키에 있는 특수문자가 변형되지 않도록 디코딩을 꼭 해줘야 한다!!
-            decodedUrl = URLDecoder.decode(SERVICE_KEY, "EUC_KR");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-    }
+
 
     @SuppressLint("CheckResult")
     @Override
@@ -77,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         recyclerLiveBus = findViewById(R.id.recyclerLiveBus);
         recyclerLiveBus.setLayoutManager(new LinearLayoutManager(this));
-        liveBusRecyclerAdapter = new LiveBusRecyclerAdapter(this, liveBusList, routeStationList);
         busNumberSearchAdapter = new BusNumberSearchAdapter(this, routeSearchList);
         recyclerLiveBus.setAdapter(busNumberSearchAdapter);
         //recyclerLiveBus.setAdapter(liveBusRecyclerAdapter);
@@ -120,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });*/
 
+        //
         Observable<ResponseBody> getRouteList = retrofitInit.service.getRoutes(ROUTE_TXT);
         getRouteList.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ResponseBody>() {
             @Override
@@ -218,99 +211,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         btnDoRouteSearch.setOnClickListener(this);
 
-
-
-    }
-
-    private void searchResult(long routeId){
-
-        Observable<ResponseBody> getRouteStationList = retrofitInit.service.getRouteStation(ROUTE_STATION_TXT);
-        getRouteStationList.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ResponseBody>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(ResponseBody responseBody) {
-                try{
-                    String routeStation = responseBody.string();
-
-
-                    for(String string : routeStation.split("\\^")) {
-                        BusRouteStation routeStationInfo = new BusRouteStation();
-                        if (string.split("\\|")[0].equals(routeId)) {
-                            if (!string.split("\\|")[0].isEmpty()) {
-                                routeStationInfo.setRouteId(string.split("\\|")[0]);
-                            }
-                            if (!string.split("\\|")[1].isEmpty()) {
-                                routeStationInfo.setStationId(string.split("\\|")[1]);
-                            }
-                            if (!string.split("\\|")[2].isEmpty()) {
-                                routeStationInfo.setUpDown(string.split("\\|")[2]);
-                            }
-                            if (!string.split("\\|")[3].isEmpty()) {
-                                routeStationInfo.setStationOrder(string.split("\\|")[3]);
-                            }
-                            if (!string.split("\\|")[4].isEmpty()) {
-                                routeStationInfo.setRouteNumber(string.split("\\|")[4]);
-                            }
-                            if (!string.split("\\|")[5].isEmpty()) {
-                                routeStationInfo.setStationNumber(string.split("\\|")[5]);
-                            }
-                            routeStationList.add(routeStationInfo);
-                            Log.e("routeStaSize", routeStationList.size() + "");
-                        }
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e("error RouteSta", e.getMessage()+"");
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        });
-
-
-        Observable<Response> getLive = retrofitInit.service.getLiveBus(decodedUrl, routeId);
-        getLive.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Response>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(Response response) {
-                Log.e("response", response.getMsgHeader().getQueryTime());
-                Log.e("error", response.getComMsgHeader().getErrMsg()+"");
-                Log.e("success?", response.getMsgHeader().getResultMessage());
-                Log.e("busList", response.getMsgBody().getBusLocationList().get(0).getPlateNo());
-                for(BusLocationList locationList : response.getMsgBody().getBusLocationList()){
-                    liveBusList.add(locationList);
-
-
-                }
-                liveBusRecyclerAdapter.notifyDataSetChanged();
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e("error", e.getMessage()+"");
-            }
-
-            @Override
-            public void onComplete() {
-            }
-        });
     }
 
     @Override
@@ -318,18 +218,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         switch(view.getId()){
             case R.id.btnDoRouteSearch:
-                if(!recyclerLiveBus.getAdapter().equals(busNumberSearchAdapter)) {
-                    routeSearchList.clear();
-                    Log.e("routeSize", routeList.size() + "");
-                    for (BusRoute route : routeList) {
-                        if (route.getRouteNumber().contains(inputBusRouteNumber.getText().toString())) {
-                            routeSearchList.add(route);
-                        }
+                routeSearchList.clear();
+                Log.e("routeSize", routeList.size() + "");
+                for (BusRoute route : routeList) {
+                    if (route.getRouteNumber().contains(inputBusRouteNumber.getText().toString())) {
+                        routeSearchList.add(route);
                     }
-
-                    recyclerLiveBus.swapAdapter(busNumberSearchAdapter, true);
-                    busNumberSearchAdapter.notifyDataSetChanged();
                 }
+                busNumberSearchAdapter.notifyDataSetChanged();
                 break;
 
         }
@@ -337,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void getRouteId(long routeId) {
-        recyclerLiveBus.setAdapter(liveBusRecyclerAdapter);
-        searchResult(routeId);
+        //recyclerLiveBus.setAdapter(liveBusRecyclerAdapter);
+        //searchResult(routeId);
     }
 }

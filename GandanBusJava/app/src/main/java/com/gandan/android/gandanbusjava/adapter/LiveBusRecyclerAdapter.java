@@ -17,12 +17,12 @@ import java.util.List;
 public class LiveBusRecyclerAdapter extends RecyclerView.Adapter<LiveBusRecyclerAdapter.Holder> {
 
     Context context;
-    List<BusLocationList> liveBusList;
+    //List<BusLocationList> liveBusList;
     List<BusRouteStation> busRouteStationList;
 
-    public LiveBusRecyclerAdapter(Context context, List<BusLocationList> liveBusList, List<BusRouteStation> busRouteStationList){
+    public LiveBusRecyclerAdapter(Context context, /*List<BusLocationList> liveBusList*/ List<BusRouteStation> busRouteStationList){
         this.context = context;
-        this.liveBusList = liveBusList;
+        //this.liveBusList = liveBusList;
         this.busRouteStationList = busRouteStationList;
     }
 
@@ -36,12 +36,19 @@ public class LiveBusRecyclerAdapter extends RecyclerView.Adapter<LiveBusRecycler
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
        BusRouteStation busRouteStation = busRouteStationList.get(position);
-       holder.busStaName.setText(busRouteStation.getStationNumber());
+       if(position+1 != busRouteStationList.size()-1){
+           if(busRouteStationList.get(position-1).getUpDown().equals("정") && busRouteStationList.get(position+1).getUpDown().equals("역")){
+               holder.busStaName.setText("회차 " + busRouteStation.getStationNumber());
+           }
+       } else {
+           holder.busStaName.setText(busRouteStation.getStationNumber());
+       }
+
     }
 
     @Override
     public int getItemCount() {
-        return liveBusList.size();
+        return busRouteStationList.size();
     }
 
     class Holder extends RecyclerView.ViewHolder {

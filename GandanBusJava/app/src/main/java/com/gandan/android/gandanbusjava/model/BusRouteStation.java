@@ -1,6 +1,8 @@
 package com.gandan.android.gandanbusjava.model;
 
-public class BusRouteStation {
+import java.io.Serializable;
+
+public class BusRouteStation implements Serializable{
 
     //버스노선 고유 아이디 (ex : 성우 300 -> 200000006)
     private String routeId;
