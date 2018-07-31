@@ -2,6 +2,7 @@ package com.gandan.android.gandanbusjava;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -29,7 +30,9 @@ public class RetrofitInit {
 
 
     private static String today(){
+
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
         return simpleDateFormat.format(System.currentTimeMillis());
     }
 

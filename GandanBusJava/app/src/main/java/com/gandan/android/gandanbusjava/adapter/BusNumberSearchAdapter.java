@@ -47,6 +47,7 @@ public class BusNumberSearchAdapter extends RecyclerView.Adapter<BusNumberSearch
             public void onClick(View view) {
                 Intent intent = new Intent(context, BusRouteActivity.class);
                 intent.putExtra("busId", route.getRouteId()+"");
+                intent.putExtra("busNumber", route.getRouteNumber()+"");
                 context.startActivity(intent);
 
             }

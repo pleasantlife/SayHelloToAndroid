@@ -3,6 +3,7 @@ package com.gandan.android.gandanbusjava.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +18,12 @@ import java.util.List;
 public class LiveBusRecyclerAdapter extends RecyclerView.Adapter<LiveBusRecyclerAdapter.Holder> {
 
     Context context;
-    //List<BusLocationList> liveBusList;
+    List<BusLocationList> liveBusList;
     List<BusRouteStation> busRouteStationList;
 
-    public LiveBusRecyclerAdapter(Context context, /*List<BusLocationList> liveBusList*/ List<BusRouteStation> busRouteStationList){
+    public LiveBusRecyclerAdapter(Context context, /*List<BusLocationList> liveBusList*/ List<BusRouteStation> busRouteStationList, List<BusLocationList> liveBusList){
         this.context = context;
-        //this.liveBusList = liveBusList;
+        this.liveBusList = liveBusList;
         this.busRouteStationList = busRouteStationList;
     }
 
@@ -36,14 +37,29 @@ public class LiveBusRecyclerAdapter extends RecyclerView.Adapter<LiveBusRecycler
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
        BusRouteStation busRouteStation = busRouteStationList.get(position);
-       if(position+1 != busRouteStationList.size()-1){
-           if(busRouteStationList.get(position-1).getUpDown().equals("정") && busRouteStationList.get(position+1).getUpDown().equals("역")){
-               holder.busStaName.setText("회차 " + busRouteStation.getStationNumber());
-           }
+       holder.busEndBus.setVisibility(View.INVISIBLE);
+       if(position == 0){
+           holder.busStaName.setText("<기점> "+ busRouteStation.getStationName());
+       } else if(position == busRouteStationList.size() - 1) {
+           holder.busStaName.setText("<종점> " + busRouteStation.getStationName());
        } else {
-           holder.busStaName.setText(busRouteStation.getStationNumber());
+           if(busRouteStationList.get(position-1).getUpDown().equals("정") && busRouteStationList.get(position).getUpDown().equals("역")){
+               holder.busStaName.setText("<회차> " + busRouteStation.getStationName());
+           } else {
+               holder.busStaName.setText(busRouteStation.getStationName());
+           }
        }
+        holder.busStationSeq.setText(busRouteStation.getStationOrder());
 
+       if(liveBusList.size() != 0){
+           Log.e("exist", "bus");
+           for(BusLocationList busLocationList : liveBusList){
+               if(busLocationList.getStationId().equals(busRouteStation.getStationId())){
+                   holder.busEndBus.setText(busLocationList.getPlateNo()+"");
+                   holder.busEndBus.setVisibility(View.VISIBLE);
+               }
+           }
+       }
     }
 
     @Override

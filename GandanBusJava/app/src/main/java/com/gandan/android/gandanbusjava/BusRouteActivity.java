@@ -7,6 +7,8 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gandan.android.gandanbusjava.adapter.LiveBusRecyclerAdapter;
@@ -36,8 +38,11 @@ public class BusRouteActivity extends AppCompatActivity {
     String id;
     long routeId;
     List<BusRouteStation> routeStationList = new ArrayList<>();
+    List<BusLocationList> liveList = new ArrayList<>();
     RecyclerView recyclerRouteDetail;
     LiveBusRecyclerAdapter liveBusRecyclerAdapter;
+    TextView txtBusNumberRoute;
+    Button btnRefresh;
 
     String decodedUrl;
 
@@ -49,7 +54,9 @@ public class BusRouteActivity extends AppCompatActivity {
         Log.e("Test", "here+");
 
         recyclerRouteDetail = findViewById(R.id.recyclerRouteDetail);
-        liveBusRecyclerAdapter = new LiveBusRecyclerAdapter(this, routeStationList);
+        txtBusNumberRoute = findViewById(R.id.txtBusNumberRoute);
+        btnRefresh = findViewById(R.id.btnRefresh);
+        liveBusRecyclerAdapter = new LiveBusRecyclerAdapter(this, routeStationList, liveList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, linearLayoutManager.getOrientation());
         recyclerRouteDetail.setLayoutManager(linearLayoutManager);
@@ -59,8 +66,11 @@ public class BusRouteActivity extends AppCompatActivity {
         Intent intent = getIntent();
         id = intent.getStringExtra("busId");
         routeId = Long.parseLong(id);
+        txtBusNumberRoute.setText(intent.getStringExtra("busNumber")+"번 버스");
 
         searchResult(routeId);
+
+        btnRefresh.setOnClickListener(v -> searchResult(routeId));
 
         {
             try {
@@ -74,7 +84,8 @@ public class BusRouteActivity extends AppCompatActivity {
     }
 
     private void searchResult(long routeId){
-
+        routeStationList.clear();
+        liveList.clear();
         Observable<ResponseBody> getRouteStationList = retrofitInit.service.getRouteStation(ROUTE_STATION_TXT);
         getRouteStationList.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ResponseBody>() {
             @Override
@@ -106,10 +117,11 @@ public class BusRouteActivity extends AppCompatActivity {
                                 routeStationInfo.setRouteNumber(string.split("\\|")[4]);
                             }
                             if (!string.split("\\|")[5].isEmpty()) {
-                                routeStationInfo.setStationNumber(string.split("\\|")[5]);
+                                routeStationInfo.setStationName(string.split("\\|")[5]);
                             }
                             routeStationList.add(routeStationInfo);
                             Log.e("routeStaSize", routeStationList.size() + "");
+                            //liveBusRecyclerAdapter.notifyDataSetChanged();
                         }
                     }
 
@@ -128,12 +140,15 @@ public class BusRouteActivity extends AppCompatActivity {
             @Override
             public void onComplete() {
                 Toast.makeText(BusRouteActivity.this, "검색 완료", Toast.LENGTH_SHORT).show();
-                liveBusRecyclerAdapter.notifyDataSetChanged();
+                getLive();
+
             }
         });
 
+    }
 
-        /*Observable<Response> getLive = retrofitInit.service.getLiveBus(decodedUrl, routeId);
+    private void getLive(){
+        Observable<Response> getLive = retrofitInit.service.getLiveBus(decodedUrl, routeId);
         getLive.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Response>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -147,11 +162,9 @@ public class BusRouteActivity extends AppCompatActivity {
                 Log.e("success?", response.getMsgHeader().getResultMessage());
                 Log.e("busList", response.getMsgBody().getBusLocationList().get(0).getPlateNo());
                 for(BusLocationList locationList : response.getMsgBody().getBusLocationList()){
-                    liveBusList.add(locationList);
-
-
+                    liveList.add(locationList);
                 }
-                liveBusRecyclerAdapter.notifyDataSetChanged();
+
 
             }
 
@@ -162,8 +175,8 @@ public class BusRouteActivity extends AppCompatActivity {
 
             @Override
             public void onComplete() {
+                liveBusRecyclerAdapter.notifyDataSetChanged();
             }
         });
-    }*/
     }
 }

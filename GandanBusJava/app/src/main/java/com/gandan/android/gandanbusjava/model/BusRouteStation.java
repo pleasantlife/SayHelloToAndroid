@@ -15,7 +15,7 @@ public class BusRouteStation implements Serializable{
     //노선 번호
     private String routeNumber;
     //정류장 명
-    private String stationNumber;
+    private String stationName;
 
     public String getRouteId() {
         return routeId;
@@ -57,11 +57,11 @@ public class BusRouteStation implements Serializable{
         this.routeNumber = routeNumber;
     }
 
-    public String getStationNumber() {
-        return stationNumber;
+    public String getStationName() {
+        return stationName;
     }
 
-    public void setStationNumber(String stationNumber) {
-        this.stationNumber = stationNumber;
+    public void setStationName(String stationName) {
+        this.stationName = stationName;
     }
 }

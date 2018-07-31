@@ -7,8 +7,11 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gandan.android.gandanbusjava.adapter.BusNumberSearchAdapter;
@@ -67,6 +70,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         inputBusRouteNumber = findViewById(R.id.inputBusRouteNumber);
         //inputBusRouteNumber.setHint("BusNumber");
+
+        inputBusRouteNumber.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                switch (actionId){
+                    case EditorInfo.IME_ACTION_SEARCH:
+                        routeSearch();
+                        break;
+                    default:
+                        return false;
+                }
+                return true;
+            }
+        });
 
         recyclerLiveBus = findViewById(R.id.recyclerLiveBus);
         recyclerLiveBus.setLayoutManager(new LinearLayoutManager(this));
@@ -218,17 +235,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         switch(view.getId()){
             case R.id.btnDoRouteSearch:
-                routeSearchList.clear();
-                Log.e("routeSize", routeList.size() + "");
-                for (BusRoute route : routeList) {
-                    if (route.getRouteNumber().contains(inputBusRouteNumber.getText().toString())) {
-                        routeSearchList.add(route);
-                    }
-                }
-                busNumberSearchAdapter.notifyDataSetChanged();
+                routeSearch();
+
                 break;
 
         }
+    }
+
+    private void routeSearch(){
+        routeSearchList.clear();
+        Log.e("routeSize", routeList.size() + "");
+        for (BusRoute route : routeList) {
+            if (route.getRouteNumber().contains(inputBusRouteNumber.getText().toString())) {
+                routeSearchList.add(route);
+            }
+        }
+        busNumberSearchAdapter.notifyDataSetChanged();
     }
 
     @Override

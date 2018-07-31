@@ -47,7 +47,8 @@
             android:ems="10"
             android:fontFamily="@font/lobster"
             android:hint="busNumber"
-            android:inputType="phone" />
+            android:inputType="phone"
+            android:imeOptions="actionSearch"/>
 
     </android.support.design.widget.TextInputLayout>
 
