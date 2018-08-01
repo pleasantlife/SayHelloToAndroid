@@ -70,7 +70,13 @@ public class BusRouteActivity extends AppCompatActivity {
 
         searchResult(routeId);
 
-        btnRefresh.setOnClickListener(v -> searchResult(routeId));
+        btnRefresh.setOnClickListener(v -> {
+            recyclerRouteDetail.setEnabled(false);
+            routeStationList.clear();
+            liveBusRecyclerAdapter.notifyDataSetChanged();
+            searchResult(routeId);
+
+        });
 
         {
             try {

@@ -16,7 +16,7 @@
         android:fontFamily="@font/lobster"
         android:text="정류장순서"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/busLow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/busStaNo" />
 
@@ -31,7 +31,7 @@
         android:fontFamily="@font/lobster"
         android:text="버스번호"
         app:layout_constraintBottom_toTopOf="@+id/busStationSeq"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/busEndBus"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
