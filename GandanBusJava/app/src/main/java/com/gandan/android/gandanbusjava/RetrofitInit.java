@@ -1,6 +1,8 @@
 package com.gandan.android.gandanbusjava;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -31,9 +33,22 @@ public class RetrofitInit {
 
     private static String today(){
 
+
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+        long times;
+        if(calendar.get(Calendar.HOUR_OF_DAY) > 0 && calendar.get(Calendar.HOUR_OF_DAY) < 5){
+            times = System.currentTimeMillis() - (24 * 60 * 60 * 1000);
+        } else {
+            times = System.currentTimeMillis();
+        }
+
+
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
-        return simpleDateFormat.format(System.currentTimeMillis());
+        return simpleDateFormat.format(times);
     }
 
     private HttpLoggingInterceptor interceptor(){
