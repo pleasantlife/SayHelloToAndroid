@@ -1,5 +1,6 @@
 package com.gandan.android.gandanbusjava;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -45,6 +46,7 @@ public class BusRouteActivity extends AppCompatActivity {
     Button btnRefresh;
 
     String decodedUrl;
+    AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,7 @@ public class BusRouteActivity extends AppCompatActivity {
         id = intent.getStringExtra("busId");
         routeId = Long.parseLong(id);
         txtBusNumberRoute.setText(intent.getStringExtra("busNumber")+"번 버스");
+        dialog = new AlertDialog.Builder(this).setMessage("실시간 버스 정보 검색중...").create();
 
         searchResult(routeId);
 
@@ -90,6 +93,7 @@ public class BusRouteActivity extends AppCompatActivity {
     }
 
     private void searchResult(long routeId){
+        dialog.show();
         routeStationList.clear();
         liveList.clear();
         Observable<ResponseBody> getRouteStationList = retrofitInit.service.getRouteStation(ROUTE_STATION_TXT);
@@ -182,6 +186,7 @@ public class BusRouteActivity extends AppCompatActivity {
             @Override
             public void onComplete() {
                 liveBusRecyclerAdapter.notifyDataSetChanged();
+                dialog.dismiss();
             }
         });
     }

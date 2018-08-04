@@ -1,6 +1,7 @@
 package com.gandan.android.gandanbusjava;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -139,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onNext(ResponseBody responseBody) {
+
                 try {
                     String routes = responseBody.string();
 
@@ -243,6 +245,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void routeSearch(){
+
         routeSearchList.clear();
         Log.e("routeSize", routeList.size() + "");
         for (BusRoute route : routeList) {
