@@ -254,6 +254,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         busNumberSearchAdapter.notifyDataSetChanged();
+        if(routeSearchList.size() == 0){
+            Toast.makeText(this, "검색결과가 없습니다.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

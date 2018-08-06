@@ -107,7 +107,8 @@ public class BusRouteActivity extends AppCompatActivity {
             public void onNext(ResponseBody responseBody) {
                 try{
                     String routeStation = responseBody.string();
-                    Log.e("start", routeId+"result");
+                    String split = routeStation.split(String.valueOf(routeId))[0];
+
                     for(String string : routeStation.split("\\^")) {
                         BusRouteStation routeStationInfo = new BusRouteStation();
                         if (string.split("\\|")[0].equals(routeId+"")) {
@@ -150,6 +151,8 @@ public class BusRouteActivity extends AppCompatActivity {
             @Override
             public void onComplete() {
                 Toast.makeText(BusRouteActivity.this, "검색 완료", Toast.LENGTH_SHORT).show();
+                liveBusRecyclerAdapter.notifyDataSetChanged();
+                dialog.dismiss();
                 getLive();
 
             }
@@ -171,9 +174,7 @@ public class BusRouteActivity extends AppCompatActivity {
                 Log.e("error", response.getComMsgHeader().getErrMsg()+"");
                 Log.e("success?", response.getMsgHeader().getResultMessage());
                 Log.e("busList", response.getMsgBody().getBusLocationList().get(0).getPlateNo());
-                for(BusLocationList locationList : response.getMsgBody().getBusLocationList()){
-                    liveList.add(locationList);
-                }
+                liveList.addAll(response.getMsgBody().getBusLocationList());
 
 
             }
@@ -186,7 +187,10 @@ public class BusRouteActivity extends AppCompatActivity {
             @Override
             public void onComplete() {
                 liveBusRecyclerAdapter.notifyDataSetChanged();
-                dialog.dismiss();
+                if(liveList.size() == 0){
+                    Toast.makeText(BusRouteActivity.this, "운행중인 버스가 없습니다.", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
