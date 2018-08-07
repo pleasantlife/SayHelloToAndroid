@@ -4,6 +4,7 @@ import android.animation.TimeInterpolator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.transition.ChangeBounds;
@@ -11,6 +12,7 @@ import android.support.transition.ChangeImageTransform;
 import android.support.transition.Transition;
 import android.support.transition.TransitionSet;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +45,10 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.Holder> 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
         Animation animation = AnimationUtils.loadAnimation(context, R.anim.up_from_bottom);
+        //아래와 같이 setBackgroundColor로 컬러를 바꾸면 cornerRadius와 elevation 설정 등을 초기화 시켜버린다.
+        holder.cardViewItem.setBackgroundColor(Color.WHITE);
+        //따라서 아래와 같이 setCardBackgroundColor로 카드뷰의 배경색을 바꿔야 한다.
+        holder.cardViewItem.setCardBackgroundColor(Color.WHITE);
         holder.itemView.startAnimation(animation);
         holder.txtOne.setText(position+1+"번째 제목");
         holder.txtTwo.setText(position+1+"번째 내용");
@@ -59,6 +65,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.Holder> 
         TextView txtOne, txtTwo;
         ConstraintLayout constraintItem;
         ImageView imgItem;
+        CardView cardViewItem;
 
         public Holder(final View itemView) {
             super(itemView);
@@ -68,6 +75,8 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.Holder> 
             txtOne = itemView.findViewById(R.id.txtOne);
             txtTwo = itemView.findViewById(R.id.txtTwo);
             imgItem = itemView.findViewById(R.id.imgItem);
+
+            cardViewItem = itemView.findViewById(R.id.cardview_item);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
