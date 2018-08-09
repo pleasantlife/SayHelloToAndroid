@@ -107,9 +107,10 @@ public class BusRouteActivity extends AppCompatActivity {
             public void onNext(ResponseBody responseBody) {
                 try{
                     String routeStation = responseBody.string();
-                    String split = routeStation.split(String.valueOf(routeId))[0];
+                    String splitRoute = routeId+routeStation.split(String.valueOf(routeId))[0];
 
-                    for(String string : routeStation.split("\\^")) {
+                    //for(String string : routeStation.split("\\^")) {
+                    for(String string : splitRoute.split("\\^")){
                         BusRouteStation routeStationInfo = new BusRouteStation();
                         if (string.split("\\|")[0].equals(routeId+"")) {
                             if (!string.split("\\|")[0].isEmpty()) {
@@ -132,6 +133,7 @@ public class BusRouteActivity extends AppCompatActivity {
                             }
                             routeStationList.add(routeStationInfo);
                             Log.e("routeStaSize", routeStationList.size() + "");
+
                             //liveBusRecyclerAdapter.notifyDataSetChanged();
                         }
                     }
@@ -151,6 +153,7 @@ public class BusRouteActivity extends AppCompatActivity {
             @Override
             public void onComplete() {
                 Toast.makeText(BusRouteActivity.this, "검색 완료", Toast.LENGTH_SHORT).show();
+                Toast.makeText(BusRouteActivity.this, routeStationList.size()+"", Toast.LENGTH_SHORT).show();
                 liveBusRecyclerAdapter.notifyDataSetChanged();
                 dialog.dismiss();
                 getLive();
