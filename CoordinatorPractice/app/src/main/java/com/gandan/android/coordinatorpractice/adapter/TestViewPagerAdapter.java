@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.gandan.android.coordinatorpractice.R;
 import com.gandan.android.coordinatorpractice.fragment.TestOneFragment;
 import com.gandan.android.coordinatorpractice.fragment.TestTwoFragment;
 
@@ -33,9 +34,9 @@ public class TestViewPagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch(position){
             case 0:
-                return "모카 한 모금";
+                return context.getString(R.string.tab_layout_left);
             case 1:
-                return "모카 한 잔";
+                return context.getString(R.string.tab_layout_right);
                 default:
                     return null;
         }
