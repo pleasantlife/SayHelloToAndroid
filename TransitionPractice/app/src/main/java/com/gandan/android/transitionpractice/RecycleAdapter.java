@@ -50,8 +50,9 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.Holder> 
         //따라서 아래와 같이 setCardBackgroundColor로 카드뷰의 배경색을 바꿔야 한다.
         holder.cardViewItem.setCardBackgroundColor(Color.WHITE);
         holder.itemView.startAnimation(animation);
-        holder.txtOne.setText(position+1+"번째 제목");
-        holder.txtTwo.setText(position+1+"번째 내용");
+        int pos = position+1;
+        holder.txtOne.setText(context.getString(R.string.title, pos));
+        holder.txtTwo.setText(context.getString(R.string.contents, pos));
         Glide.with(context).load("https://cdn.pixabay.com/photo/2018/05/30/15/31/rustic-3441673_1280.jpg").apply(RequestOptions.centerCropTransform()).into(holder.imgItem);
     }
 
