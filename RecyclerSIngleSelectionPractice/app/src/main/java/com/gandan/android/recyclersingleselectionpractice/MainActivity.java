@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.bignerdranch.android.multiselector.MultiSelector;
+import com.bignerdranch.android.multiselector.SingleSelector;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +28,9 @@ public class MainActivity extends AppCompatActivity {
         initContact("ParkSinHye", "woman", "Korea");
         initContact("MoonJaeIn", "man", "Korea");
 
-        recyclerAdapter = new RecyclerAdapter(this, contact);
+
+        MultiSelector singleSelector = new SingleSelector();
+        recyclerAdapter = new RecyclerAdapter(this, contact, singleSelector);
         recyclerMain = findViewById(R.id.recycler_main);
         recyclerMain.setLayoutManager(new LinearLayoutManager(this));
         recyclerMain.setAdapter(recyclerAdapter);

@@ -5,6 +5,7 @@ public class Item {
     private String name;
     private String gender;
     private String address;
+    private boolean select;
 
     public String getName() {
         return name;
@@ -28,5 +29,13 @@ public class Item {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public boolean isSelect() {
+        return select;
+    }
+
+    public void setSelect(boolean select) {
+        this.select = select;
     }
 }
