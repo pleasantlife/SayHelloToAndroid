@@ -11,6 +11,9 @@ import com.bignerdranch.android.multiselector.SingleSelector;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+
 public class MainActivity extends AppCompatActivity {
 
     List<Item> contact = new ArrayList<>();
@@ -30,10 +33,39 @@ public class MainActivity extends AppCompatActivity {
 
 
         MultiSelector singleSelector = new SingleSelector();
-        recyclerAdapter = new RecyclerAdapter(this, contact, singleSelector);
+        recyclerAdapter = new RecyclerAdapter(this, contact);
         recyclerMain = findViewById(R.id.recycler_main);
         recyclerMain.setLayoutManager(new LinearLayoutManager(this));
         recyclerMain.setAdapter(recyclerAdapter);
+
+        RxEventBus.getInstance().getItemEvent().subscribe(new Observer<Item>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(Item item) {
+                for(Item it : contact){
+                    if(it.equals(item)){
+                        it.setSelect(true);
+                    } else {
+                        it.setSelect(false);
+                    }
+                }
+                recyclerAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
 
 
     }
