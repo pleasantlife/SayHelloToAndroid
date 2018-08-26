@@ -4,9 +4,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
-import com.bignerdranch.android.multiselector.MultiSelector;
-import com.bignerdranch.android.multiselector.SingleSelector;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +19,19 @@ public class MainActivity extends AppCompatActivity {
     List<Item> contact = new ArrayList<>();
     RecyclerAdapter recyclerAdapter;
     RecyclerView recyclerMain;
+    boolean single;
+    RadioGroup radioGroup;
+    RadioButton radioSingle, radioMulti;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        radioGroup = findViewById(R.id.radioGroup);
+        radioSingle = findViewById(R.id.radio_single);
+        radioMulti = findViewById(R.id.radio_multi);
+
 
         initContact("Sherlock", "man", "England");
         initContact("IronMan", "man", "America");
@@ -32,11 +40,32 @@ public class MainActivity extends AppCompatActivity {
         initContact("MoonJaeIn", "man", "Korea");
 
 
-        MultiSelector singleSelector = new SingleSelector();
-        recyclerAdapter = new RecyclerAdapter(this, contact);
+        single = false;
+
+        recyclerAdapter = new RecyclerAdapter(this, contact, single);
         recyclerMain = findViewById(R.id.recycler_main);
         recyclerMain.setLayoutManager(new LinearLayoutManager(this));
         recyclerMain.setAdapter(recyclerAdapter);
+
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                if(radioSingle.isChecked()){
+                    radioMulti.setChecked(false);
+                    single = true;
+                } else {
+                    radioMulti.setChecked(true);
+                    single = false;
+                }
+                for(Item it : contact){
+                    it.setSelect(false);
+                }
+                Toast.makeText(MainActivity.this, "선택 방식 초기화!", Toast.LENGTH_SHORT).show();
+                recyclerAdapter.notifyDataSetChanged();
+            }
+        });
+
 
         RxEventBus.getInstance().getItemEvent().subscribe(new Observer<Item>() {
             @Override
@@ -46,11 +75,19 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onNext(Item item) {
-                for(Item it : contact){
-                    if(it.equals(item)){
-                        it.setSelect(true);
-                    } else {
-                        it.setSelect(false);
+                if(single) {
+                    for (Item it : contact) {
+                        if (it.equals(item)) {
+                            it.setSelect(true);
+                        } else {
+                            it.setSelect(false);
+                        }
+                    }
+                } else {
+                    for(Item it : contact){
+                        if(it.equals(item)){
+                            it.setSelect(true);
+                        }
                     }
                 }
                 recyclerAdapter.notifyDataSetChanged();

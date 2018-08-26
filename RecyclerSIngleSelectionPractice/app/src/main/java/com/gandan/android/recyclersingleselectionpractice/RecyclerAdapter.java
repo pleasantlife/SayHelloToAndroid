@@ -10,22 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.bignerdranch.android.multiselector.MultiSelector;
-import com.bignerdranch.android.multiselector.MultiSelectorBindingHolder;
-import com.bignerdranch.android.multiselector.SingleSelector;
-import com.bignerdranch.android.multiselector.SwappingHolder;
-
 import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder> {
 
     Context context;
     List<Item> contact;
+    boolean single;
 
-    public RecyclerAdapter(Context context, List<Item> contact){
+    public RecyclerAdapter(Context context, List<Item> contact, boolean single){
         this.context = context;
         this.contact = contact;
+        this.single = single;
     }
 
     @NonNull
@@ -73,12 +69,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Holder
 
         TextView textName;
         ConstraintLayout layoutItem;
-        MultiSelector singleSelector;
         boolean select;
 
         public Holder(View itemView) {
             super(itemView);
-            this.singleSelector = singleSelector;
             textName = itemView.findViewById(R.id.txt_item_name);
             layoutItem = itemView.findViewById(R.id.layout_item);
         }
