@@ -4,6 +4,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -22,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     boolean single;
     RadioGroup radioGroup;
     RadioButton radioSingle, radioMulti;
+    EditText inputText;
+    Button btnInputData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,23 @@ public class MainActivity extends AppCompatActivity {
         radioGroup = findViewById(R.id.radioGroup);
         radioSingle = findViewById(R.id.radio_single);
         radioMulti = findViewById(R.id.radio_multi);
+        inputText = findViewById(R.id.input_text);
+        btnInputData = findViewById(R.id.btn_input_data);
+
+        recyclerAdapter = new RecyclerAdapter(this, contact, single);
+        recyclerMain = findViewById(R.id.recycler_main);
+        recyclerMain.setLayoutManager(new LinearLayoutManager(this));
+        recyclerMain.setAdapter(recyclerAdapter);
+
+
+        btnInputData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                initContact(inputText.getText().toString(), "man", "Korea");
+                inputText.setText("");
+                recyclerAdapter.notifyDataSetChanged();
+            }
+        });
 
 
         initContact("Sherlock", "man", "England");
@@ -41,12 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         single = false;
-
-        recyclerAdapter = new RecyclerAdapter(this, contact, single);
-        recyclerMain = findViewById(R.id.recycler_main);
-        recyclerMain.setLayoutManager(new LinearLayoutManager(this));
-        recyclerMain.setAdapter(recyclerAdapter);
-
+        radioMulti.setChecked(true);
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
