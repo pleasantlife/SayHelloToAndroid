@@ -13,12 +13,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     ImageView codeOne, codeTwo, codeThree, codeFour, codeFive, codeSix;
     EditText inputCodeEditText;
     InputMethodManager inputMethodManager;
     TextView codeText;
+    String colorString = "#E73828";
+    List<ImageView> codeOvalImages = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         codeSix.setOnClickListener(this);
         codeText = findViewById(R.id.codeText);
 
+        codeOvalImages.add(codeOne);
+        codeOvalImages.add(codeTwo);
+        codeOvalImages.add(codeThree);
+        codeOvalImages.add(codeFour);
+        codeOvalImages.add(codeFive);
+        codeOvalImages.add(codeSix);
+
         inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
 
@@ -53,59 +65,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 switch(s.length()){
                     case 1:
-                        codeOne.getDrawable().setColorFilter(Color.parseColor("#E73828"), PorterDuff.Mode.SRC_ATOP);
-                        codeTwo.getDrawable().clearColorFilter();
-                        codeThree.getDrawable().clearColorFilter();
-                        codeFour.getDrawable().clearColorFilter();
-                        codeFive.getDrawable().clearColorFilter();
-                        codeSix.getDrawable().clearColorFilter();
-                        codeText.setVisibility(View.INVISIBLE);
+                        setOvalColorFilter(1);
                         break;
                     case 2:
-                        codeOne.getDrawable().setColorFilter(Color.parseColor("#E73828"), PorterDuff.Mode.SRC_ATOP);
-                        codeTwo.getDrawable().setColorFilter(Color.parseColor("#E73828"), PorterDuff.Mode.SRC_ATOP);
-                        codeThree.getDrawable().clearColorFilter();
-                        codeFour.getDrawable().clearColorFilter();
-                        codeFive.getDrawable().clearColorFilter();
-                        codeSix.getDrawable().clearColorFilter();
-                        codeText.setVisibility(View.INVISIBLE);
+                        setOvalColorFilter(2);
                         break;
                     case 3:
-                        codeOne.getDrawable().setColorFilter(Color.parseColor("#E73828"), PorterDuff.Mode.SRC_ATOP);
-                        codeTwo.getDrawable().setColorFilter(Color.parseColor("#E73828"), PorterDuff.Mode.SRC_ATOP);
-                        codeThree.getDrawable().setColorFilter(Color.parseColor("#E73828"), PorterDuff.Mode.SRC_ATOP);
-                        codeFour.getDrawable().clearColorFilter();
-                        codeFive.getDrawable().clearColorFilter();
-                        codeSix.getDrawable().clearColorFilter();
-                        codeText.setVisibility(View.INVISIBLE);
+                        setOvalColorFilter(3);
                         break;
                     case 4:
-                        codeOne.getDrawable().setColorFilter(Color.parseColor("#E73828"), PorterDuff.Mode.SRC_ATOP);
-                        codeTwo.getDrawable().setColorFilter(Color.parseColor("#E73828"), PorterDuff.Mode.SRC_ATOP);
-                        codeThree.getDrawable().setColorFilter(Color.parseColor("#E73828"), PorterDuff.Mode.SRC_ATOP);
-                        codeFour.getDrawable().setColorFilter(Color.parseColor("#E73828"), PorterDuff.Mode.SRC_ATOP);
-                        codeFive.getDrawable().clearColorFilter();
-                        codeSix.getDrawable().clearColorFilter();
-                        codeText.setVisibility(View.INVISIBLE);
+                        setOvalColorFilter(4);
                         break;
                     case 5:
-                        codeOne.getDrawable().setColorFilter(Color.parseColor("#E73828"), PorterDuff.Mode.SRC_ATOP);
-                        codeTwo.getDrawable().setColorFilter(Color.parseColor("#E73828"), PorterDuff.Mode.SRC_ATOP);
-                        codeThree.getDrawable().setColorFilter(Color.parseColor("#E73828"), PorterDuff.Mode.SRC_ATOP);
-                        codeFour.getDrawable().setColorFilter(Color.parseColor("#E73828"), PorterDuff.Mode.SRC_ATOP);
-                        codeFive.getDrawable().setColorFilter(Color.parseColor("#E73828"), PorterDuff.Mode.SRC_ATOP);
-                        codeSix.getDrawable().clearColorFilter();
-                        codeText.setVisibility(View.INVISIBLE);
+                        setOvalColorFilter(5);
                         break;
                     case 6:
-                        codeOne.getDrawable().setColorFilter(Color.parseColor("#E73828"), PorterDuff.Mode.SRC_ATOP);
-                        codeTwo.getDrawable().setColorFilter(Color.parseColor("#E73828"), PorterDuff.Mode.SRC_ATOP);
-                        codeThree.getDrawable().setColorFilter(Color.parseColor("#E73828"), PorterDuff.Mode.SRC_ATOP);
-                        codeFour.getDrawable().setColorFilter(Color.parseColor("#E73828"), PorterDuff.Mode.SRC_ATOP);
-                        codeFive.getDrawable().setColorFilter(Color.parseColor("#E73828"), PorterDuff.Mode.SRC_ATOP);
-                        codeSix.getDrawable().setColorFilter(Color.parseColor("#E73828"), PorterDuff.Mode.SRC_ATOP);
-                        codeText.setText(inputCodeEditText.getText().toString());
-                        codeText.setVisibility(View.VISIBLE);
+                        setOvalColorFilter(6);
                         break;
                     default:
                         codeOne.getDrawable().clearColorFilter();
@@ -115,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         codeFive.getDrawable().clearColorFilter();
                         codeSix.getDrawable().clearColorFilter();
                         codeText.setVisibility(View.INVISIBLE);
-                        inputMethodManager.hideSoftInputFromWindow(inputCodeEditText.getWindowToken(), 0);
+                        inputMethodManager.hideSoftInputFromWindow(inputCodeEditText.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
                         break;
                 }
             }
@@ -129,45 +104,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private void setOvalColorFilter(int number){
+        for(int i = 0; i < number; i++){
+            codeOvalImages.get(i).getDrawable().setColorFilter(Color.parseColor(colorString), PorterDuff.Mode.SRC_ATOP);
+        }
+        for(int i = number-1; i >= 0; i--){
+            codeOvalImages.get(i).clearColorFilter();
+        }
+        if(number == 6){
+            codeText.setText(inputCodeEditText.getText().toString());
+            codeText.setVisibility(View.VISIBLE);
+            inputMethodManager.hideSoftInputFromWindow(inputCodeEditText.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+        }
+    }
+
+    private void requestFocusToEditText(){
+        inputCodeEditText.setText(null);
+        inputCodeEditText.performClick();
+        inputCodeEditText.requestFocus();
+        inputMethodManager.showSoftInput(inputCodeEditText, InputMethodManager.SHOW_IMPLICIT);
+    }
+
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
-            case R.id.codeOne:
-                inputCodeEditText.setText(null);
-                inputCodeEditText.performClick();
-                inputCodeEditText.requestFocus();
-                inputMethodManager.showSoftInput(inputCodeEditText, InputMethodManager.SHOW_IMPLICIT);
-                break;
-            case R.id.codeTwo:
-                inputCodeEditText.setText(null);
-                inputCodeEditText.performClick();
-                inputCodeEditText.requestFocus();
-                inputMethodManager.showSoftInput(inputCodeEditText, InputMethodManager.SHOW_IMPLICIT);
-                break;
-            case R.id.codeThree:
-                inputCodeEditText.setText(null);
-                inputCodeEditText.performClick();
-                inputCodeEditText.requestFocus();
-                inputMethodManager.showSoftInput(inputCodeEditText, InputMethodManager.SHOW_IMPLICIT);
-                break;
-            case R.id.codeFour:
-                inputCodeEditText.setText(null);
-                inputCodeEditText.performClick();
-                inputCodeEditText.requestFocus();
-                inputMethodManager.showSoftInput(inputCodeEditText, InputMethodManager.SHOW_IMPLICIT);
-                break;
-            case R.id.codeFive:
-                inputCodeEditText.setText(null);
-                inputCodeEditText.performClick();
-                inputCodeEditText.requestFocus();
-                inputMethodManager.showSoftInput(inputCodeEditText, InputMethodManager.SHOW_IMPLICIT);
-                break;
-            case R.id.codeSix:
-                inputCodeEditText.setText(null);
-                inputCodeEditText.performClick();
-                inputCodeEditText.requestFocus();
-                inputMethodManager.showSoftInput(inputCodeEditText, InputMethodManager.SHOW_IMPLICIT);
-                break;
+        if(v instanceof ImageView){
+            requestFocusToEditText();
         }
     }
 }
