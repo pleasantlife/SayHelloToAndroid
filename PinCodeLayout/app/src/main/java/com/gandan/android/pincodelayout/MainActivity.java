@@ -83,14 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         setOvalColorFilter(6);
                         break;
                     default:
-                        codeOne.getDrawable().clearColorFilter();
-                        codeTwo.getDrawable().clearColorFilter();
-                        codeThree.getDrawable().clearColorFilter();
-                        codeFour.getDrawable().clearColorFilter();
-                        codeFive.getDrawable().clearColorFilter();
-                        codeSix.getDrawable().clearColorFilter();
-                        codeText.setVisibility(View.INVISIBLE);
-                        inputMethodManager.hideSoftInputFromWindow(inputCodeEditText.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+                        clearColorFilter();
                         break;
                 }
             }
@@ -116,6 +109,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             codeText.setVisibility(View.VISIBLE);
             inputMethodManager.hideSoftInputFromWindow(inputCodeEditText.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
         }
+    }
+
+    private void clearColorFilter(){
+        codeOne.getDrawable().clearColorFilter();
+        codeTwo.getDrawable().clearColorFilter();
+        codeThree.getDrawable().clearColorFilter();
+        codeFour.getDrawable().clearColorFilter();
+        codeFive.getDrawable().clearColorFilter();
+        codeSix.getDrawable().clearColorFilter();
+        codeText.setVisibility(View.INVISIBLE);
+        inputMethodManager.hideSoftInputFromWindow(inputCodeEditText.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
     }
 
     private void requestFocusToEditText(){
