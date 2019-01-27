@@ -6,6 +6,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.request.RequestOptions;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,5 +34,12 @@ public class MainActivity extends AppCompatActivity {
          */
         RequestManager requestManager = Glide.with(this);
         requestManager.load(R.drawable.parachute).into(imgGlideDrawable);
+
+        /**
+         *  큰 이미지에서 화질저하가 심해지는 현상 해결하기
+         */
+
+        ImageView imgGlideResize = findViewById(R.id.imgGlideResize);
+        Glide.with(this).load(R.drawable.parachute).apply(RequestOptions.formatOf(DecodeFormat.PREFER_ARGB_8888)).into(imgGlideResize);
     }
 }

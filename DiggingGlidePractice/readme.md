@@ -49,3 +49,23 @@ compile ("com.github.bumptech.glide:recyclerview-integration:4.6.1") {
 ### 4-4. PreloadSizeProvider와 PreloadModelProvider를 결합한 RecyclerViewPreloader 생성하기
 ### 4-5. RecyclerView Scroll Listener에 RecyclerViewPreloader 결합하기
 
+
+### 5. 이미지 화질이 저하되는 에러 해결하기
+
+- RGB_565 포맷으로 이미지를 압축하여 다른 이미지 라이브러리에 비해 최대 50%의 메모리절약 효과를 보고 있음
+- 하지만 글씨가 많은데 이미지 사이즈가 큰 경우 알아보기 힘들 정도로 화질이 저하되는 경우가 있음
+- 따라서 메모리를 희생하더라도, 제대로 이미지를 띄워야 할 경우 아래와 같이 대처.
+
+```java
+Glide.with(imageView).load(url)
+    .apply(new RequestOptions()
+            .format(DecodeFormat.PREFER_ARGB_8888)
+    .into(imageView);
+
+    // 또는
+
+    Glide.with(imageView).load(url)
+    .apply(RequestOptions
+            .formatOf(DecodeFormat.PREFER_ARGB_8888))
+    .into(imgGlideResize);
+```
