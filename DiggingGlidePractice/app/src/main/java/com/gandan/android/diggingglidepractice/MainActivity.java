@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
          */
 
         ImageView imgGlideResize = findViewById(R.id.imgGlideResize);
-        Glide.with(this).load(R.drawable.parachute).apply(RequestOptions.formatOf(DecodeFormat.PREFER_ARGB_8888)).into(imgGlideResize);
+        //RequestOptions에 여러가지 속성을 한번에 적용할 수 있음.
+        //여기에서는 화질저하 부분 해결과 함께 모서리를 140px만큼 둥글게 하는 처리를 적용.
+        Glide.with(this).load("https://cdn.pixabay.com/photo/2017/10/12/20/15/photoshop-2845779_1280.jpg")
+                .apply(RequestOptions.formatOf(DecodeFormat.PREFER_ARGB_8888)
+                        .bitmapTransform(new RoundedCorners(140))).into(imgGlideResize);
     }
 }
