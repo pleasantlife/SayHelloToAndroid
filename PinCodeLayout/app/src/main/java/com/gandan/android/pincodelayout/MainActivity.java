@@ -12,11 +12,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, CodeListener {
 
     ImageView codeOne, codeTwo, codeThree, codeFour, codeFive, codeSix;
     EditText inputCodeEditText;
@@ -108,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             codeText.setText(inputCodeEditText.getText().toString());
             codeText.setVisibility(View.VISIBLE);
             inputMethodManager.hideSoftInputFromWindow(inputCodeEditText.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+            this.inputCode(inputCodeEditText.getText().toString());
         }
     }
 
@@ -134,5 +136,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(v instanceof ImageView){
             requestFocusToEditText();
         }
+    }
+
+    //인터페이스를 사용해봄.
+    @Override
+    public void inputCode(String code) {
+        Toast.makeText(this, code+"", Toast.LENGTH_SHORT).show();
     }
 }
