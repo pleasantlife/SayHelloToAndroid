@@ -30,4 +30,8 @@ dependencies {
         exclude group: 'com.android.support'
     }
     annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
+
+    implementation ('jp.wasabeef:glide-transformations:4.0.1'){
+        exclude group: 'com.android.support'
+    }
 }

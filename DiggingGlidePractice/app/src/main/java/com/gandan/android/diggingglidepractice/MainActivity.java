@@ -1,5 +1,6 @@
 package com.gandan.android.diggingglidepractice;
 
+import android.graphics.BlurMaskFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -9,6 +10,8 @@ import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+
+import jp.wasabeef.glide.transformations.BlurTransformation;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,5 +49,12 @@ public class MainActivity extends AppCompatActivity {
         Glide.with(this).load("https://cdn.pixabay.com/photo/2017/10/12/20/15/photoshop-2845779_1280.jpg")
                 .apply(RequestOptions.formatOf(DecodeFormat.PREFER_ARGB_8888)
                         .bitmapTransform(new RoundedCorners(140))).into(imgGlideResize);
+
+
+        ImageView imgGlideBlur = findViewById(R.id.imgGlideBlur);
+        Glide.with(this).load("https://cdn.pixabay.com/photo/2017/10/12/20/15/photoshop-2845779_1280.jpg")
+                .apply(RequestOptions.bitmapTransform(new BlurTransformation(60)))
+                .into(imgGlideBlur);
+
     }
 }
