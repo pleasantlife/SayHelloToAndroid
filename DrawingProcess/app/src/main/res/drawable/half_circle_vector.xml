@@ -7,7 +7,7 @@
     android:height="100dp">
 
     <path
-        android:fillColor="@color/colorAccent"
+        android:fillColor="#FF4081"
         android:pathData="M 100 100 A 30 30 0 0 0 30 30 Z"/>
 
 </vector>
