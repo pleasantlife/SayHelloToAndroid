@@ -64,28 +64,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                switch(s.length()){
-                    case 1:
-                        setOvalColorFilter(1);
-                        break;
-                    case 2:
-                        setOvalColorFilter(2);
-                        break;
-                    case 3:
-                        setOvalColorFilter(3);
-                        break;
-                    case 4:
-                        setOvalColorFilter(4);
-                        break;
-                    case 5:
-                        setOvalColorFilter(5);
-                        break;
-                    case 6:
-                        setOvalColorFilter(6);
-                        break;
-                    default:
-                        clearColorFilter();
-                        break;
+                if(s.length() >= 1 && s.length() <= 6){
+                    setOvalColorFilter(s.length());
+                } else {
+                    clearColorFilter();
                 }
             }
 
@@ -114,12 +96,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void clearColorFilter(){
-        codeOne.getDrawable().clearColorFilter();
-        codeTwo.getDrawable().clearColorFilter();
-        codeThree.getDrawable().clearColorFilter();
-        codeFour.getDrawable().clearColorFilter();
-        codeFive.getDrawable().clearColorFilter();
-        codeSix.getDrawable().clearColorFilter();
+        for(ImageView imgCode : codeOvalImages){
+            imgCode.getDrawable().clearColorFilter();
+        }
         codeText.setVisibility(View.INVISIBLE);
         inputMethodManager.hideSoftInputFromWindow(inputCodeEditText.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
     }
