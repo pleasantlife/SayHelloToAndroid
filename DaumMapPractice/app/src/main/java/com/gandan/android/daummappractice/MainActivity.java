@@ -15,6 +15,8 @@ import android.widget.Toast;
 import net.daum.android.map.MapViewController;
 import net.daum.android.map.MapViewEventListener;
 import net.daum.android.map.MapViewTouchEventListener;
+import net.daum.android.map.coord.MapCoord;
+import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
@@ -46,22 +48,33 @@ public class MainActivity extends AppCompatActivity {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        dialog = new AlertDialog.Builder(this).setTitle("안녕?").create();
+        dialog = new AlertDialog.Builder(this).setTitle("안녕?").setMessage("로딩중이야").create();
 
 
         daumMapView = findViewById(R.id.daumMapView);
-        initMapView = findViewById(R.id.mapView);
+        initMapView = findViewById(R.id.initMapView);
         initMapView.setHDMapTileEnabled(true);
         initMapView.setMapType(MapView.MapType.Hybrid);
         initMapView.setShowCurrentLocationMarker(true);
         initMapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(37.4982086, 127.02776360000007), 1, true);
+
+        MapPoint point = MapPoint.mapPointWithGeoCoord(37.4982086, 127.02776360000007);
+
+        MapPOIItem mapPOIItem = new MapPOIItem();
+        mapPOIItem.setTag(0);
+        mapPOIItem.setItemName("최초 시작 지점");
+        mapPOIItem.setMapPoint(point);
+        mapPOIItem.setMarkerType(MapPOIItem.MarkerType.BluePin);
+        mapPOIItem.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
+        mapPOIItem.setCustomImageAutoscale(false);
+        initMapView.addPOIItem(mapPOIItem);
 
         dialog.show();
 
         final MapView.MapViewEventListener listener = new MapView.MapViewEventListener() {
             @Override
             public void onMapViewInitialized(MapView mapView) {
-
+                //setMarker();
             }
 
             @Override
@@ -81,7 +94,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint) {
-
+                Log.e("latitude", mapPoint.getMapPointGeoCoord().latitude+"");
+                Log.e("longitude", mapPoint.getMapPointGeoCoord().longitude+"");
             }
 
             @Override
@@ -110,15 +124,19 @@ public class MainActivity extends AppCompatActivity {
             //이 이후에 net.daum.android.map.MapView.MapView를 붙여야 리스너가 제대로 동작함.
             @Override
             public void onLoadMapView() {
-                Log.e("Load", "Complete?");
+                Log.e("EventListener", "Attached");
                 initMapView.setMapViewEventListener(listener);
+                if(dialog.isShowing()){
+                    dialog.dismiss();
+                }
             }
         };
 
 
-
         initMapView.setMapViewEventListener(eventListener);
-        //mapViewEventListener.onMapViewCenterPointMoved(initMapView, initMapView.getMapCenterPoint());
-        //mapViewEventListener.onMapViewSingleTapped(initMapView, initMapView.getMapCenterPoint());
+    }
+
+    private void setMarker(){
+
     }
 }
