@@ -4,18 +4,25 @@ import android.app.Dialog;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import net.daum.android.map.MapViewController;
 import net.daum.android.map.MapViewEventListener;
 import net.daum.android.map.MapViewTouchEventListener;
 import net.daum.android.map.coord.MapCoord;
+import net.daum.mf.map.api.CalloutBalloonAdapter;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
@@ -64,10 +71,63 @@ public class MainActivity extends AppCompatActivity {
         mapPOIItem.setTag(0);
         mapPOIItem.setItemName("최초 시작 지점");
         mapPOIItem.setMapPoint(point);
-        mapPOIItem.setMarkerType(MapPOIItem.MarkerType.BluePin);
-        mapPOIItem.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
-        mapPOIItem.setCustomImageAutoscale(false);
+        mapPOIItem.setCustomImageAutoscale(true);
+        mapPOIItem.setCustomSelectedImageResourceId(R.drawable.map_marker_icon);
+        mapPOIItem.setMarkerType(MapPOIItem.MarkerType.CustomImage);
+        /*mapPOIItem.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);*/
+        mapPOIItem.setCustomImageResourceId(R.drawable.map_marker_icon);
+        mapPOIItem.setShowCalloutBalloonOnTouch(true);
         initMapView.addPOIItem(mapPOIItem);
+
+        final CalloutBalloonAdapter balloonAdapter = new CalloutBalloonAdapter() {
+            @Override
+            public View getCalloutBalloon(MapPOIItem mapPOIItem) {
+                return null;
+            }
+
+            @Override
+            public View getPressedCalloutBalloon(MapPOIItem mapPOIItem) {
+                View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.hmm, null, false);
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(MainActivity.this, "Success!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                return view;
+            }
+        };
+
+
+        final CalloutBalloonAdapter adapter = new CalloutBalloonAdapter() {
+            @Override
+            public View getCalloutBalloon(MapPOIItem mapPOIItem) {
+                View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.hmm, null, false);
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(MainActivity.this, "Success!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                return view;
+            }
+
+            @Override
+            public View getPressedCalloutBalloon(MapPOIItem mapPOIItem) {
+                Log.e("흐음?", "으앙?");
+                View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.hmm, null, false);
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(MainActivity.this, "Success!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                return view;
+            }
+
+
+        };
+
 
         dialog.show();
 
@@ -75,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onMapViewInitialized(MapView mapView) {
                 //setMarker();
+                initMapView.setCalloutBalloonAdapter(adapter);
             }
 
             @Override
@@ -132,11 +193,13 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-
         initMapView.setMapViewEventListener(eventListener);
+
+
+
+
+
+
     }
 
-    private void setMarker(){
-
-    }
 }
