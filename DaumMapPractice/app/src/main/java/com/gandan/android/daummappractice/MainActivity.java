@@ -31,7 +31,7 @@ import net.daum.mf.map.api.MapView;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MapView.POIItemEventListener {
 
     LinearLayout daumMapView;
     MapView initMapView;
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
         MapPoint point = MapPoint.mapPointWithGeoCoord(37.4982086, 127.02776360000007);
 
-        MapPOIItem mapPOIItem = new MapPOIItem();
+        final MapPOIItem mapPOIItem = new MapPOIItem();
         mapPOIItem.setTag(0);
         mapPOIItem.setItemName("최초 시작 지점");
         mapPOIItem.setMapPoint(point);
@@ -78,56 +78,7 @@ public class MainActivity extends AppCompatActivity {
         mapPOIItem.setCustomImageResourceId(R.drawable.map_marker_icon);
         mapPOIItem.setShowCalloutBalloonOnTouch(true);
         initMapView.addPOIItem(mapPOIItem);
-
-        final CalloutBalloonAdapter balloonAdapter = new CalloutBalloonAdapter() {
-            @Override
-            public View getCalloutBalloon(MapPOIItem mapPOIItem) {
-                return null;
-            }
-
-            @Override
-            public View getPressedCalloutBalloon(MapPOIItem mapPOIItem) {
-                View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.hmm, null, false);
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(MainActivity.this, "Success!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                return view;
-            }
-        };
-
-
-        final CalloutBalloonAdapter adapter = new CalloutBalloonAdapter() {
-            @Override
-            public View getCalloutBalloon(MapPOIItem mapPOIItem) {
-                View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.hmm, null, false);
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(MainActivity.this, "Success!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                return view;
-            }
-
-            @Override
-            public View getPressedCalloutBalloon(MapPOIItem mapPOIItem) {
-                Log.e("흐음?", "으앙?");
-                View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.hmm, null, false);
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(MainActivity.this, "Success!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                return view;
-            }
-
-
-        };
-
+        initMapView.setPOIItemEventListener(this);
 
         dialog.show();
 
@@ -135,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onMapViewInitialized(MapView mapView) {
                 //setMarker();
-                initMapView.setCalloutBalloonAdapter(adapter);
             }
 
             @Override
@@ -187,19 +137,33 @@ public class MainActivity extends AppCompatActivity {
             public void onLoadMapView() {
                 Log.e("EventListener", "Attached");
                 initMapView.setMapViewEventListener(listener);
-                if(dialog.isShowing()){
+                if (dialog.isShowing()) {
                     dialog.dismiss();
                 }
             }
         };
 
         initMapView.setMapViewEventListener(eventListener);
+    }
 
-
-
-
-
+    //Implement해야 함. onCreate단에서 하면 동작하지 않음..
+    @Override
+    public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
 
     }
 
+    @Override
+    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem) {
+
+    }
+
+    @Override
+    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
+        Toast.makeText(this, "Clicked " + mapPOIItem.getItemName() + " Callout Balloon", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
+
+    }
 }
