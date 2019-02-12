@@ -25,6 +25,7 @@ import net.daum.android.map.coord.MapCoord;
 import net.daum.mf.map.api.CalloutBalloonAdapter;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
+import net.daum.mf.map.api.MapReverseGeoCoder;
 import net.daum.mf.map.api.MapView;
 
 
@@ -82,6 +83,8 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
 
         dialog.show();
 
+
+
         final MapView.MapViewEventListener listener = new MapView.MapViewEventListener() {
             @Override
             public void onMapViewInitialized(MapView mapView) {
@@ -111,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
 
             @Override
             public void onMapViewLongPressed(MapView mapView, MapPoint mapPoint) {
-
+                getAddress(mapPoint);
             }
 
             @Override
@@ -144,6 +147,23 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
         };
 
         initMapView.setMapViewEventListener(eventListener);
+    }
+
+    //지도점(MapPoint)의 주소를 가져옴.
+    private void getAddress(MapPoint mapPoint){
+        MapReverseGeoCoder geoCoder = new MapReverseGeoCoder(getString(R.string.api_key), mapPoint,
+                new MapReverseGeoCoder.ReverseGeoCodingResultListener() {
+                    @Override
+                    public void onReverseGeoCoderFoundAddress(MapReverseGeoCoder mapReverseGeoCoder, String s) {
+                        Toast.makeText(MainActivity.this, s+"", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onReverseGeoCoderFailedToFindAddress(MapReverseGeoCoder mapReverseGeoCoder) {
+                        Log.e("Err", "GeoCoding");
+                    }
+                }, this);
+        geoCoder.startFindingAddress();
     }
 
     //Implement해야 함. onCreate단에서 하면 동작하지 않음..

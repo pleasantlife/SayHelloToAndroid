@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data android:name="com.kakao.sdk.AppKey"
-            android:value="83cabf14cb7145b4f13779a75f37239d"/>
+            android:value="@string/api_key"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

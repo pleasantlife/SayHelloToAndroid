@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DaumMapPractice</string>
+    <string name="api_key">83cabf14cb7145b4f13779a75f37239d</string>
 </resources>
