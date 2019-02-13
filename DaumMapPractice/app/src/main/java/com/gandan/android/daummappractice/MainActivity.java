@@ -78,8 +78,38 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
         /*mapPOIItem.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);*/
         mapPOIItem.setCustomImageResourceId(R.drawable.map_marker_icon);
         mapPOIItem.setShowCalloutBalloonOnTouch(true);
+
+
+        MapPOIItem[] items = new MapPOIItem[3];
+        MapPOIItem itemOne = new MapPOIItem();
+        itemOne.setItemName("광화문");
+        MapPoint pointOne = MapPoint.mapPointWithGeoCoord(37.5759369,126.9768157);
+        itemOne.setMapPoint(pointOne);
+        itemOne.setMarkerType(MapPOIItem.MarkerType.BluePin);
+        itemOne.setShowCalloutBalloonOnTouch(true);
+        items[0] = itemOne;
+
+        MapPOIItem itemTwo = new MapPOIItem();
+        itemTwo.setItemName("신논현역");
+        MapPoint pointTwo = MapPoint.mapPointWithGeoCoord(37.504724,127.0248328);
+        itemTwo.setMapPoint(pointTwo);
+        itemTwo.setMarkerType(MapPOIItem.MarkerType.BluePin);
+        itemTwo.setShowCalloutBalloonOnTouch(true);
+        items[1] = itemTwo;
+
+        MapPOIItem itemThree = new MapPOIItem();
+        itemThree.setItemName("63빌딩");
+        MapPoint pointThree = MapPoint.mapPointWithGeoCoord(37.5193776,126.9390509);
+        itemThree.setMapPoint(pointThree);
+        itemThree.setMarkerType(MapPOIItem.MarkerType.BluePin);
+        itemThree.setShowCalloutBalloonOnTouch(true);
+        items[2] = itemThree;
+
+
         initMapView.addPOIItem(mapPOIItem);
+        initMapView.addPOIItems(items);
         initMapView.setPOIItemEventListener(this);
+
 
         dialog.show();
 
@@ -169,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
     //Implement해야 함. onCreate단에서 하면 동작하지 않음..
     @Override
     public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
-
+        mapView.setMapCenterPoint(mapPOIItem.getMapPoint(), true);
     }
 
     @Override
