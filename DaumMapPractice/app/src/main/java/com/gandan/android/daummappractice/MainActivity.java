@@ -32,9 +32,9 @@ import net.daum.mf.map.api.MapView;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class MainActivity extends AppCompatActivity implements MapView.POIItemEventListener {
+public class MainActivity extends AppCompatActivity implements MapView.POIItemEventListener, View.OnClickListener {
 
-    LinearLayout daumMapView;
+    LinearLayout daumMapView, zoomIn, zoomOut;
     MapView initMapView;
 
     AlertDialog dialog;
@@ -64,6 +64,10 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
         initMapView.setHDMapTileEnabled(true);
         initMapView.setMapType(MapView.MapType.Hybrid);
         initMapView.setShowCurrentLocationMarker(true);
+        zoomIn = findViewById(R.id.zoomIn);
+        zoomIn.setOnClickListener(this);
+        zoomOut = findViewById(R.id.zoomOut);
+        zoomOut.setOnClickListener(this);
         initMapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(37.4982086, 127.02776360000007), 1, true);
 
         MapPoint point = MapPoint.mapPointWithGeoCoord(37.4982086, 127.02776360000007);
@@ -215,5 +219,17 @@ public class MainActivity extends AppCompatActivity implements MapView.POIItemEv
     @Override
     public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()){
+            case R.id.zoomIn:
+                initMapView.setZoomLevel(initMapView.getZoomLevel()-1, true);
+                break;
+            case R.id.zoomOut:
+                initMapView.setZoomLevel(initMapView.getZoomLevel()+1, true);
+                break;
+        }
     }
 }
