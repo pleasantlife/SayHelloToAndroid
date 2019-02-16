@@ -20,13 +20,20 @@ public class RecyclerInterfaceAdapter extends RecyclerView.Adapter<RecyclerInter
     Context context;
     List<String> hundredList = new ArrayList<>();
     DataListener dataListener;
+    AnotherListener anotherListener;
 
 
+    //생성자에 넣거나
     public RecyclerInterfaceAdapter(Context context, List<String> hundredList, DataListener dataListener){
         this.context = context;
         this.hundredList = hundredList;
         //MainActivity에서 this로 넘겨받아 dataListener를 선언함.
         this.dataListener = dataListener;
+    }
+
+    //따로 넣어도 된다!
+    public void setAnotherListener(AnotherListener anotherListener){
+        this.anotherListener = anotherListener;
     }
 
 
@@ -40,6 +47,7 @@ public class RecyclerInterfaceAdapter extends RecyclerView.Adapter<RecyclerInter
     public void onBindViewHolder(Holder holder, int position) {
         final String string = hundredList.get(position);
         holder.txtItem.setText(string);
+        holder.txtItem.setOnClickListener( v -> anotherListener.listen(string));
         holder.constraintItem.setOnClickListener( v -> dataListener.sendData(string));
         /*holder.constraintItem.setOnClickListener(new View.OnClickListener() {
             @Override

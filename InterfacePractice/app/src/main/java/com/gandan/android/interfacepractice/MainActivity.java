@@ -5,11 +5,12 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements DataListener {
+public class MainActivity extends AppCompatActivity implements DataListener, AnotherListener {
 
     List<String> hundredList = new ArrayList<>();
     RecyclerView recyclerInterface;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements DataListener {
         recyclerInterface = findViewById(R.id.recyclerInterface);
         //MainActivity에서 implements로 구현했기 때문에, 리사이클러어댑터뷰에 this로 인터페이스를 넘겨준다.
         recyclerInterfaceAdapter = new RecyclerInterfaceAdapter(this, hundredList, this);
+        recyclerInterfaceAdapter.setAnotherListener(this);
         recyclerInterface.setAdapter(recyclerInterfaceAdapter);
         recyclerInterface.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -39,5 +41,10 @@ public class MainActivity extends AppCompatActivity implements DataListener {
     @Override
     public void sendData(String data) {
         txtInterface.setText(data);
+    }
+
+    @Override
+    public void listen(String data) {
+        Toast.makeText(this, data+"", Toast.LENGTH_SHORT).show();
     }
 }
