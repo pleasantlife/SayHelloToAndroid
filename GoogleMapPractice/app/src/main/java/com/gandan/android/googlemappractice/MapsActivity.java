@@ -2,11 +2,14 @@ package com.gandan.android.googlemappractice;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -24,7 +27,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
 
         //안드로이드에 기본적으로 내장된 '맵프래그먼트'를 이용한다.
-        //TODO: XML에서 MapView를 등록하여 사용할 수 있는지?
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -49,11 +51,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng meritzGangnam = new LatLng(37.497082, 127.028704);
 
         //마커(핀)를 표시할 때는 map.addMarker메소드를 이용한다.
-        mMap.addMarker(new MarkerOptions().position(meritzGangnam).title("메리츠 강남타워"));
-        //setMapType 메소드를 통해 위성지도, 하이브리드, 일반지도 모드로 설정할 수 있다.
-        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.title("Mertiz Gangnam Tower");
+        markerOptions.position(meritzGangnam);
 
-        //위에서 설정한 LatLng 객체를 구글맵 객체에 등록한다.
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(meritzGangnam));
+        mMap.addMarker(markerOptions);
+        //setMapType 메소드를 통해 위성지도, 하이브리드, 일반지도 모드로 설정할 수 있다.
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+        //카메라가 최초로 비추는 곳에 대한 각도, 위치, 줌레벨 설정등을 할 수 있다.
+        CameraPosition cameraPosition = CameraPosition.builder().zoom(15).target(meritzGangnam).bearing(0)
+                .tilt(0).build();
+
+        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(meritzGangnam));
+
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                Toast.makeText(MapsActivity.this, "latitude"+latLng.latitude+" "+"longitude"+latLng.longitude, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
