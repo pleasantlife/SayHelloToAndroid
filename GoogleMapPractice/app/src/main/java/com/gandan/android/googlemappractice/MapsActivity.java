@@ -2,6 +2,7 @@ package com.gandan.android.googlemappractice;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -9,8 +10,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.GroundOverlay;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
@@ -66,11 +71,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(meritzGangnam));
 
+        setOverLayImage();
+
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                Toast.makeText(MapsActivity.this, "latitude"+latLng.latitude+" "+"longitude"+latLng.longitude, Toast.LENGTH_SHORT).show();
+                Log.e("latitude", latLng.latitude+"");
+                Log.e("longitude", latLng.longitude+"");
             }
         });
+    }
+
+    private void setOverLayImage(){
+        LatLngBounds latLngBounds = new LatLngBounds(
+                //남서쪽
+                new LatLng(37.575748292159425, 126.97426971048117),
+                //북동쪽
+                new LatLng(37.58316795383823, 126.97923883795738)
+        );
+
+        GroundOverlayOptions groundOverlayOptions = new GroundOverlayOptions().
+                image(BitmapDescriptorFactory.fromResource(R.drawable.gyeongbokgoong))
+                .anchor(0,1)
+                .positionFromBounds(latLngBounds);
+
+        mMap.addGroundOverlay(groundOverlayOptions);
     }
 }
