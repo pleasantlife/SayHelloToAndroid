@@ -3,6 +3,7 @@ package com.gandan.android.googlemappractice;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -16,6 +17,7 @@ import com.google.android.gms.maps.model.GroundOverlay;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
@@ -52,15 +54,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
 
+
+
         //경도, 위도 순으로 파라미터를 입력한 LatLng 객체를 생성하여 지도의 '최초' 중심점을 잡는다.
         LatLng meritzGangnam = new LatLng(37.497082, 127.028704);
 
         //마커(핀)를 표시할 때는 map.addMarker메소드를 이용한다.
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.title("Mertiz Gangnam Tower");
-        markerOptions.position(meritzGangnam);
+        MarkerOptions meritzMarker = new MarkerOptions();
+        meritzMarker.title("Mertiz Gangnam Tower");
+        meritzMarker.position(meritzGangnam);
 
-        mMap.addMarker(markerOptions);
+        MarkerOptions cgvMarker = new MarkerOptions();
+        cgvMarker.title("CGV Gangnam");
+        cgvMarker.position(new LatLng(37.5005811, 127.026329));
+
+        MarkerOptions gangnamStationMarker = new MarkerOptions();
+        gangnamStationMarker.title("Gangnam Station");
+        gangnamStationMarker.position(new LatLng(37.497909, 127.027627));
+
+        mMap.addMarker(meritzMarker);
+        mMap.addMarker(cgvMarker);
+        mMap.addMarker(gangnamStationMarker);
+
+
         //setMapType 메소드를 통해 위성지도, 하이브리드, 일반지도 모드로 설정할 수 있다.
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
@@ -80,6 +96,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.e("longitude", latLng.longitude+"");
             }
         });
+
+        /*mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                if(marker.getPosition().latitude == 37.497082){
+                    Toast.makeText(MapsActivity.this, "강남 메리츠 마커 클릭", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                return false;
+            }
+        });*/
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Toast.makeText(MapsActivity.this, marker.getTitle(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
 
     private void setOverLayImage(){
