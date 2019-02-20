@@ -19,6 +19,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.MarkerManager;
+import com.google.maps.android.clustering.ClusterItem;
+import com.google.maps.android.clustering.ClusterManager;
 
 /**
  *      안드로이드 스튜디오에서 새 액티비티를 생성할 때 Google Maps Activity를 선택하면 자동으로 구글맵 액티비티를 생성해준다.
@@ -27,6 +30,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private ClusterManager<ClusterItem> clusterManager;
+    private MarkerManager markerManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +58,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-
+        markerManager = new MarkerManager(mMap);
+        clusterManager = new ClusterManager(this, mMap, markerManager);
 
 
         //경도, 위도 순으로 파라미터를 입력한 LatLng 객체를 생성하여 지도의 '최초' 중심점을 잡는다.
@@ -75,6 +81,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(meritzMarker);
         mMap.addMarker(cgvMarker);
         mMap.addMarker(gangnamStationMarker);
+
+
+        mMap.setOnCameraIdleListener(clusterManager);
+        mMap.setOnMarkerClickListener(clusterManager);
+
+        addItem();
 
 
         //setMapType 메소드를 통해 위성지도, 하이브리드, 일반지도 모드로 설정할 수 있다.
@@ -115,6 +127,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
 
+
+
+    }
+
+    private void addItem(){
+        double lat = 37.497909;
+        double lng = 127.027627;
+
+        for (int i =0; i < 10; i++){
+            double offset = 1 / 100d;
+            lat = lat + offset;
+            lng = lng + offset;
+            MyItem item = new MyItem(lat, lng);
+            clusterManager.addItem(item);
+        }
     }
 
     private void setOverLayImage(){
@@ -131,5 +158,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .positionFromBounds(latLngBounds);
 
         mMap.addGroundOverlay(groundOverlayOptions);
+    }
+
+    class MyItem implements ClusterItem {
+
+        private double lat;
+        private double lng;
+        private LatLng latLng;
+        private String title;
+        private String snippet;
+
+        public MyItem(double lat, double lng, String title, String snippet){
+
+        }
+
+        public MyItem(double lat, double lng){
+            latLng = new LatLng(lat, lng);
+        }
+
+        @Override
+        public LatLng getPosition() {
+            return latLng;
+        }
+
+        @Override
+        public String getTitle() {
+            return title;
+        }
+
+        @Override
+        public String getSnippet() {
+            return snippet;
+        }
     }
 }
