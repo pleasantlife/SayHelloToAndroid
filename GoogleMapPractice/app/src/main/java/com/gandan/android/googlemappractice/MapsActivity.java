@@ -23,6 +23,10 @@ import com.google.maps.android.MarkerManager;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
 /**
  *      안드로이드 스튜디오에서 새 액티비티를 생성할 때 Google Maps Activity를 선택하면 자동으로 구글맵 액티비티를 생성해준다.
  */
@@ -70,18 +74,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         meritzMarker.title("Mertiz Gangnam Tower");
         meritzMarker.position(meritzGangnam);
 
-        MarkerOptions cgvMarker = new MarkerOptions();
-        cgvMarker.title("CGV Gangnam");
-        cgvMarker.position(new LatLng(37.5005811, 127.026329));
-
-        MarkerOptions gangnamStationMarker = new MarkerOptions();
-        gangnamStationMarker.title("Gangnam Station");
-        gangnamStationMarker.position(new LatLng(37.497909, 127.027627));
-
         mMap.addMarker(meritzMarker);
-        mMap.addMarker(cgvMarker);
-        mMap.addMarker(gangnamStationMarker);
-
 
         mMap.setOnCameraIdleListener(clusterManager);
         mMap.setOnMarkerClickListener(clusterManager);
@@ -131,7 +124,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    //최소 10개는 추가해야 하는 듯 하다.
+    //원하는 줌 레벨에 클러스터링 조작하기 : https://stackoverflow.com/questions/28673764/control-zoom-level-when-using-google-maps-android-marker-clustering-utility
     private void addItem(){
+
+        MarkerOptions cgvMarker = new MarkerOptions();
+        cgvMarker.title("CGV Gangnam");
+        cgvMarker.position(new LatLng(37.5005811, 127.026329));
+
+        MarkerOptions gangnamStationMarker = new MarkerOptions();
+        gangnamStationMarker.title("Gangnam Station");
+        gangnamStationMarker.position(new LatLng(37.497909, 127.027627));
+
         double lat = 37.497909;
         double lng = 127.027627;
 
@@ -141,7 +145,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             lng = lng + offset;
             MyItem item = new MyItem(lat, lng);
             clusterManager.addItem(item);
+
         }
+
+        clusterManager.addItem(new MyItem(37.497909, 127.027627, "Gangnam Station", "Subway Line No.2"));
+        clusterManager.addItem(new MyItem(37.5005811, 127.026329, "CGV Gangnam", "Running 24 hours"));
+
+        //MyItem cgvItem = new MyItem(37.5005811, 127.026329, "CGV Gangnam", "Running 24 hours");
+        //MyItem gangnamStationItem = new MyItem(37.497909, 127.027627, "Gangnam Station", "Subway Line No.2");
+
+
     }
 
     private void setOverLayImage(){
@@ -169,7 +182,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         private String snippet;
 
         public MyItem(double lat, double lng, String title, String snippet){
-
+            latLng = new LatLng(lat, lng);
+            this.title = title;
+            this.snippet = snippet;
         }
 
         public MyItem(double lat, double lng){
@@ -190,5 +205,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public String getSnippet() {
             return snippet;
         }
+
+
     }
 }
