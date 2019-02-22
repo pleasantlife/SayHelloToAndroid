@@ -206,6 +206,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return snippet;
         }
 
+        public double getLat() {
+            return lat;
+        }
 
+        public void setLat(double lat) {
+            this.lat = lat;
+        }
+
+        public double getLng() {
+            return lng;
+        }
+
+        public void setLng(double lng) {
+            this.lng = lng;
+        }
+
+        public LatLng getLatLng() {
+            return latLng;
+        }
+
+        public void setLatLng(LatLng latLng) {
+            this.latLng = latLng;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public void setSnippet(String snippet) {
+            this.snippet = snippet;
+        }
     }
 }
