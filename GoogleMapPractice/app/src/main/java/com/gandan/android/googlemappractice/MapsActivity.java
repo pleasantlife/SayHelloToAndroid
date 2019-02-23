@@ -22,6 +22,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.MarkerManager;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.data.geojson.GeoJsonLayer;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,6 +40,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private ClusterManager<ClusterItem> clusterManager;
     private MarkerManager markerManager;
+    private String geoJsonStr = "";
+    private JSONObject object;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +52,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        //geoJson을 이용하여 마커를 표시할 수도 있다.
+        geoJsonStr = "{\n" +
+                "  \"type\": \"Feature\",\n" +
+                "  \"geometry\": {\n" +
+                "    \"type\": \"Point\",\n" +
+                "    \"coordinates\": [126.4919855, 33.5069606]\n" +
+                "  },\n" +
+                "  \"properties\": {\n" +
+                "    \"name\": \"Jeju Islands\"\n" +
+                "  }\n" +
+                "}";
+
+        try {
+            object = new JSONObject(geoJsonStr);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -64,6 +88,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         markerManager = new MarkerManager(mMap);
         clusterManager = new ClusterManager(this, mMap, markerManager);
+
+        GeoJsonLayer geoJsonLayer = new GeoJsonLayer(mMap, object);
+        geoJsonLayer.addLayerToMap();
 
 
         //경도, 위도 순으로 파라미터를 입력한 LatLng 객체를 생성하여 지도의 '최초' 중심점을 잡는다.
