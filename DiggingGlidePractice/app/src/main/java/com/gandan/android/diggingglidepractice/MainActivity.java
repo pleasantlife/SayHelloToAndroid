@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.MultiTransformation;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -70,6 +71,13 @@ public class MainActivity extends AppCompatActivity {
         Glide.with(this).load("https://cdn.pixabay.com/photo/2017/10/12/20/15/photoshop-2845779_1280.jpg")
                 .apply(RequestOptions.bitmapTransform(multiTransformation))
                 .into(imgGlideMulti);
+
+        //메모리나 캐시에 저장해두지 않고 로딩될 때 마다 새롭게 이미지를 받아오게 하려면 아래와 같이!
+
+        ImageView imgGlideMemory = findViewById(R.id.imgGlideMemory);
+        Glide.with(this).load("https://cdn.pixabay.com/photo/2017/10/12/20/15/photoshop-2845779_1280.jpg")
+                .apply(RequestOptions.skipMemoryCacheOf(true).diskCacheStrategy(DiskCacheStrategy.NONE))
+                .into(imgGlideMemory);
 
     }
 }
