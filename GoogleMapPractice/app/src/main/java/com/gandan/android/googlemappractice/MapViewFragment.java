@@ -21,7 +21,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MapViewFragment extends Fragment {
+public class MapViewFragment extends Fragment implements OnMapReadyCallback {
 
     MapView fragmentMapView;
     GoogleMap gmap;
@@ -44,27 +44,53 @@ public class MapViewFragment extends Fragment {
         fragmentMapView.onCreate(savedInstanceState);
         fragmentMapView.onResume();
 
-        fragmentMapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
-                gmap = googleMap;
-
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.title("AHA!");
-                markerOptions.position(new LatLng(37.575983, 126.976934));
-                gmap.addMarker(markerOptions);
-
-                CameraPosition cameraPosition = new CameraPosition.Builder().zoom(15).bearing(0)
-                        .target(new LatLng(37.575983, 126.976934))
-                        .tilt(0).build();
-
-                gmap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            }
-        });
+        fragmentMapView.getMapAsync(this);
 
         MapsInitializer.initialize(getActivity());
+
 
         return view;
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+            gmap = googleMap;
+
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.title("AHA!");
+            markerOptions.position(new LatLng(37.575983, 126.976934));
+            gmap.addMarker(markerOptions);
+
+            CameraPosition cameraPosition = new CameraPosition.Builder().zoom(15).bearing(0)
+                    .target(new LatLng(37.575983, 126.976934))
+                    .tilt(0).build();
+
+            gmap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+    }
+
+    //프래그먼트 생명주기에 따라 맵뷰도 생명주기를 강제로 변동시켜야함.
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        fragmentMapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        fragmentMapView.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        fragmentMapView.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        fragmentMapView.onDestroy();
+    }
 }
