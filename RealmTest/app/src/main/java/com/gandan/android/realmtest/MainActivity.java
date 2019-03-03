@@ -14,6 +14,7 @@ import io.realm.DynamicRealmObject;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmList;
+import io.realm.RealmResults;
 import io.realm.internal.android.JsonUtils;
 
 public class MainActivity extends AppCompatActivity {
@@ -60,6 +61,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
         Log.e("list", list.get(2).getEmail()+"");
+
+        RealmResults<DummyJsonObject> results = realm.where(DummyJsonObject.class).equalTo("gender", "Female").findAll();
+
+        RealmResults<DummyJsonObject> resultsTwo = realm.where(DummyJsonObject.class).contains("email", ".com").findAll();
+
+        Log.e("results", results.get(0).getLast_name() + results.get(0).getFirst_name() + results.get(0).getGender());
+        for(DummyJsonObject object : resultsTwo) {
+            Log.e("resultsTow", object.getLast_name() + object.getFirst_name() + object.getEmail());
+        }
 
 
 
