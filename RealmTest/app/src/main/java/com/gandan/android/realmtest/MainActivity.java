@@ -66,10 +66,17 @@ public class MainActivity extends AppCompatActivity {
 
         RealmResults<DummyJsonObject> resultsTwo = realm.where(DummyJsonObject.class).contains("email", ".com").findAll();
 
+        //논리연산
+        //realm.where(DummyJsonObject.class).greaterThan("id", 3).beginGroup().equalTo("gender", "Female").endGroup().findAll();
+
         Log.e("results", results.get(0).getLast_name() + results.get(0).getFirst_name() + results.get(0).getGender());
         for(DummyJsonObject object : resultsTwo) {
             Log.e("resultsTow", object.getLast_name() + object.getFirst_name() + object.getEmail());
         }
+
+
+        //Realm Transition 취소
+        //realm.cancelTransition();
 
 
 
