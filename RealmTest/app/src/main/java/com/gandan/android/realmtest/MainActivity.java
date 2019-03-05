@@ -1,8 +1,11 @@
 package com.gandan.android.realmtest;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     JSONArray jsonArray;
     DummyJsonObject dummyJsonObject = new DummyJsonObject();
     RealmList<DummyJsonObject> list = new RealmList<>();
+    Button goSubActivity;
+    Realm realm;
 
 
     @Override
@@ -32,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         Realm.init(this);
 
-        Realm realm = Realm.getDefaultInstance();
+        realm = Realm.getDefaultInstance();
         RealmConfiguration config = new RealmConfiguration.Builder().name("myrealmtest.realm").build();
         Realm.setDefaultConfiguration(config);
         //realm.beginTransaction();
@@ -74,11 +79,26 @@ public class MainActivity extends AppCompatActivity {
             Log.e("resultsTow", object.getLast_name() + object.getFirst_name() + object.getEmail());
         }
 
+        goSubActivity = findViewById(R.id.goSubActivity);
+        goSubActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SubActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         //Realm Transition 취소
         //realm.cancelTransition();
 
 
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realm.close();
     }
 }
