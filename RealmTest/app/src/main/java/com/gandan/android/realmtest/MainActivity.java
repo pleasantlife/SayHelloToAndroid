@@ -20,7 +20,7 @@ import io.realm.RealmList;
 import io.realm.RealmResults;
 import io.realm.internal.android.JsonUtils;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends MyApplication {
 
     JSONObject jsonObject;
     JSONArray jsonArray;
@@ -35,11 +35,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Realm.init(this);
-
         realm = Realm.getDefaultInstance();
-        RealmConfiguration config = new RealmConfiguration.Builder().name("myrealmtest.realm").build();
-        Realm.setDefaultConfiguration(config);
         //realm.beginTransaction();
 
         realm.executeTransaction(new Realm.Transaction() {
@@ -62,8 +58,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                     list.add(realm.createObjectFromJson(DummyJsonObject.class, object));
                 }
+                //realm.commitTransaction();
             }
+
+
         });
+
+
+
 
         Log.e("list", list.get(2).getEmail()+"");
 
