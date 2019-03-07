@@ -33,10 +33,12 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scrollTest"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
         android:fitsSystemWindows="true"
+        app:behavior_overlapTop="42dp"
         app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior">
 
         <RelativeLayout
@@ -47,7 +49,7 @@
                 android:id="@+id/leftSidebar"
                 android:layout_width="32dp"
                 android:layout_height="match_parent"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="42dp"
                 android:background="@color/colorAccent"
                 android:orientation="horizontal"></LinearLayout>
 
@@ -55,7 +57,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
+                android:background="@color/colorPrimary"
                 android:layout_toRightOf="@+id/leftSidebar">
+
+                <TextView
+                    android:id="@+id/dummyHeaderTxtView"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:text="테스트입니다."/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerTest"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:nestedScrollingEnabled="false">
+
+                </android.support.v7.widget.RecyclerView>
 
             </LinearLayout>
         </RelativeLayout>
