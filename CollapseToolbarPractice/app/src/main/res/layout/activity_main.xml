@@ -15,7 +15,6 @@
             android:layout_height="match_parent"
             app:toolbarId="@+id/toolbar"
             app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
-            app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
             app:contentScrim="?attr/colorPrimary">
 
             <ImageView
@@ -36,17 +35,29 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:fitsSystemWindows="true"
         app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <WebView
-                android:id="@+id/webView"
+            <LinearLayout
+                android:id="@+id/leftSidebar"
+                android:layout_width="32dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="32dp"
+                android:background="@color/colorAccent"
+                android:orientation="horizontal"></LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_toRightOf="@+id/leftSidebar">
+
+            </LinearLayout>
+        </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>
