@@ -17,7 +17,7 @@ import java.util.List;
 public class SignAdapter extends RecyclerView.Adapter<SignAdapter.Holder> {
 
     Context context;
-    List<SignData> signDataList = new ArrayList<>();
+    List<SignData> signDataList;
 
     public SignAdapter(Context context, List<SignData> signDataList){
         this.context = context;
@@ -41,7 +41,7 @@ public class SignAdapter extends RecyclerView.Adapter<SignAdapter.Holder> {
 
     @Override
     public int getItemCount() {
-        return 4;
+        return /*signDataList.size();*/ 4;
     }
 
     class Holder extends RecyclerView.ViewHolder {

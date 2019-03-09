@@ -5,6 +5,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.webkit.WebChromeClient;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerTest = findViewById(R.id.recyclerTest);
         gridLayoutManager = new GridLayoutManager(this, 2);
         recyclerTest.setLayoutManager(gridLayoutManager);
+        //recyclerTest.setLayoutManager(new LinearLayoutManager(this));
         signAdapter = new SignAdapter(this, signDataList);
         recyclerTest.setAdapter(signAdapter);
 
@@ -87,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
                 signData.setSignLocation(locationforRecycler[index]);
                 signDataList.add(signData);
                 index++;
-                //Log.e("데이터 아이들어가니?", signData.getSignImage());
             }
             return;
         }
@@ -107,8 +108,8 @@ public class MainActivity extends AppCompatActivity {
                 boolean isShow = true;
                 int scrollRange = -1;
 
-                if(gridLayoutManager.getHeight() + dummyHeaderTxtView.getMeasuredHeight() >= displayHeight
-                        - (152 * ((float) getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT))){
+                if(recyclerTest.getMeasuredHeight() + dummyHeaderTxtView.getMeasuredHeight() >= displayHeight
+                        - (100 * ((float) getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT))){
 
                     float ratio = ((float) verticalOffset / (float) appBarLayout.getTotalScrollRange()) * 180;
                     lp.topMargin = initMargin - Math.abs((int) (-ratio));
