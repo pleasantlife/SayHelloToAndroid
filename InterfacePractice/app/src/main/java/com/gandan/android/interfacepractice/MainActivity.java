@@ -25,7 +25,17 @@ public class MainActivity extends AppCompatActivity implements DataListener, Ano
         txtInterface = findViewById(R.id.txtInterface);
         recyclerInterface = findViewById(R.id.recyclerInterface);
         //MainActivity에서 implements로 구현했기 때문에, 리사이클러어댑터뷰에 this로 인터페이스를 넘겨준다.
-        recyclerInterfaceAdapter = new RecyclerInterfaceAdapter(this, hundredList, this);
+        //recyclerInterfaceAdapter = new RecyclerInterfaceAdapter(this, hundredList, this);
+        //혹은 새로 만들어서 넘겨줄 수도 있다.
+        /*recyclerInterfaceAdapter = new RecyclerInterfaceAdapter(this, hundredList, new DataListener() {
+            @Override
+            public void sendData(String data) {
+                txtInterface.setText(data);
+            }
+        });*/
+
+        //람다로 좀 더 간단하게 넘길 수도 있다.
+        recyclerInterfaceAdapter = new RecyclerInterfaceAdapter(this, hundredList, data -> txtInterface.setText(data));
         recyclerInterfaceAdapter.setAnotherListener(this);
         recyclerInterface.setAdapter(recyclerInterfaceAdapter);
         recyclerInterface.setLayoutManager(new LinearLayoutManager(this));

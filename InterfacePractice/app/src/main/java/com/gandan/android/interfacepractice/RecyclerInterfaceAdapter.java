@@ -47,8 +47,8 @@ public class RecyclerInterfaceAdapter extends RecyclerView.Adapter<RecyclerInter
     public void onBindViewHolder(Holder holder, int position) {
         final String string = hundredList.get(position);
         holder.txtItem.setText(string);
-        holder.txtItem.setOnClickListener( v -> anotherListener.listen(string));
-        holder.constraintItem.setOnClickListener( v -> dataListener.sendData(string));
+        holder.txtItem.setOnClickListener( view -> anotherListener.listen(string));
+        holder.constraintItem.setOnClickListener( view -> dataListener.sendData(string));
         /*holder.constraintItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
