@@ -40,5 +40,30 @@ public class SubActivity extends MyApplication {
         for(DummyJsonObject object : linear){
             Log.d("linear", object.getGender()+" "+object.getEmail());
         }*/
+
+        /**
+         *  Realm 쓰기
+         */
+
+        RealmResults<DummyJsonObject> all = realm.where(DummyJsonObject.class).findAll();
+        int id = 0;
+
+        id = all.size();
+
+        realm.beginTransaction();
+        DummyJsonObject realmWriteObject = realm.createObject(DummyJsonObject.class);
+        realmWriteObject.setEmail("samsung@galaxy.com");
+        realmWriteObject.setFirst_name("Jae Yoong");
+        realmWriteObject.setLast_name("Lee");
+        realmWriteObject.setGender("Male");
+        realmWriteObject.setIp_address("1.1.1.1");
+        realmWriteObject.setId(id);
+        realm.commitTransaction();
+
+        RealmResults<DummyJsonObject> samsung = realm.where(DummyJsonObject.class).equalTo("email", "samsung@galaxy.com").findAll();
+
+        Log.e("samsung", samsung.get(0).getEmail() + "");
+
+
     }
 }
