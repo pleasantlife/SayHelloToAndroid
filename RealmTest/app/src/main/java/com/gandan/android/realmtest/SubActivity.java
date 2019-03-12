@@ -65,5 +65,6 @@ public class SubActivity extends MyApplication {
         Log.e("samsung", samsung.get(0).getEmail() + "");
 
 
+
     }
 }

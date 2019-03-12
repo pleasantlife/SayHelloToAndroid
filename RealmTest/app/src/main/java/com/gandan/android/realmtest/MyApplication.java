@@ -18,7 +18,14 @@ public class MyApplication extends AppCompatActivity {
         Realm.init(this);
 
         realm = Realm.getDefaultInstance();
-        RealmConfiguration config = new RealmConfiguration.Builder().name("myrealmtest.realm").build();
+
+        //Builder type으로 Realm config 가능!
+        RealmConfiguration config = new RealmConfiguration.Builder()
+                .name("myrealmtest.realm")
+                //스키마 버전을 지정하여 서로 다른 config를 설정할 수 있음.
+                .schemaVersion(2)
+                .build();
+
         Realm.setDefaultConfiguration(config);
     }
 
