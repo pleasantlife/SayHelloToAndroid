@@ -2,11 +2,14 @@ package com.gandan.android.realmtest;
 
 import io.realm.RealmModel;
 import io.realm.RealmObject;
+import io.realm.annotations.Required;
 
 public class DummyJsonObject extends RealmObject implements RealmModel {
 
     public DummyJsonObject() {}
 
+    //Required 어노테이션을 사용하면 null을 허용하지 않게 된다.
+    @Required
     private int id;
 
     private String first_name;
