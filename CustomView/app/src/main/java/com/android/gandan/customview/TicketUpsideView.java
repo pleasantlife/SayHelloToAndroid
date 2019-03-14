@@ -54,7 +54,7 @@ public class TicketUpsideView extends View {
         canvas.drawRect(0, 0, 0, getHeight(), mPaint);
         canvas.drawColor(mTextColor);
         Paint paintText = new Paint();
-        paintText.setColor(Color.BLACK);
+        paintText.setColor(Color.parseColor("#00000000"));
         Paint paint = new Paint();
         paint.setColor(Color.WHITE);
         paint.setAntiAlias(true);
