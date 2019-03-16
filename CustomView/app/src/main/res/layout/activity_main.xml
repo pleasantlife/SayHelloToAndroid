@@ -21,7 +21,8 @@
         <com.android.gandan.customview.TicketUpsideView
             android:layout_width="256dp"
             android:layout_height="54dp"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            app:strokeWidth="2dp"/>
 
         <com.android.gandan.customview.TicketDownSideView
             android:layout_width="256dp"
