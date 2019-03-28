@@ -1,11 +1,9 @@
 package com.gandan.android.realmtest;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
 public class SubActivity extends MyApplication {
