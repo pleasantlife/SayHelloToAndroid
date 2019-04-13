@@ -31,7 +31,10 @@
  - [네이버 지도 표시 액티비티 만들기]
  (https://github.com/pleasantlife/SayHelloToAndroid/tree/master/NaverMapPractice)
 
-# 8. 기타
+# 8. 안드로이드 디자인 패턴 
+ - [안드로이드에서 쓸 수 있는 디자인패턴들](https://github.com/pleasantlife/AndroidDesignPattern)
+
+# 9. 기타
 - [안드로이드에서 쓸 수 있는 아주아주아주 사소한 팁들](http://github.com/pleasantlife/SayHelloToAndroid/tree/master/AndroidSmallTips)
 - [디자인 라이브러리 : Collapse Toolbar Layout 뜯어보기](http://github.com/pleasantlife/SayHelloToAndroid/tree/master/CollapseToolbarPractice)
 - [Dagger2 라이트하게 훑어보기 (in 2018 GDG LightningTalk)](https://github.com/pleasantlife/SayHelloToAndroid/blob/master/180202lightningTalk_dagger.md)
